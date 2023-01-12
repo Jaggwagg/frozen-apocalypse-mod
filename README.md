@@ -1,6 +1,6 @@
 # Frozen Apocalypse Mod
 
-A Minecraft mod which flings Minecraft away from the Sun, turning your world into a frozen wasteland!
+A Minecraft mod which flings your world away from the Sun, turning it into a frozen wasteland!
 
 ## Testing Environment
 * OS: Arch Linux
