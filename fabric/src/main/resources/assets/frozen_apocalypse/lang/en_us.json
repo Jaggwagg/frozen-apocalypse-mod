@@ -1,0 +1,11 @@
+{
+  "effect.frozen_apocalypse.cold_resistance": "Cold Resistance",
+  "gamerule.frozenApocalypseLevel": "Frozen apocalypse level",
+  "gamerule.frozenApocalypseLevelOverride": "Frozen apocalypse level override",
+  "gamerule.frozenApocalypseDeathProtection": "Frozen apocalypse death protection",
+  "item.frozen_apocalypse.thermal_boots": "Thermal Boots",
+  "item.frozen_apocalypse.thermal_chestplate": "Thermal Chestplate",
+  "item.frozen_apocalypse.thermal_helmet": "Thermal Helmet",
+  "item.frozen_apocalypse.thermal_leggings": "Thermal Leggings",
+  "itemGroup.frozen_apocalypse.general": "Frozen Apocalypse"
+}

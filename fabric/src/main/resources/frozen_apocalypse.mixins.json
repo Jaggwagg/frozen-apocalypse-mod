@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "jaggwagg.frozen_apocalypse.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ApocalypseEffectsMixin",
+    "LivingEntityFreezeMixin"
+  ],
+  "client": [
+    "client.WorldRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
