@@ -1,4 +1,4 @@
-# Frozen Apocalypse
+# Frozen Apocalypse Mod
 
 A Minecraft mod which flings Minecraft away from the Sun, turning your world into a frozen wasteland!
 
