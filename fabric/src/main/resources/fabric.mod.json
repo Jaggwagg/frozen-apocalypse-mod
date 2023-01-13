@@ -23,7 +23,6 @@
       "jaggwagg.frozen_apocalypse.FrozenApocalypse"
     ],
     "client": [
-      "jaggwagg.frozen_apocalypse.client.FrozenApocalypseClient"
     ]
   },
   "mixins": [
