@@ -29,8 +29,16 @@ public abstract class ApocalypseEffectsMixin {
 
         FrozenApocalypse.timeOfDay = serverWorld.getTimeOfDay();
 
+        if (!FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled()) {
+            return;
+        }
+
         if (!serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL_OVERRIDE).get()) {
             serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL).set(calculateDay(serverWorld), serverWorld.getServer());
+        }
+
+        if (serverWorld.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > FrozenApocalypse.CONFIG.getMaxApocalypseLevel()) {
+            serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL).set(FrozenApocalypse.CONFIG.getMaxApocalypseLevel(), serverWorld.getServer());
         }
 
         int apocalypseLevel = serverWorld.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL);

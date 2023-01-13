@@ -13,9 +13,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FrozenApocalypseConfig {
-    private static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/gray_goo.json";
-    private final int empRadius;
-    private final boolean allowGooSpread;
+    private static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/" + FrozenApocalypse.MOD_ID + ".json";
+    private final boolean frozenApocalypseEnabled;
+    private int maxApocalypseLevel;
 
     private static FrozenApocalypseConfig createNewDefaultConfig(File configFile, Gson gson) throws IOException {
         FileWriter writer = new FileWriter(configFile);
@@ -28,16 +28,16 @@ public class FrozenApocalypseConfig {
     }
 
     public FrozenApocalypseConfig() {
-        this.empRadius = 64;
-        this.allowGooSpread = true;
+        this.frozenApocalypseEnabled = true;
+        this.maxApocalypseLevel = 999;
     }
 
-    public int getEmpRadius() {
-        return this.empRadius;
+    public boolean getFrozenApocalypseEnabled() {
+        return this.frozenApocalypseEnabled;
     }
 
-    public boolean getAllowGooSpread() {
-        return this.allowGooSpread;
+    public int getMaxApocalypseLevel() {
+        return this.maxApocalypseLevel;
     }
 
     public static FrozenApocalypseConfig getConfig() {

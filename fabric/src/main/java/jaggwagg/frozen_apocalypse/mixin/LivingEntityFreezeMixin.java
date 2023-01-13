@@ -23,6 +23,10 @@ public abstract class LivingEntityFreezeMixin {
         LivingEntity livingEntity = ((LivingEntity)(Object)this);
         World world = livingEntity.getWorld();
 
+        if (!FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled()) {
+            return;
+        }
+
         if (!world.getDimension().bedWorks()) {
             return;
         }
@@ -43,7 +47,7 @@ public abstract class LivingEntityFreezeMixin {
         }
 
         if (world.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > 1) {
-            if (livingEntity.getY() > 90) {
+            if (livingEntity.getY() > 100) {
                 freezeLivingEntity(world, livingEntity);
             }
         }
@@ -55,18 +59,12 @@ public abstract class LivingEntityFreezeMixin {
         }
 
         if (world.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > 3) {
-            if (livingEntity.getY() > 70) {
-                freezeLivingEntity(world, livingEntity);
-            }
-        }
-
-        if (world.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > 4) {
             if (livingEntity.getY() > 60) {
                 freezeLivingEntity(world, livingEntity);
             }
         }
 
-        if (world.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > 5) {
+        if (world.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > 4) {
             if (livingEntity.getY() > 50) {
                 freezeLivingEntity(world, livingEntity);
             }
