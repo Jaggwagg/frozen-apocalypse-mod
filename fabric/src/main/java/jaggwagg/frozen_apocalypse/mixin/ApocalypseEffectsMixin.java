@@ -20,7 +20,7 @@ public abstract class ApocalypseEffectsMixin {
     }
 
     @Inject(method = "tickChunk", at = @At("HEAD"))
-    private void randomTick(WorldChunk chunk, int randomTickSpeed, CallbackInfo callbackInfo) {
+    private void randomTick(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
         ServerWorld serverWorld = ((ServerWorld)(Object)this);
         ChunkPos chunkPos = chunk.getPos();
         int startX = chunkPos.getStartX();

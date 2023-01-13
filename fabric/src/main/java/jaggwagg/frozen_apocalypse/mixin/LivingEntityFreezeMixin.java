@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityFreezeMixin {
     @Inject(method = "tickMovement", at = @At("HEAD"))
-    private void hookTickMovement(CallbackInfo callbackInfo) {
+    private void hookTickMovement(CallbackInfo ci) {
         LivingEntity livingEntity = ((LivingEntity)(Object)this);
         World world = livingEntity.getWorld();
 
