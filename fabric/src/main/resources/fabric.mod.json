@@ -14,9 +14,8 @@
     "issues": "https://github.com/Jaggwagg/frozen-apocalypse/issues"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/frozen_apocalypse/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [

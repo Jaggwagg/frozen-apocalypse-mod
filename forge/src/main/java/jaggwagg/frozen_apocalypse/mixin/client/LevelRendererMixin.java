@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(LevelRenderer.class)
-public abstract class WorldRendererMixin {
+public abstract class LevelRendererMixin {
     @Unique
     private Matrix4f sunMatrixCopy;
 

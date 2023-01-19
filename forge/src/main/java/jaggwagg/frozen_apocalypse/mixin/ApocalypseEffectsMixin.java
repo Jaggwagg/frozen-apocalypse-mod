@@ -1,49 +1,52 @@
 package jaggwagg.frozen_apocalypse.mixin;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import net.minecraft.block.*;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.WorldChunk;
+import jaggwagg.frozen_apocalypse.gamerules.FrozenApocalypseGameRules;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.levelgen.Heightmap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ServerWorld.class)
+@Mixin(ServerLevel.class)
 public abstract class ApocalypseEffectsMixin {
-    private static int calculateDay(World world) {
-        return (int) Math.floor(world.getTimeOfDay() / 24000.0f);
+    private static int calculateDay(Level world) {
+        return (int) Math.floor(world.getGameTime() / 24000.0f);
     }
 
     @Inject(method = "tickChunk", at = @At("HEAD"))
-    private void randomTick(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
-        ServerWorld serverWorld = ((ServerWorld)(Object)this);
+    private void randomTick(LevelChunk chunk, int randomTickSpeed, CallbackInfo ci) {
+        ServerLevel serverWorld = ((ServerLevel)(Object)this);
         ChunkPos chunkPos = chunk.getPos();
-        int startX = chunkPos.getStartX();
-        int startZ = chunkPos.getStartZ();
-        BlockPos blockPos = serverWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING, serverWorld.getRandomPosInChunk(startX, 0, startZ, 15));
+        int startX = chunkPos.getMinBlockX();
+        int startZ = chunkPos.getMinBlockZ();
+        BlockPos blockPos = serverWorld.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, serverWorld.getBlockRandomPos(startX, 0, startZ, 15));
 
-        FrozenApocalypse.timeOfDay = serverWorld.getTimeOfDay();
+        FrozenApocalypse.timeOfDay = (int)serverWorld.getGameTime();
 
         if (!FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled()) {
             return;
         }
 
-        if (!serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL_OVERRIDE).get()) {
-            serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL).set(calculateDay(serverWorld), serverWorld.getServer());
+        if (!serverWorld.getGameRules().getBoolean(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL_OVERRIDE)) {
+            serverWorld.getGameRules().getRule(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(calculateDay(serverWorld), serverWorld.getServer());
         }
 
-        if (serverWorld.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > FrozenApocalypse.CONFIG.getMaxApocalypseLevel()) {
-            serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL).set(FrozenApocalypse.CONFIG.getMaxApocalypseLevel(), serverWorld.getServer());
+        if (serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL) > FrozenApocalypse.CONFIG.getMaxApocalypseLevel()) {
+            serverWorld.getGameRules().getRule(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(FrozenApocalypse.CONFIG.getMaxApocalypseLevel(), serverWorld.getServer());
         }
 
-        int apocalypseLevel = serverWorld.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL);
+        int apocalypseLevel = serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL);
 
-        if (!serverWorld.getDimension().bedWorks()) {
+        if (!serverWorld.dimensionType().bedWorks()) {
             return;
         }
 
@@ -53,7 +56,7 @@ public abstract class ApocalypseEffectsMixin {
                 setMiscBlocks(serverWorld, blockPos);
 
                 if (serverWorld.isRaining()) {
-                    serverWorld.setWeather(1000000, 0, false, false);
+                    serverWorld.setWeatherParameters(1000000, 0, false, false);
                 }
             }
         }
@@ -80,70 +83,71 @@ public abstract class ApocalypseEffectsMixin {
         }
     }
 
-    public void setIce(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.WATER)) {
-            serverWorld.setBlockState(blockPos.down(), Blocks.ICE.getDefaultState());
+    public void setIce(ServerLevel serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.below()).is(Blocks.WATER)) {
+            serverWorld.setBlockAndUpdate(blockPos.below(), Blocks.ICE.defaultBlockState());
         }
     }
 
-    public void setPackedIce(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.WATER) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.ICE)) {
-            serverWorld.setBlockState(blockPos.down(), Blocks.PACKED_ICE.getDefaultState());
+    public void setPackedIce(ServerLevel serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.below()).is(Blocks.WATER) || serverWorld.getBlockState(blockPos.below()).is(Blocks.ICE)) {
+            serverWorld.setBlockAndUpdate(blockPos.below(), Blocks.ICE.defaultBlockState());
         }
     }
 
-    public void setObsidian(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.LAVA)) {
-            if (serverWorld.getBlockState(blockPos.down()).getFluidState().getLevel() > 7) {
-                serverWorld.setBlockState(blockPos.down(), Blocks.OBSIDIAN.getDefaultState());
-                serverWorld.syncWorldEvent(1501, blockPos.down(), 0);
+    public void setObsidian(ServerLevel serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.below()).is(Blocks.LAVA)) {
+            if (serverWorld.getBlockState(blockPos.below()).getFluidState().getAmount() > 7) {
+                serverWorld.setBlockAndUpdate(blockPos.below(), Blocks.OBSIDIAN.defaultBlockState());
+                /*serverWorld.syncWorldEvent(1501, blockPos.below(), 0);
+                serverWorld.blockEvent();*/
             }
         }
     }
 
-    public void setPodzol(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.GRASS_BLOCK)) {
-            serverWorld.setBlockState(blockPos.down(), Blocks.PODZOL.getDefaultState());
+    public void setPodzol(ServerLevel serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.below()).is(Blocks.GRASS_BLOCK)) {
+            serverWorld.setBlockAndUpdate(blockPos.below(), Blocks.PODZOL.defaultBlockState());
         }
     }
 
-    public void setLeafDecay(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).contains(LeavesBlock.PERSISTENT)) {
-            serverWorld.removeBlock(blockPos.down(), true);
+    public void setLeafDecay(ServerLevel serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.below()).hasProperty(LeavesBlock.PERSISTENT)) {
+            serverWorld.removeBlock(blockPos.below(), true);
         }
     }
 
-    public void setMiscBlocks(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.CAMPFIRE) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.SOUL_CAMPFIRE) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.TORCH)) {
-            serverWorld.removeBlock(blockPos.down(), true);
+    public void setMiscBlocks(ServerLevel serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.below()).is(Blocks.CAMPFIRE) || serverWorld.getBlockState(blockPos.below()).is(Blocks.SOUL_CAMPFIRE) || serverWorld.getBlockState(blockPos.below()).is(Blocks.TORCH)) {
+            serverWorld.removeBlock(blockPos.below(), true);
         }
     }
 
-    public void setSnow(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).contains(FluidBlock.LEVEL)) {
+    public void setSnow(ServerLevel serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.below()).hasProperty(LiquidBlock.LEVEL)) {
             return;
         }
 
-        if (serverWorld.getBlockState(blockPos.down()).contains(LeavesBlock.PERSISTENT)) {
+        if (serverWorld.getBlockState(blockPos.below()).hasProperty(LeavesBlock.PERSISTENT)) {
             return;
         }
 
-        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.ICE) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.PACKED_ICE)) {
+        if (serverWorld.getBlockState(blockPos.below()).is(Blocks.ICE) || serverWorld.getBlockState(blockPos.below()).is(Blocks.PACKED_ICE)) {
             return;
         }
 
-        serverWorld.setBlockState(blockPos, Blocks.SNOW.getDefaultState());
+        serverWorld.setBlockAndUpdate(blockPos, Blocks.SNOW.defaultBlockState());
     }
 
-    public void setPowderSnow(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).contains(FluidBlock.LEVEL)) {
+    public void setPowderSnow(ServerLevel serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.below()).hasProperty(LiquidBlock.LEVEL)) {
             return;
         }
 
-        if (serverWorld.getBlockState(blockPos.down()).contains(LeavesBlock.PERSISTENT)) {
+        if (serverWorld.getBlockState(blockPos.below()).hasProperty(LeavesBlock.PERSISTENT)) {
             return;
         }
 
-        serverWorld.setBlockState(blockPos, Blocks.POWDER_SNOW.getDefaultState());
+        serverWorld.setBlockAndUpdate(blockPos, Blocks.POWDER_SNOW.defaultBlockState());
     }
 }

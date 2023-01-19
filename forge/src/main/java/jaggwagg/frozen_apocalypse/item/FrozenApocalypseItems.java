@@ -1,13 +1,17 @@
 package jaggwagg.frozen_apocalypse.item;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -16,7 +20,6 @@ public class FrozenApocalypseItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, FrozenApocalypse.MOD_ID);
 
     public static void init(IEventBus modEventBus) {
-        Arrays.stream(Armor.values()).forEach(value -> registerItem(value.item, value.name));
         ITEMS.register(modEventBus);
     }
 
@@ -39,15 +42,11 @@ public class FrozenApocalypseItems {
         THERMAL_BOOTS(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, EquipmentSlot.FEET, new Item.Properties()));
 
         public final String name;
-        public final Item item;
+        public final RegistryObject<Item> item;
 
         <T extends Item> Armor(T item) {
             this.name = this.toString().toLowerCase(Locale.ROOT);
-            this.item = item;
+            this.item = ITEMS.register(name, () -> item);
         }
-    }
-
-    public static void registerItem(Item item, String name) {
-        ITEMS.register(name, () -> item);
     }
 }
