@@ -1,0 +1,11 @@
+{
+  "effect.frozen_apocalypse.cold_resistance": "霜寒抗性",
+  "gamerule.frozenApocalypseLevel": "冰封启示录级别",
+  "gamerule.frozenApocalypseLevelOverride": "冰冻启示录级别覆盖",
+  "gamerule.frozenApocalypseDeathProtection": "冰封启示录死亡保护",
+  "item.frozen_apocalypse.thermal_boots": "热力靴子",
+  "item.frozen_apocalypse.thermal_chestplate": "热力胸甲",
+  "item.frozen_apocalypse.thermal_helmet": "热力头盔",
+  "item.frozen_apocalypse.thermal_leggings": "热力护腿",
+  "itemGroup.frozen_apocalypse.general": "冰封启示录"
+}
