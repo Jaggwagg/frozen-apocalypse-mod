@@ -4,7 +4,6 @@ A Minecraft mod which flings your world away from the Sun, turning it into a fro
 
 ## Testing Environment
 * OS: Arch Linux
-* Kernel: x86_64 6.1.4-zen2-1-zen
 
 ## Dependencies
 * Gradle
