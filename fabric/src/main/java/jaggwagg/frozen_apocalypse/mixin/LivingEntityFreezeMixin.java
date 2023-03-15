@@ -4,7 +4,6 @@ import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.entity.effect.FrozenApocalypseStatusEffects;
 import jaggwagg.frozen_apocalypse.item.FrozenApocalypseItems;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.mob.StrayEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -83,7 +82,7 @@ public abstract class LivingEntityFreezeMixin {
         }
 
         if (world.getRandom().nextInt(32) == 0) {
-            livingEntity.damage(DamageSource.FREEZE, 1.0f);
+            livingEntity.damage(world.getDamageSources().freeze(), 1.0f);
         }
 
         livingEntity.setInPowderSnow(true);

@@ -2,7 +2,6 @@ package jaggwagg.frozen_apocalypse.item;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -29,10 +28,10 @@ public class FrozenApocalypseItems {
     }
 
     public enum Armor {
-        THERMAL_HELMET(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, EquipmentSlot.HEAD, new Item.Settings())),
-        THERMAL_CHESTPLATE(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, EquipmentSlot.CHEST, new Item.Settings())),
-        THERMAL_LEGGINGS(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, EquipmentSlot.LEGS, new Item.Settings())),
-        THERMAL_BOOTS(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, EquipmentSlot.FEET, new Item.Settings()));
+        THERMAL_HELMET(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, ArmorItem.Type.HELMET, new Item.Settings())),
+        THERMAL_CHESTPLATE(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, ArmorItem.Type.CHESTPLATE, new Item.Settings())),
+        THERMAL_LEGGINGS(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, ArmorItem.Type.LEGGINGS, new Item.Settings())),
+        THERMAL_BOOTS(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, ArmorItem.Type.BOOTS, new Item.Settings()));
 
         public final String name;
         public final Item item;
