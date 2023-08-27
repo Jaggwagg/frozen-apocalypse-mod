@@ -7,5 +7,5 @@
   "item.frozen_apocalypse.thermal_chestplate": "Thermal Chestplate",
   "item.frozen_apocalypse.thermal_helmet": "Thermal Helmet",
   "item.frozen_apocalypse.thermal_leggings": "Thermal Leggings",
-  "itemGroup.frozen_apocalypse.general": "Frozen Apocalypse"
+  "group.frozen_apocalypse.general": "Frozen Apocalypse"
 }

@@ -7,5 +7,5 @@
   "item.frozen_apocalypse.thermal_chestplate": "热力胸甲",
   "item.frozen_apocalypse.thermal_helmet": "热力头盔",
   "item.frozen_apocalypse.thermal_leggings": "热力护腿",
-  "itemGroup.frozen_apocalypse.general": "冰封启示录"
+  "group.frozen_apocalypse.general": "冰封启示录"
 }

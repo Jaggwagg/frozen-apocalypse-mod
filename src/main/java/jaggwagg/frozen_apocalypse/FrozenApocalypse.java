@@ -7,11 +7,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.GameRules;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,10 +16,6 @@ public class FrozenApocalypse implements ModInitializer {
     public static final String MOD_ID = "frozen_apocalypse";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static final FrozenApocalypseConfig CONFIG = FrozenApocalypseConfig.getConfig();
-
-    public static final ItemGroup ITEM_GROUP = FabricItemGroup.builder(new Identifier(MOD_ID, "general"))
-            .icon(() -> new ItemStack(FrozenApocalypseItems.Armor.THERMAL_CHESTPLATE.item))
-            .build();
 
     public static final GameRules.Key<GameRules.IntRule> FROZEN_APOCALYPSE_LEVEL =
             GameRuleRegistry.register("frozenApocalypseLevel", GameRules.Category.UPDATES, GameRuleFactory.createIntRule(0));

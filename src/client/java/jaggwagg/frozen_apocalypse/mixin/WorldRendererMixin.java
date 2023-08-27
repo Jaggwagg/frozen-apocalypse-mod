@@ -1,4 +1,4 @@
-package jaggwagg.frozen_apocalypse.mixin.client;
+package jaggwagg.frozen_apocalypse.mixin;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import net.minecraft.client.render.WorldRenderer;
@@ -38,6 +38,7 @@ public abstract class WorldRendererMixin {
         return copy;
     }
 
+    @Unique
     private Matrix4f copy(Matrix4f matrix) {
         Matrix4f copy = new Matrix4f();
 
