@@ -5,17 +5,23 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.registry.Registries;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FrozenApocalypseConfig {
     private static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/" + FrozenApocalypse.MOD_ID + ".json";
     private final boolean frozenApocalypseEnabled;
     private final int maxApocalypseLevel;
+    private final ArrayList<String> heatBlocks;
 
     private static FrozenApocalypseConfig createNewDefaultConfig(File configFile, Gson gson) throws IOException {
         FileWriter writer = new FileWriter(configFile);
@@ -30,6 +36,15 @@ public class FrozenApocalypseConfig {
     public FrozenApocalypseConfig() {
         this.frozenApocalypseEnabled = true;
         this.maxApocalypseLevel = 999;
+        this.heatBlocks = new ArrayList<>();
+
+        ArrayList<Block> heatBlocks = new ArrayList<>(List.of(
+                Blocks.TORCH, Blocks.WALL_TORCH, Blocks.FIRE, Blocks.SOUL_FIRE,
+                Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE, Blocks.LANTERN, Blocks.SOUL_LANTERN,
+                Blocks.LAVA, Blocks.LAVA_CAULDRON, Blocks.MAGMA_BLOCK, Blocks.JACK_O_LANTERN, Blocks.SEA_LANTERN
+        ));
+
+        heatBlocks.forEach(value -> this.heatBlocks.add(Registries.BLOCK.getId(value).toString()));
     }
 
     public boolean getFrozenApocalypseEnabled() {
@@ -38,6 +53,10 @@ public class FrozenApocalypseConfig {
 
     public int getMaxApocalypseLevel() {
         return this.maxApocalypseLevel;
+    }
+
+    public ArrayList<String> getHeatBlocks() {
+        return this.heatBlocks;
     }
 
     public static FrozenApocalypseConfig getConfig() {

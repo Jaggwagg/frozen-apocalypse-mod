@@ -9,12 +9,14 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerWorld.class)
 public abstract class ApocalypseEffectsMixin {
+    @Unique
     private static int calculateDay(World world) {
         return (int) Math.floor(world.getTimeOfDay() / 24000.0f);
     }
@@ -50,7 +52,6 @@ public abstract class ApocalypseEffectsMixin {
         if (apocalypseLevel > 3) {
             if (serverWorld.random.nextInt((int)Math.ceil(256.0f / apocalypseLevel)) <= 1) {
                 setPowderSnow(serverWorld, blockPos);
-                setMiscBlocks(serverWorld, blockPos);
 
                 if (serverWorld.isRaining()) {
                     serverWorld.setWeather(1000000, 0, false, false);
@@ -80,18 +81,21 @@ public abstract class ApocalypseEffectsMixin {
         }
     }
 
+    @Unique
     public void setIce(ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.WATER)) {
             serverWorld.setBlockState(blockPos.down(), Blocks.ICE.getDefaultState());
         }
     }
 
+    @Unique
     public void setPackedIce(ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.WATER) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.ICE)) {
             serverWorld.setBlockState(blockPos.down(), Blocks.PACKED_ICE.getDefaultState());
         }
     }
 
+    @Unique
     public void setObsidian(ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.LAVA)) {
             if (serverWorld.getBlockState(blockPos.down()).getFluidState().getLevel() > 7) {
@@ -101,24 +105,21 @@ public abstract class ApocalypseEffectsMixin {
         }
     }
 
+    @Unique
     public void setPodzol(ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.GRASS_BLOCK)) {
             serverWorld.setBlockState(blockPos.down(), Blocks.PODZOL.getDefaultState());
         }
     }
 
+    @Unique
     public void setLeafDecay(ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos.down()).contains(LeavesBlock.PERSISTENT)) {
             serverWorld.removeBlock(blockPos.down(), true);
         }
     }
 
-    public void setMiscBlocks(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.CAMPFIRE) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.SOUL_CAMPFIRE) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.TORCH)) {
-            serverWorld.removeBlock(blockPos.down(), true);
-        }
-    }
-
+    @Unique
     public void setSnow(ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos.down()).contains(FluidBlock.LEVEL)) {
             return;
@@ -135,6 +136,7 @@ public abstract class ApocalypseEffectsMixin {
         serverWorld.setBlockState(blockPos, Blocks.SNOW.getDefaultState());
     }
 
+    @Unique
     public void setPowderSnow(ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos.down()).contains(FluidBlock.LEVEL)) {
             return;

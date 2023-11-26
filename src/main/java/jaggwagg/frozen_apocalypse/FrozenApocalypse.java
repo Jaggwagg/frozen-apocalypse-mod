@@ -32,7 +32,7 @@ public class FrozenApocalypse implements ModInitializer {
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, isAlive) -> {
             if (newPlayer.getWorld().getGameRules().getBoolean(FROZEN_APOCALYPSE_DEATH_PROTECTION)) {
                 if (!newPlayer.isCreative() && !newPlayer.isSpectator()) {
-                    newPlayer.addStatusEffect(new StatusEffectInstance(FrozenApocalypseStatusEffects.COLD_RESISTANCE, 2400));
+                    newPlayer.addStatusEffect(new StatusEffectInstance(FrozenApocalypseStatusEffects.FROST_RESISTANCE, 2400));
                 }
             }
         });

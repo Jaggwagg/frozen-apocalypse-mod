@@ -20,13 +20,15 @@ public class FrozenApocalypseItems {
     public static void init() {
         Arrays.stream(Armor.values()).forEach(value -> registerItem(value.item, value.name));
         Registry.register(Registries.ITEM_GROUP, ITEM_GROUP, FabricItemGroup.builder()
-                .icon(() -> new ItemStack(Armor.THERMAL_CHESTPLATE.item))
+                .icon(() -> new ItemStack(Armor.IRON_THERMAL_CHESTPLATE.item))
                 .displayName(Text.translatable("group." + FrozenApocalypse.MOD_ID + ".general"))
                 .build());
     }
 
     public enum ArmorMaterials {
-        THERMAL_ARMOR(new ThermalArmorMaterial());
+        IRON_THERMAL_ARMOR(new IronThermalArmorMaterial()),
+        DIAMOND_THERMAL_ARMOR(new DiamondThermalArmorMaterial()),
+        NETHERITE_THERMAL_ARMOR(new NetheriteThermalArmorMaterial());
 
         public final String name;
         public final ArmorMaterial material;
@@ -38,10 +40,18 @@ public class FrozenApocalypseItems {
     }
 
     public enum Armor {
-        THERMAL_HELMET(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, ArmorItem.Type.HELMET, new Item.Settings())),
-        THERMAL_CHESTPLATE(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, ArmorItem.Type.CHESTPLATE, new Item.Settings())),
-        THERMAL_LEGGINGS(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, ArmorItem.Type.LEGGINGS, new Item.Settings())),
-        THERMAL_BOOTS(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, ArmorItem.Type.BOOTS, new Item.Settings()));
+        IRON_THERMAL_HELMET(new ThermalArmorItem(ArmorMaterials.IRON_THERMAL_ARMOR.material, ArmorItem.Type.HELMET, new Item.Settings())),
+        IRON_THERMAL_CHESTPLATE(new ThermalArmorItem(ArmorMaterials.IRON_THERMAL_ARMOR.material, ArmorItem.Type.CHESTPLATE, new Item.Settings())),
+        IRON_THERMAL_LEGGINGS(new ThermalArmorItem(ArmorMaterials.IRON_THERMAL_ARMOR.material, ArmorItem.Type.LEGGINGS, new Item.Settings())),
+        IRON_THERMAL_BOOTS(new ThermalArmorItem(ArmorMaterials.IRON_THERMAL_ARMOR.material, ArmorItem.Type.BOOTS, new Item.Settings())),
+        DIAMOND_THERMAL_HELMET(new ThermalArmorItem(ArmorMaterials.DIAMOND_THERMAL_ARMOR.material, ArmorItem.Type.HELMET, new Item.Settings())),
+        DIAMOND_THERMAL_CHESTPLATE(new ThermalArmorItem(ArmorMaterials.DIAMOND_THERMAL_ARMOR.material, ArmorItem.Type.CHESTPLATE, new Item.Settings())),
+        DIAMOND_THERMAL_LEGGINGS(new ThermalArmorItem(ArmorMaterials.DIAMOND_THERMAL_ARMOR.material, ArmorItem.Type.LEGGINGS, new Item.Settings())),
+        DIAMOND_THERMAL_BOOTS(new ThermalArmorItem(ArmorMaterials.DIAMOND_THERMAL_ARMOR.material, ArmorItem.Type.BOOTS, new Item.Settings())),
+        NETHERITE_THERMAL_HELMET(new ThermalArmorItem(ArmorMaterials.NETHERITE_THERMAL_ARMOR.material, ArmorItem.Type.HELMET, new Item.Settings())),
+        NETHERITE_THERMAL_CHESTPLATE(new ThermalArmorItem(ArmorMaterials.NETHERITE_THERMAL_ARMOR.material, ArmorItem.Type.CHESTPLATE, new Item.Settings())),
+        NETHERITE_THERMAL_LEGGINGS(new ThermalArmorItem(ArmorMaterials.NETHERITE_THERMAL_ARMOR.material, ArmorItem.Type.LEGGINGS, new Item.Settings())),
+        NETHERITE_THERMAL_BOOTS(new ThermalArmorItem(ArmorMaterials.NETHERITE_THERMAL_ARMOR.material, ArmorItem.Type.BOOTS, new Item.Settings()));
 
         public final String name;
         public final Item item;
