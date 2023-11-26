@@ -25,7 +25,8 @@ public class FrozenApocalypse implements ModInitializer {
     public static final GameRules.Key<GameRules.BooleanRule> FROZEN_APOCALYPSE_DEATH_PROTECTION =
             GameRuleRegistry.register("frozenApocalypseDeathProtection", GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(true));
 
-    public static long timeOfDay;
+    public static boolean isFrozenApocalypseEnabled = FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled();
+    public static int frozenApocalypseLevel = 0;
 
     @Override
     public void onInitialize() {

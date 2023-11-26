@@ -28,6 +28,7 @@ public abstract class LivingEntityFreezeMixin {
     private void tickMovement(CallbackInfo ci) {
         LivingEntity livingEntity = ((LivingEntity)(Object)this);
         World world = livingEntity.getWorld();
+        int apocalypseLevel = world.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL);
 
         if (!FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled()) {
             return;
@@ -69,36 +70,18 @@ public abstract class LivingEntityFreezeMixin {
             }
         }
 
-        if (world.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > 1) {
-            if (livingEntity.getY() > 100) {
-                if (notNearHeatSource(5, world, livingEntity)) {
-                    freezeLivingEntity(world, livingEntity);
-                }
-            }
-        }
-
-        if (world.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > 2) {
-            if (livingEntity.getY() > 80) {
-                if (notNearHeatSource(5, world, livingEntity)) {
-                    freezeLivingEntity(world, livingEntity);
-                }
-            }
-        }
-
-        if (world.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > 3) {
-            if (livingEntity.getY() > 60) {
-                if (notNearHeatSource(4, world, livingEntity)) {
-                    freezeLivingEntity(world, livingEntity);
-                }
-            }
-        }
-
-        if (world.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > 4) {
-            if (livingEntity.getY() > 50) {
-                if (notNearHeatSource(3, world, livingEntity)) {
-                    freezeLivingEntity(world, livingEntity);
-                }
-            }
+        if (apocalypseLevel == 1) {
+            freezeLivingEntity(150, 7, 1.0f, 32, livingEntity, world);
+        } else if (apocalypseLevel == 2) {
+            freezeLivingEntity(100, 7, 1.0f, 32, livingEntity, world);
+        } else if (apocalypseLevel == 3) {
+            freezeLivingEntity(60, 5, 1.0f, 32, livingEntity, world);
+        } else if (apocalypseLevel == 4) {
+            freezeLivingEntity(50, 5, 2.0f, 32, livingEntity, world);
+        } else if (apocalypseLevel == 5) {
+            freezeLivingEntity(40, 3, 2.0f, 16, livingEntity, world);
+        } else if (apocalypseLevel > 5) {
+            freezeLivingEntity(30, 3, 2.0f, 16, livingEntity, world);
         }
     }
 
@@ -125,25 +108,29 @@ public abstract class LivingEntityFreezeMixin {
     }
 
     @Unique
-    public void freezeLivingEntity(World world, LivingEntity livingEntity) {
-        if (livingEntity instanceof PlayerEntity playerEntity) {
-            if (playerEntity.isCreative() || playerEntity.isSpectator()) {
-                return;
+    public void freezeLivingEntity(int aboveY, int heatSize, float damage, int random, LivingEntity livingEntity, World world) {
+        if (livingEntity.getY() > aboveY) {
+            if (notNearHeatSource(heatSize, world, livingEntity)) {
+                if (livingEntity instanceof PlayerEntity playerEntity) {
+                    if (playerEntity.isCreative() || playerEntity.isSpectator()) {
+                        return;
+                    }
+                }
+
+                if (livingEntity instanceof SkeletonEntity || livingEntity instanceof StrayEntity) {
+                    return;
+                }
+
+                if (world.getRandom().nextInt(random) == 0) {
+                    livingEntity.damage(world.getDamageSources().freeze(), damage);
+                }
+
+                livingEntity.setInPowderSnow(true);
+
+                if (!world.isClient) {
+                    livingEntity.setOnFire(false);
+                }
             }
-        }
-
-        if (livingEntity instanceof SkeletonEntity || livingEntity instanceof StrayEntity) {
-            return;
-        }
-
-        if (world.getRandom().nextInt(32) == 0) {
-            livingEntity.damage(world.getDamageSources().freeze(), 1.0f);
-        }
-
-        livingEntity.setInPowderSnow(true);
-
-        if (!world.isClient) {
-            livingEntity.setOnFire(false);
         }
     }
 }

@@ -18,16 +18,20 @@ public abstract class WorldRendererMixin {
 
     @ModifyVariable(method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lorg/joml/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderTexture(ILnet/minecraft/util/Identifier;)V", ordinal = 0), ordinal = 1)
     private Matrix4f scaleSun(Matrix4f in) {
-        float scale = (FrozenApocalypse.timeOfDay / 240000.0f) * 2;
-
-        sunMatrixCopy = new Matrix4f(in);
         Matrix4f copy = new Matrix4f(in);
+        sunMatrixCopy = new Matrix4f(copy);
 
-        if (scale < 1.0f) {
-            return copy.scale(1.0f - scale, 1.0f, 1.0f - scale);
-        } else {
-            return copy.scale(0.1f, 1.0f, 0.1f);
+        if (!FrozenApocalypse.isFrozenApocalypseEnabled) {
+            return copy;
         }
+
+        return switch (FrozenApocalypse.frozenApocalypseLevel) {
+            case 0 -> copy;
+            case 1 -> copy.scale(0.8f, 1.0f, 0.8f);
+            case 2 -> copy.scale(0.6f, 1.0f, 0.6f);
+            case 3 -> copy.scale(0.4f, 1.0f, 0.4f);
+            default -> copy.scale(0.2f, 1.0f, 0.2f);
+        };
     }
 
     @ModifyVariable(method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lorg/joml/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderTexture(ILnet/minecraft/util/Identifier;)V", ordinal = 1), ordinal = 1)

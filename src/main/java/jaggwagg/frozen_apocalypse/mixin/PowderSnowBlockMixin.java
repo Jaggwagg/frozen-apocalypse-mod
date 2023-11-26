@@ -7,6 +7,9 @@ import net.minecraft.block.PowderSnowBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,6 +38,34 @@ public abstract class PowderSnowBlockMixin {
         if (entity instanceof  LivingEntity livingEntity) {
             if (livingEntity.hasStatusEffect(FrozenApocalypseStatusEffects.FROST_RESISTANCE)) {
                 entity.inPowderSnow = false;
+            }
+
+            if (livingEntity instanceof PlayerEntity playerEntity) {
+                DefaultedList<ItemStack> playerArmor = playerEntity.getInventory().armor;
+                boolean wearingThermalBoots = false;
+                boolean wearingThermalLeggings = false;
+                boolean wearingThermalChestplate = false;
+                boolean wearingThermalHelmet = false;
+
+                if (playerArmor.get(0).getItem().getClass() == FrozenApocalypseItems.Armor.IRON_THERMAL_BOOTS.item.getClass()) {
+                    wearingThermalBoots = true;
+                }
+
+                if (playerArmor.get(1).getItem().getClass() == FrozenApocalypseItems.Armor.IRON_THERMAL_LEGGINGS.item.getClass()) {
+                    wearingThermalLeggings = true;
+                }
+
+                if (playerArmor.get(2).getItem().getClass() == FrozenApocalypseItems.Armor.IRON_THERMAL_CHESTPLATE.item.getClass()) {
+                    wearingThermalChestplate = true;
+                }
+
+                if (playerArmor.get(3).getItem().getClass() == FrozenApocalypseItems.Armor.IRON_THERMAL_HELMET.item.getClass()) {
+                    wearingThermalHelmet = true;
+                }
+
+                if (wearingThermalBoots && wearingThermalLeggings && wearingThermalChestplate && wearingThermalHelmet) {
+                    entity.inPowderSnow = false;
+                }
             }
         }
     }
