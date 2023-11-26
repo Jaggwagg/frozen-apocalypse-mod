@@ -1,7 +1,10 @@
 # Frozen Apocalypse Mod
 
-A Minecraft mod which flings your world away from the Sun, turning it into a frozen wasteland! Fabric only.
-Warning! This will destroy your world! Make backups!
+A Minecraft mod which flings your world away from the Sun, turning it into a frozen wasteland!
+
+Fabric only.
+
+**Warning! This will destroy your world! Make backups!**
 
 ## Testing Environment
 * OS: Arch Linux
@@ -11,7 +14,6 @@ Warning! This will destroy your world! Make backups!
 * JDK 17 or greater
 
 ## Compiling and Running
-
 ```shell
 git clone https://github.com/Jaggwagg/frozen-apocalypse.git
 ```
@@ -23,4 +25,5 @@ Contributions will be accepted for bug fixes. Any feature requests should not be
 Language translation would be much appreciated!
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+* [GPL](https://choosealicense.com/licenses/mit/)
+* Below 1.1.0 - [MIT](https://choosealicense.com/licenses/mit/)

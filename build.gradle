@@ -22,7 +22,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"modid" {
+		"frozen_apocalypse" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}
