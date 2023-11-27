@@ -20,7 +20,6 @@ import java.util.List;
 public class FrozenApocalypseConfig {
     private static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/" + FrozenApocalypse.MOD_ID + ".json";
     private final boolean frozenApocalypseEnabled;
-    private final int maxApocalypseLevel;
     private final ArrayList<String> heatBlocks;
 
     private static FrozenApocalypseConfig createNewDefaultConfig(File configFile, Gson gson) throws IOException {
@@ -35,7 +34,6 @@ public class FrozenApocalypseConfig {
 
     public FrozenApocalypseConfig() {
         this.frozenApocalypseEnabled = true;
-        this.maxApocalypseLevel = 999;
         this.heatBlocks = new ArrayList<>();
 
         ArrayList<Block> heatBlocks = new ArrayList<>(List.of(
@@ -49,10 +47,6 @@ public class FrozenApocalypseConfig {
 
     public boolean getFrozenApocalypseEnabled() {
         return this.frozenApocalypseEnabled;
-    }
-
-    public int getMaxApocalypseLevel() {
-        return this.maxApocalypseLevel;
     }
 
     public ArrayList<String> getHeatBlocks() {
