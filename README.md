@@ -4,7 +4,7 @@ A Minecraft mod which flings your world away from the Sun, turning it into a fro
 
 **Fabric only.**
 
-#### <u>Warning! This will destroy your world! Make backups!</u>
+### Warning! This will destroy your world! Make backups!
 
 ## Testing Environment
 * OS: Arch Linux
