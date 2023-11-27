@@ -2,9 +2,9 @@
 
 A Minecraft mod which flings your world away from the Sun, turning it into a frozen wasteland!
 
-Fabric only.
+**Fabric only.**
 
-**Warning! This will destroy your world! Make backups!**
+#### <u>Warning! This will destroy your world! Make backups!</u>
 
 ## Testing Environment
 * OS: Arch Linux
@@ -25,5 +25,5 @@ Contributions will be accepted for bug fixes. Any feature requests should not be
 Language translation would be much appreciated!
 
 ## License
-* [GPL](https://choosealicense.com/licenses/mit/)
+* Current - [GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/)
 * Below 1.1.0 - [MIT](https://choosealicense.com/licenses/mit/)
