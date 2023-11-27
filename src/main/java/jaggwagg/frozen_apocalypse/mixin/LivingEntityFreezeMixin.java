@@ -2,7 +2,6 @@ package jaggwagg.frozen_apocalypse.mixin;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.entity.effect.FrozenApocalypseStatusEffects;
-import jaggwagg.frozen_apocalypse.item.FrozenApocalypseItems;
 import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
@@ -10,10 +9,8 @@ import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.mob.StrayEntity;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
