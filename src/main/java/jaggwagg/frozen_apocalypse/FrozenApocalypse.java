@@ -21,10 +21,6 @@ public class FrozenApocalypse implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static final FrozenApocalypseConfig CONFIG = FrozenApocalypseConfig.getConfig();
 
-    public static final ItemGroup ITEM_GROUP = FabricItemGroup.builder(new Identifier(MOD_ID, "general"))
-            .icon(() -> new ItemStack(FrozenApocalypseItems.Armor.THERMAL_CHESTPLATE.item))
-            .build();
-
     public static final GameRules.Key<GameRules.IntRule> FROZEN_APOCALYPSE_LEVEL =
             GameRuleRegistry.register("frozenApocalypseLevel", GameRules.Category.UPDATES, GameRuleFactory.createIntRule(0));
     public static final GameRules.Key<GameRules.BooleanRule> FROZEN_APOCALYPSE_LEVEL_OVERRIDE =
@@ -33,20 +29,21 @@ public class FrozenApocalypse implements ModInitializer {
     public static final GameRules.Key<GameRules.BooleanRule> FROZEN_APOCALYPSE_DEATH_PROTECTION =
             GameRuleRegistry.register("frozenApocalypseDeathProtection", GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(true));
 
-    public static long timeOfDay;
+    public static final boolean isFrozenApocalypseEnabled = FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled();
+    public static int frozenApocalypseLevel = 0;
 
     @Override
     public void onInitialize() {
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, isAlive) -> {
             if (newPlayer.getWorld().getGameRules().getBoolean(FROZEN_APOCALYPSE_DEATH_PROTECTION)) {
                 if (!newPlayer.isCreative() && !newPlayer.isSpectator()) {
-                    newPlayer.addStatusEffect(new StatusEffectInstance(FrozenApocalypseStatusEffects.COLD_RESISTANCE, 2400));
+                    newPlayer.addStatusEffect(new StatusEffectInstance(FrozenApocalypseStatusEffects.FROST_RESISTANCE, 2400));
                 }
             }
         });
 
         FrozenApocalypseItems.init();
         FrozenApocalypseStatusEffects.init();
-        LOGGER.info("Successfully initialized!");
+        LOGGER.info("Successfully initialized common!");
     }
 }

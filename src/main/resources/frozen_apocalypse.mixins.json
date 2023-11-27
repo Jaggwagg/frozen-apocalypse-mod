@@ -6,9 +6,11 @@
   "mixins": [
     "ApocalypseEffectsMixin",
     "LivingEntityFreezeMixin",
+    "MobEntityMixin",
     "PowderSnowBlockMixin"
   ],
   "client": [
+    "ClientWorldMixin",
     "client.WorldRendererMixin"
   ],
   "injectors": {

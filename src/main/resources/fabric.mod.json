@@ -2,9 +2,8 @@
   "schemaVersion": 1,
   "id": "frozen_apocalypse",
   "version": "${version}",
-
   "name": "Frozen Apocalypse",
-  "description": "A mod which turns your Minecraft world into a frozen wasteland!",
+  "description": "A mod which turns your Minecraft world into a frozen wasteland! Warning! This will destroy your world! Make backups!",
   "authors": [
     "Jaggwagg"
   ],
@@ -13,8 +12,7 @@
     "sources": "https://github.com/Jaggwagg/frozen-apocalypse.git",
     "issues": "https://github.com/Jaggwagg/frozen-apocalypse/issues"
   },
-
-  "license": "MIT",
+  "license": "GPL-3.0",
   "icon": "assets/frozen_apocalypse/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -27,7 +25,6 @@
   "mixins": [
     "frozen_apocalypse.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.14.11",
     "fabric-api": "*",

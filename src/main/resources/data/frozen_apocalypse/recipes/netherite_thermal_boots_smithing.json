@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "base": {
+    "item": "frozen_apocalypse:diamond_thermal_boots"
+  },
+  "result": {
+    "item": "frozen_apocalypse:netherite_thermal_boots"
+  }
+}

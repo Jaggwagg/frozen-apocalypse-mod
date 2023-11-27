@@ -1,6 +1,7 @@
 package jaggwagg.frozen_apocalypse.item;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
@@ -11,12 +12,18 @@ import java.util.Arrays;
 import java.util.Locale;
 
 public class FrozenApocalypseItems {
+    public static final ItemGroup ITEM_GROUP = FabricItemGroup.builder(new Identifier(FrozenApocalypse.MOD_ID, "general"))
+            .icon(() -> new ItemStack(FrozenApocalypseItems.Armor.IRON_THERMAL_CHESTPLATE.item))
+            .build();
+
     public static void init() {
         Arrays.stream(Armor.values()).forEach(value -> registerItem(value.item, value.name));
     }
 
     public enum ArmorMaterials {
-        THERMAL_ARMOR(new ThermalArmorMaterial());
+        IRON_THERMAL_ARMOR(new IronThermalArmorMaterial()),
+        DIAMOND_THERMAL_ARMOR(new DiamondThermalArmorMaterial()),
+        NETHERITE_THERMAL_ARMOR(new NetheriteThermalArmorMaterial());
 
         public final String name;
         public final ArmorMaterial material;
@@ -28,10 +35,18 @@ public class FrozenApocalypseItems {
     }
 
     public enum Armor {
-        THERMAL_HELMET(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, ArmorItem.Type.HELMET, new Item.Settings())),
-        THERMAL_CHESTPLATE(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, ArmorItem.Type.CHESTPLATE, new Item.Settings())),
-        THERMAL_LEGGINGS(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, ArmorItem.Type.LEGGINGS, new Item.Settings())),
-        THERMAL_BOOTS(new ArmorItem(ArmorMaterials.THERMAL_ARMOR.material, ArmorItem.Type.BOOTS, new Item.Settings()));
+        IRON_THERMAL_HELMET(new ArmorItem(ArmorMaterials.IRON_THERMAL_ARMOR.material, ArmorItem.Type.HELMET, new Item.Settings())),
+        IRON_THERMAL_CHESTPLATE(new ArmorItem(ArmorMaterials.IRON_THERMAL_ARMOR.material, ArmorItem.Type.CHESTPLATE, new Item.Settings())),
+        IRON_THERMAL_LEGGINGS(new ArmorItem(ArmorMaterials.IRON_THERMAL_ARMOR.material, ArmorItem.Type.LEGGINGS, new Item.Settings())),
+        IRON_THERMAL_BOOTS(new ArmorItem(ArmorMaterials.IRON_THERMAL_ARMOR.material, ArmorItem.Type.BOOTS, new Item.Settings())),
+        DIAMOND_THERMAL_HELMET(new ArmorItem(ArmorMaterials.DIAMOND_THERMAL_ARMOR.material, ArmorItem.Type.HELMET, new Item.Settings())),
+        DIAMOND_THERMAL_CHESTPLATE(new ArmorItem(ArmorMaterials.DIAMOND_THERMAL_ARMOR.material, ArmorItem.Type.CHESTPLATE, new Item.Settings())),
+        DIAMOND_THERMAL_LEGGINGS(new ArmorItem(ArmorMaterials.DIAMOND_THERMAL_ARMOR.material, ArmorItem.Type.LEGGINGS, new Item.Settings())),
+        DIAMOND_THERMAL_BOOTS(new ArmorItem(ArmorMaterials.DIAMOND_THERMAL_ARMOR.material, ArmorItem.Type.BOOTS, new Item.Settings())),
+        NETHERITE_THERMAL_HELMET(new ArmorItem(ArmorMaterials.NETHERITE_THERMAL_ARMOR.material, ArmorItem.Type.HELMET, new Item.Settings())),
+        NETHERITE_THERMAL_CHESTPLATE(new ArmorItem(ArmorMaterials.NETHERITE_THERMAL_ARMOR.material, ArmorItem.Type.CHESTPLATE, new Item.Settings())),
+        NETHERITE_THERMAL_LEGGINGS(new ArmorItem(ArmorMaterials.NETHERITE_THERMAL_ARMOR.material, ArmorItem.Type.LEGGINGS, new Item.Settings())),
+        NETHERITE_THERMAL_BOOTS(new ArmorItem(ArmorMaterials.NETHERITE_THERMAL_ARMOR.material, ArmorItem.Type.BOOTS, new Item.Settings()));
 
         public final String name;
         public final Item item;
@@ -44,6 +59,6 @@ public class FrozenApocalypseItems {
 
     public static void registerItem(Item item, String name) {
         Registry.register(Registries.ITEM, new Identifier(FrozenApocalypse.MOD_ID, name), item);
-        ItemGroupEvents.modifyEntriesEvent(FrozenApocalypse.ITEM_GROUP).register(content -> content.add(item));
+        ItemGroupEvents.modifyEntriesEvent(ITEM_GROUP).register(content -> content.add(item));
     }
 }
