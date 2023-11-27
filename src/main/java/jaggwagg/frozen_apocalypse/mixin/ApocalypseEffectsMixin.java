@@ -44,10 +44,6 @@ public abstract class ApocalypseEffectsMixin {
             serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL).set(FrozenApocalypse.frozenApocalypseLevel, serverWorld.getServer());
         }
 
-        if (serverWorld.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > FrozenApocalypse.CONFIG.getMaxApocalypseLevel()) {
-            serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL).set(FrozenApocalypse.CONFIG.getMaxApocalypseLevel(), serverWorld.getServer());
-        }
-
         switch (FrozenApocalypse.frozenApocalypseLevel) {
             case 0:
                 break;
@@ -90,7 +86,7 @@ public abstract class ApocalypseEffectsMixin {
                 break;
             default:
                 if (serverWorld.random.nextInt(32) == 0) {
-                    setPowderSnow(serverWorld, blockPos);
+                    setSnowBlock(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);
                     setPackedIce(serverWorld, blockPos);
@@ -160,7 +156,7 @@ public abstract class ApocalypseEffectsMixin {
     }
 
     @Unique
-    public void setPowderSnow(ServerWorld serverWorld, BlockPos blockPos) {
+    public void setSnowBlock(ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos.down()).contains(FluidBlock.LEVEL)) {
             return;
         }
