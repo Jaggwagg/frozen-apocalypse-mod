@@ -5,6 +5,7 @@
   "mixins": [
     "ApocalypseEffectsMixin",
     "LivingEntityFreezeMixin",
+    "MobEntityMixin",
     "PowderSnowBlockMixin"
   ],
   "injectors": {

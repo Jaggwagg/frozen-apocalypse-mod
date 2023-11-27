@@ -24,60 +24,83 @@ public abstract class ApocalypseEffectsMixin {
     @Inject(method = "tickChunk", at = @At("HEAD"))
     private void randomTick(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
         ServerWorld serverWorld = ((ServerWorld) (Object) this);
+        FrozenApocalypse.frozenApocalypseLevel = calculateDay(serverWorld);
+        ChunkPos chunkPos = chunk.getPos();
+        BlockPos blockPos = serverWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING, serverWorld.getRandomPosInChunk(chunkPos.getStartX(), 0, chunkPos.getStartZ(), 15));
 
-        if (!serverWorld.isClient()) {
-            ChunkPos chunkPos = chunk.getPos();
-            int startX = chunkPos.getStartX();
-            int startZ = chunkPos.getStartZ();
-            FrozenApocalypse.frozenApocalypseLevel = serverWorld.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL);
-            BlockPos blockPos = serverWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING, serverWorld.getRandomPosInChunk(startX, 0, startZ, 15));
+        if (serverWorld.isClient()) {
+            return;
+        }
 
-            if (!FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled()) {
-                return;
-            }
+        if (!FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled()) {
+            return;
+        }
 
-            if (!serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL_OVERRIDE).get()) {
-                serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL).set(calculateDay(serverWorld), serverWorld.getServer());
-            }
+        if (!serverWorld.getDimension().bedWorks()) {
+            return;
+        }
 
-            if (serverWorld.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > FrozenApocalypse.CONFIG.getMaxApocalypseLevel()) {
-                serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL).set(FrozenApocalypse.CONFIG.getMaxApocalypseLevel(), serverWorld.getServer());
-            }
+        if (!serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL_OVERRIDE).get()) {
+            serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL).set(FrozenApocalypse.frozenApocalypseLevel, serverWorld.getServer());
+        }
 
-            if (!serverWorld.getDimension().bedWorks()) {
-                return;
-            }
+        if (serverWorld.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL) > FrozenApocalypse.CONFIG.getMaxApocalypseLevel()) {
+            serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL).set(FrozenApocalypse.CONFIG.getMaxApocalypseLevel(), serverWorld.getServer());
+        }
 
-            if (FrozenApocalypse.frozenApocalypseLevel > 3) {
+        switch (FrozenApocalypse.frozenApocalypseLevel) {
+            case 0:
+                break;
+            case 1:
+                if (serverWorld.random.nextInt(128) == 0) {
+                    setLeafDecay(serverWorld, blockPos);
+                    setPodzol(serverWorld, blockPos);
+                }
+                break;
+            case 2:
+                if (serverWorld.random.nextInt(64) == 0) {
+                    setLeafDecay(serverWorld, blockPos);
+                    setPodzol(serverWorld, blockPos);
+                }
+                break;
+            case 3:
+                if (serverWorld.random.nextInt(64) == 0) {
+                    setIce(serverWorld, blockPos);
+                    setSnow(serverWorld, blockPos);
+                    setLeafDecay(serverWorld, blockPos);
+                    setPodzol(serverWorld, blockPos);
+                }
+                break;
+            case 4:
+                if (serverWorld.random.nextInt(32) == 0) {
+                    setIce(serverWorld, blockPos);
+                    setSnow(serverWorld, blockPos);
+                    setLeafDecay(serverWorld, blockPos);
+                    setPodzol(serverWorld, blockPos);
+                }
+                break;
+            case 5:
+                if (serverWorld.random.nextInt(32) == 0) {
+                    setSnow(serverWorld, blockPos);
+                    setLeafDecay(serverWorld, blockPos);
+                    setPodzol(serverWorld, blockPos);
+                    setPackedIce(serverWorld, blockPos);
+                    setObsidian(serverWorld, blockPos);
+                }
+                break;
+            default:
                 if (serverWorld.random.nextInt(32) == 0) {
                     setPowderSnow(serverWorld, blockPos);
+                    setLeafDecay(serverWorld, blockPos);
+                    setPodzol(serverWorld, blockPos);
+                    setPackedIce(serverWorld, blockPos);
+                    setObsidian(serverWorld, blockPos);
 
                     if (serverWorld.isRaining()) {
                         serverWorld.setWeather(99999999, 0, false, false);
                     }
                 }
-            }
-
-            if (FrozenApocalypse.frozenApocalypseLevel > 2) {
-                if (serverWorld.random.nextInt(64) == 0) {
-                    setPackedIce(serverWorld, blockPos);
-                    setObsidian(serverWorld, blockPos);
-                }
-            }
-
-            if (FrozenApocalypse.frozenApocalypseLevel > 1 && FrozenApocalypse.frozenApocalypseLevel < 4) {
-                if (serverWorld.random.nextInt(64) == 0) {
-                    setIce(serverWorld, blockPos);
-                    setSnow(serverWorld, blockPos);
-                }
-            }
-
-            if (FrozenApocalypse.frozenApocalypseLevel > 0) {
-                if (serverWorld.random.nextInt(64) == 0) {
-                    setLeafDecay(serverWorld, blockPos);
-                    setPodzol(serverWorld, blockPos);
-                }
-            }
+                break;
         }
     }
 
@@ -146,6 +169,10 @@ public abstract class ApocalypseEffectsMixin {
             return;
         }
 
-        serverWorld.setBlockState(blockPos, Blocks.POWDER_SNOW.getDefaultState());
+        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.SNOW_BLOCK)) {
+            return;
+        }
+
+        serverWorld.setBlockState(blockPos, Blocks.SNOW_BLOCK.getDefaultState());
     }
 }

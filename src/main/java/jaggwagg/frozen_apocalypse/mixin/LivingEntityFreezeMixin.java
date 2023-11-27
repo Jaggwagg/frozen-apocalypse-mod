@@ -3,10 +3,12 @@ package jaggwagg.frozen_apocalypse.mixin;
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.entity.effect.FrozenApocalypseStatusEffects;
 import jaggwagg.frozen_apocalypse.item.FrozenApocalypseItems;
+import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.mob.StrayEntity;
+import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -26,7 +28,7 @@ import java.util.HashSet;
 public abstract class LivingEntityFreezeMixin {
     @Inject(method = "tickMovement", at = @At("HEAD"))
     private void tickMovement(CallbackInfo ci) {
-        LivingEntity livingEntity = ((LivingEntity)(Object)this);
+        LivingEntity livingEntity = ((LivingEntity) (Object) this);
         World world = livingEntity.getWorld();
         int apocalypseLevel = world.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL);
 
@@ -43,29 +45,7 @@ public abstract class LivingEntityFreezeMixin {
         }
 
         if (livingEntity instanceof PlayerEntity playerEntity) {
-            DefaultedList<ItemStack> playerArmor = playerEntity.getInventory().armor;
-            boolean wearingThermalBoots = false;
-            boolean wearingThermalLeggings = false;
-            boolean wearingThermalChestplate = false;
-            boolean wearingThermalHelmet = false;
-
-            if (playerArmor.get(0).getItem().getClass() == FrozenApocalypseItems.Armor.IRON_THERMAL_BOOTS.item.getClass()) {
-                wearingThermalBoots = true;
-            }
-
-            if (playerArmor.get(1).getItem().getClass() == FrozenApocalypseItems.Armor.IRON_THERMAL_LEGGINGS.item.getClass()) {
-                wearingThermalLeggings = true;
-            }
-
-            if (playerArmor.get(2).getItem().getClass() == FrozenApocalypseItems.Armor.IRON_THERMAL_CHESTPLATE.item.getClass()) {
-                wearingThermalChestplate = true;
-            }
-
-            if (playerArmor.get(3).getItem().getClass() == FrozenApocalypseItems.Armor.IRON_THERMAL_HELMET.item.getClass()) {
-                wearingThermalHelmet = true;
-            }
-
-            if (wearingThermalBoots && wearingThermalLeggings && wearingThermalChestplate && wearingThermalHelmet) {
+            if (ThermalArmorItem.wearingThermalArmor(playerEntity)) {
                 return;
             }
         }
@@ -73,20 +53,22 @@ public abstract class LivingEntityFreezeMixin {
         if (apocalypseLevel == 1) {
             freezeLivingEntity(150, 7, 1.0f, 32, livingEntity, world);
         } else if (apocalypseLevel == 2) {
-            freezeLivingEntity(100, 7, 1.0f, 32, livingEntity, world);
+            freezeLivingEntity(112, 7, 1.0f, 32, livingEntity, world);
         } else if (apocalypseLevel == 3) {
-            freezeLivingEntity(60, 5, 1.0f, 32, livingEntity, world);
+            freezeLivingEntity(84, 5, 1.0f, 32, livingEntity, world);
         } else if (apocalypseLevel == 4) {
-            freezeLivingEntity(50, 5, 2.0f, 32, livingEntity, world);
+            freezeLivingEntity(62, 5, 1.0f, 32, livingEntity, world);
         } else if (apocalypseLevel == 5) {
-            freezeLivingEntity(40, 3, 2.0f, 16, livingEntity, world);
-        } else if (apocalypseLevel > 5) {
+            freezeLivingEntity(45, 5, 2.0f, 16, livingEntity, world);
+        } else if (apocalypseLevel == 6) {
             freezeLivingEntity(30, 3, 2.0f, 16, livingEntity, world);
+        } else if (apocalypseLevel > 6) {
+            freezeLivingEntity(20, 3, 2.5f, 16, livingEntity, world);
         }
     }
 
     @Unique
-    public boolean notNearHeatSource(int size, World world, LivingEntity livingEntity) {
+    private boolean notNearHeatSource(int size, World world, LivingEntity livingEntity) {
         BlockPos livingEntityBlockPos = livingEntity.getBlockPos();
 
         for (int x = -size; x <= size; x++) {
@@ -108,7 +90,7 @@ public abstract class LivingEntityFreezeMixin {
     }
 
     @Unique
-    public void freezeLivingEntity(int aboveY, int heatSize, float damage, int random, LivingEntity livingEntity, World world) {
+    private void freezeLivingEntity(int aboveY, int heatSize, float damage, int random, LivingEntity livingEntity, World world) {
         if (livingEntity.getY() > aboveY) {
             if (notNearHeatSource(heatSize, world, livingEntity)) {
                 if (livingEntity instanceof PlayerEntity playerEntity) {
@@ -117,7 +99,7 @@ public abstract class LivingEntityFreezeMixin {
                     }
                 }
 
-                if (livingEntity instanceof SkeletonEntity || livingEntity instanceof StrayEntity) {
+                if (livingEntity instanceof SkeletonEntity || livingEntity instanceof StrayEntity || livingEntity instanceof ZombieEntity) {
                     return;
                 }
 
