@@ -68,7 +68,11 @@ public class FrozenApocalypseConfig {
                 .serializeNulls()
                 .create();
 
-        new File(System.getProperty("user.dir") + File.separator + "/config").mkdir();
+        boolean createdDirectory = new File(System.getProperty("user.dir") + File.separator + "/config").mkdir();
+
+        if (createdDirectory) {
+            FrozenApocalypse.LOGGER.info("Created config directory because it could not be found");
+        }
 
         File configFile = new File(CONFIG_PATH);
 

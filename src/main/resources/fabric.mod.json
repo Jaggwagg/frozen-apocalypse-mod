@@ -18,6 +18,9 @@
   "entrypoints": {
     "main": [
       "jaggwagg.frozen_apocalypse.FrozenApocalypse"
+    ],
+    "client": [
+      "jaggwagg.frozen_apocalypse.FrozenApocalypseClient"
     ]
   },
   "mixins": [

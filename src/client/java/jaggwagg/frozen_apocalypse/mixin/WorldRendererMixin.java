@@ -1,6 +1,7 @@
 package jaggwagg.frozen_apocalypse.mixin;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
+import jaggwagg.frozen_apocalypse.FrozenApocalypseClient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.WorldRenderer;
@@ -25,7 +26,7 @@ public abstract class WorldRendererMixin {
             return copy;
         }
 
-        return switch (FrozenApocalypse.frozenApocalypseLevel) {
+        return switch (FrozenApocalypseClient.frozenApocalypseLevelClient) {
             case 0 -> copy;
             case 1 -> copy.scale(0.9f, 1.0f, 0.9f);
             case 2 -> copy.scale(0.8f, 1.0f, 0.8f);

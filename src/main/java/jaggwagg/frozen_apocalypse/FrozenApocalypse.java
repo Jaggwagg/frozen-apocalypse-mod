@@ -25,7 +25,7 @@ public class FrozenApocalypse implements ModInitializer {
     public static final GameRules.Key<GameRules.BooleanRule> FROZEN_APOCALYPSE_DEATH_PROTECTION =
             GameRuleRegistry.register("frozenApocalypseDeathProtection", GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(true));
 
-    public static boolean isFrozenApocalypseEnabled = FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled();
+    public static final boolean isFrozenApocalypseEnabled = FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled();
     public static int frozenApocalypseLevel = 0;
 
     @Override
@@ -40,6 +40,6 @@ public class FrozenApocalypse implements ModInitializer {
 
         FrozenApocalypseItems.init();
         FrozenApocalypseStatusEffects.init();
-        LOGGER.info("Successfully initialized!");
+        LOGGER.info("Successfully initialized common!");
     }
 }

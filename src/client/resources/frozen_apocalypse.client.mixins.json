@@ -3,6 +3,7 @@
   "package": "jaggwagg.frozen_apocalypse.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "ClientWorldMixin",
     "WorldRendererMixin"
   ],
   "injectors": {

@@ -22,7 +22,7 @@ public abstract class ApocalypseEffectsMixin {
     }
 
     @Inject(method = "tickChunk", at = @At("HEAD"))
-    private void randomTick(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
+    private void tickChunk(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
         ServerWorld serverWorld = ((ServerWorld) (Object) this);
         FrozenApocalypse.frozenApocalypseLevel = calculateDay(serverWorld);
         ChunkPos chunkPos = chunk.getPos();
