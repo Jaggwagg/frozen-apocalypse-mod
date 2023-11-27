@@ -39,7 +39,7 @@ public class FrozenApocalypseConfig {
         this.heatBlocks = new ArrayList<>();
 
         ArrayList<Block> heatBlocks = new ArrayList<>(List.of(
-                Blocks.TORCH, Blocks.WALL_TORCH, Blocks.FIRE, Blocks.SOUL_FIRE,
+                Blocks.TORCH, Blocks.WALL_TORCH, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH, Blocks.FIRE, Blocks.SOUL_FIRE,
                 Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE, Blocks.LANTERN, Blocks.SOUL_LANTERN,
                 Blocks.LAVA, Blocks.LAVA_CAULDRON, Blocks.MAGMA_BLOCK, Blocks.JACK_O_LANTERN, Blocks.SEA_LANTERN
         ));
