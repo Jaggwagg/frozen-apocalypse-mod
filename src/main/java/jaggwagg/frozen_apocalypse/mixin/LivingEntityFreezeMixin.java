@@ -1,7 +1,6 @@
 package jaggwagg.frozen_apocalypse.mixin;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.config.FrozenApocalypseConfig;
 import jaggwagg.frozen_apocalypse.entity.effect.FrozenApocalypseStatusEffects;
 import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
 import net.minecraft.entity.LivingEntity;
