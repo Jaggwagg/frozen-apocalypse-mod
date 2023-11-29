@@ -52,14 +52,6 @@ public class FrozenApocalypseConfig {
         return config;
     }
 
-    public boolean getFrozenApocalypseEnabled() {
-        return this.FROZEN_APOCALYPSE_ENABLED;
-    }
-
-    public HashSet<Block> getHeatBlocks() {
-        return currentHeatBlocks;
-    }
-
     public static FrozenApocalypseConfig getConfig() {
         FrozenApocalypseConfig config = new FrozenApocalypseConfig();
         Gson gson = new GsonBuilder()
@@ -85,7 +77,7 @@ public class FrozenApocalypseConfig {
 
                 try {
                     config = gson.fromJson(json, FrozenApocalypseConfig.class);
-                } catch(JsonSyntaxException e) {
+                } catch (JsonSyntaxException e) {
                     makeBackup = true;
                 }
 
@@ -119,5 +111,13 @@ public class FrozenApocalypseConfig {
         }
 
         return config;
+    }
+
+    public boolean getFrozenApocalypseEnabled() {
+        return this.FROZEN_APOCALYPSE_ENABLED;
+    }
+
+    public HashSet<Block> getHeatBlocks() {
+        return currentHeatBlocks;
     }
 }

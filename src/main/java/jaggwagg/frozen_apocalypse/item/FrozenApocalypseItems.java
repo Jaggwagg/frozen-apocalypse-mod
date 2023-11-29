@@ -25,6 +25,11 @@ public class FrozenApocalypseItems {
                 .build());
     }
 
+    public static void registerItem(Item item, String name) {
+        Registry.register(Registries.ITEM, new Identifier(FrozenApocalypse.MOD_ID, name), item);
+        ItemGroupEvents.modifyEntriesEvent(ITEM_GROUP).register(content -> content.add(item));
+    }
+
     public enum ArmorMaterials {
         IRON_THERMAL_ARMOR(new IronThermalArmorMaterial()),
         DIAMOND_THERMAL_ARMOR(new DiamondThermalArmorMaterial()),
@@ -60,10 +65,5 @@ public class FrozenApocalypseItems {
             this.name = this.toString().toLowerCase(Locale.ROOT);
             this.item = item;
         }
-    }
-
-    public static void registerItem(Item item, String name) {
-        Registry.register(Registries.ITEM, new Identifier(FrozenApocalypse.MOD_ID, name), item);
-        ItemGroupEvents.modifyEntriesEvent(ITEM_GROUP).register(content -> content.add(item));
     }
 }
