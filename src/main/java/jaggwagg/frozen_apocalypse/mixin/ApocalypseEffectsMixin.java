@@ -1,6 +1,7 @@
 package jaggwagg.frozen_apocalypse.mixin;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
+import jaggwagg.frozen_apocalypse.world.FrozenApocalypseGameRules;
 import net.minecraft.block.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -24,9 +25,15 @@ public abstract class ApocalypseEffectsMixin {
     @Inject(method = "tickChunk", at = @At("HEAD"))
     private void tickChunk(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
         ServerWorld serverWorld = ((ServerWorld) (Object) this);
-        FrozenApocalypse.frozenApocalypseLevel = calculateDay(serverWorld);
         ChunkPos chunkPos = chunk.getPos();
         BlockPos blockPos = serverWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING, serverWorld.getRandomPosInChunk(chunkPos.getStartX(), 0, chunkPos.getStartZ(), 15));
+        FrozenApocalypse.frozenApocalypseLevel = serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL);
+        int apocalypseSpeed = serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED);
+
+        if (apocalypseSpeed < 1) {
+            serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED).set(1, serverWorld.getServer());
+            apocalypseSpeed = serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED);
+        }
 
         if (serverWorld.isClient()) {
             return;
@@ -40,27 +47,27 @@ public abstract class ApocalypseEffectsMixin {
             return;
         }
 
-        if (!serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL_OVERRIDE).get()) {
-            serverWorld.getGameRules().get(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL).set(FrozenApocalypse.frozenApocalypseLevel, serverWorld.getServer());
+        if (!serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL_OVERRIDE).get()) {
+            serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(calculateDay(serverWorld), serverWorld.getServer());
         }
 
         switch (FrozenApocalypse.frozenApocalypseLevel) {
             case 0:
                 break;
             case 1:
-                if (serverWorld.random.nextInt(128) == 0) {
+                if (serverWorld.random.nextInt(apocalypseSpeed) == 0) {
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);
                 }
                 break;
             case 2:
-                if (serverWorld.random.nextInt(64) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(apocalypseSpeed * 0.5)) == 0) {
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);
                 }
                 break;
             case 3:
-                if (serverWorld.random.nextInt(64) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(apocalypseSpeed * 0.5)) == 0) {
                     setIce(serverWorld, blockPos);
                     setSnow(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
@@ -68,7 +75,7 @@ public abstract class ApocalypseEffectsMixin {
                 }
                 break;
             case 4:
-                if (serverWorld.random.nextInt(32) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(apocalypseSpeed * 0.25)) == 0) {
                     setIce(serverWorld, blockPos);
                     setSnow(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
@@ -76,7 +83,7 @@ public abstract class ApocalypseEffectsMixin {
                 }
                 break;
             case 5:
-                if (serverWorld.random.nextInt(32) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(apocalypseSpeed * 0.25)) == 0) {
                     setSnow(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);
@@ -85,7 +92,7 @@ public abstract class ApocalypseEffectsMixin {
                 }
                 break;
             default:
-                if (serverWorld.random.nextInt(32) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(apocalypseSpeed * 0.25)) == 0) {
                     setSnowBlock(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);

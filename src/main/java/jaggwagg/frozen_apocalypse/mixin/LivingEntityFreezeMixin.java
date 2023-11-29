@@ -22,7 +22,6 @@ public abstract class LivingEntityFreezeMixin {
     private void tickMovement(CallbackInfo ci) {
         LivingEntity livingEntity = ((LivingEntity) (Object) this);
         World world = livingEntity.getWorld();
-        int apocalypseLevel = world.getGameRules().getInt(FrozenApocalypse.FROZEN_APOCALYPSE_LEVEL);
 
         if (!FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled()) {
             return;
@@ -40,19 +39,19 @@ public abstract class LivingEntityFreezeMixin {
             return;
         }
 
-        if (apocalypseLevel == 1) {
+        if (FrozenApocalypse.frozenApocalypseLevel == 1) {
             freezeLivingEntity(150, 7, 1.0f, 32, livingEntity, world);
-        } else if (apocalypseLevel == 2) {
+        } else if (FrozenApocalypse.frozenApocalypseLevel == 2) {
             freezeLivingEntity(112, 7, 1.0f, 32, livingEntity, world);
-        } else if (apocalypseLevel == 3) {
+        } else if (FrozenApocalypse.frozenApocalypseLevel == 3) {
             freezeLivingEntity(84, 5, 1.0f, 32, livingEntity, world);
-        } else if (apocalypseLevel == 4) {
+        } else if (FrozenApocalypse.frozenApocalypseLevel == 4) {
             freezeLivingEntity(62, 5, 1.0f, 32, livingEntity, world);
-        } else if (apocalypseLevel == 5) {
+        } else if (FrozenApocalypse.frozenApocalypseLevel == 5) {
             freezeLivingEntity(45, 5, 2.0f, 16, livingEntity, world);
-        } else if (apocalypseLevel == 6) {
+        } else if (FrozenApocalypse.frozenApocalypseLevel == 6) {
             freezeLivingEntity(30, 3, 2.0f, 16, livingEntity, world);
-        } else if (apocalypseLevel > 6) {
+        } else if (FrozenApocalypse.frozenApocalypseLevel > 6) {
             freezeLivingEntity(20, 3, 2.5f, 16, livingEntity, world);
         }
     }

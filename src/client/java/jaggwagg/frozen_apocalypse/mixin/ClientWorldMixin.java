@@ -4,7 +4,6 @@ import jaggwagg.frozen_apocalypse.FrozenApocalypseClient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,8 +16,8 @@ import java.util.function.BooleanSupplier;
 @Mixin(ClientWorld.class)
 public class ClientWorldMixin {
     @Unique
-    private static int calculateDay(World world) {
-        return (int) Math.floor(world.getTimeOfDay() / 24000.0f);
+    private static int calculateDay(ClientWorld clientWorld) {
+        return (int) Math.floor(clientWorld.getTimeOfDay() / 24000.0f);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
