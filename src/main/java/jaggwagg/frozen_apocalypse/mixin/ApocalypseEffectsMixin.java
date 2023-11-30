@@ -30,12 +30,7 @@ public abstract class ApocalypseEffectsMixin {
         ChunkPos chunkPos = chunk.getPos();
         BlockPos blockPos = serverWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING, serverWorld.getRandomPosInChunk(chunkPos.getStartX(), 0, chunkPos.getStartZ(), 15));
         FrozenApocalypse.frozenApocalypseLevel = serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL);
-        int apocalypseSpeed = serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED);
-
-        if (apocalypseSpeed < 1) {
-            serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED).set(1, serverWorld.getServer());
-            apocalypseSpeed = serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED);
-        }
+        int updateSpeed;
 
         if (serverWorld.isClient()) {
             return;
@@ -53,23 +48,33 @@ public abstract class ApocalypseEffectsMixin {
             serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(calculateDay(serverWorld), serverWorld.getServer());
         }
 
+        if (serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED) == 0) {
+            updateSpeed = 0;
+        } else {
+            updateSpeed = (int) (Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED) * 64));
+        }
+
+        if (updateSpeed < 1) {
+            return;
+        }
+
         switch (FrozenApocalypse.frozenApocalypseLevel) {
             case 0:
                 break;
             case 1:
-                if (serverWorld.random.nextInt(apocalypseSpeed) == 0) {
+                if (serverWorld.random.nextInt(updateSpeed) == 0) {
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);
                 }
                 break;
             case 2:
-                if (serverWorld.random.nextInt((int) Math.ceil(apocalypseSpeed * 0.5)) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.5)) == 0) {
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);
                 }
                 break;
             case 3:
-                if (serverWorld.random.nextInt((int) Math.ceil(apocalypseSpeed * 0.5)) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.5)) == 0) {
                     setIce(serverWorld, blockPos);
                     setSnow(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
@@ -77,7 +82,7 @@ public abstract class ApocalypseEffectsMixin {
                 }
                 break;
             case 4:
-                if (serverWorld.random.nextInt((int) Math.ceil(apocalypseSpeed * 0.25)) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.25)) == 0) {
                     setIce(serverWorld, blockPos);
                     setSnow(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
@@ -85,7 +90,7 @@ public abstract class ApocalypseEffectsMixin {
                 }
                 break;
             case 5:
-                if (serverWorld.random.nextInt((int) Math.ceil(apocalypseSpeed * 0.25)) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.25)) == 0) {
                     setSnow(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);
@@ -94,7 +99,7 @@ public abstract class ApocalypseEffectsMixin {
                 }
                 break;
             default:
-                if (serverWorld.random.nextInt((int) Math.ceil(apocalypseSpeed * 0.25)) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.25)) == 0) {
                     setSnowBlock(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);
