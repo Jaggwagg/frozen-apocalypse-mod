@@ -10,7 +10,7 @@
     "PowderSnowBlockMixin"
   ],
   "client": [
-    "ClientWorldMixin",
+    "client.ClientWorldMixin",
     "client.WorldRendererMixin"
   ],
   "injectors": {

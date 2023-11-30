@@ -1,4 +1,4 @@
-package jaggwagg.frozen_apocalypse.mixin;
+package jaggwagg.frozen_apocalypse.mixin.client;
 
 import jaggwagg.frozen_apocalypse.client.FrozenApocalypseClient;
 import net.fabricmc.api.EnvType;
