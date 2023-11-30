@@ -51,7 +51,7 @@ public abstract class ApocalypseEffectsMixin {
         if (serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED) == 0) {
             updateSpeed = 0;
         } else {
-            updateSpeed = (int) (Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED) * 64));
+            updateSpeed = (int) (Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED) * 128));
         }
 
         if (updateSpeed < 1) {
@@ -62,19 +62,19 @@ public abstract class ApocalypseEffectsMixin {
             case 0:
                 break;
             case 1:
-                if (serverWorld.random.nextInt(updateSpeed) == 0) {
+                if (serverWorld.random.nextInt(updateSpeed) <= 1) {
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);
                 }
                 break;
             case 2:
-                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.5)) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.5)) <= 1) {
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);
                 }
                 break;
             case 3:
-                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.5)) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.5)) <= 1) {
                     setIce(serverWorld, blockPos);
                     setSnow(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
@@ -82,7 +82,7 @@ public abstract class ApocalypseEffectsMixin {
                 }
                 break;
             case 4:
-                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.25)) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.25)) <= 1) {
                     setIce(serverWorld, blockPos);
                     setSnow(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
@@ -90,7 +90,7 @@ public abstract class ApocalypseEffectsMixin {
                 }
                 break;
             case 5:
-                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.25)) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.25)) <= 1) {
                     setSnow(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);
@@ -98,8 +98,23 @@ public abstract class ApocalypseEffectsMixin {
                     setObsidian(serverWorld, blockPos);
                 }
                 break;
+            case 6:
+                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.25)) <= 1) {
+                    setSnow(serverWorld, blockPos);
+                    setSnowBlock(serverWorld, blockPos);
+                    setLeafDecay(serverWorld, blockPos);
+                    setPodzol(serverWorld, blockPos);
+                    setPackedIce(serverWorld, blockPos);
+                    setObsidian(serverWorld, blockPos);
+
+                    if (serverWorld.isRaining()) {
+                        serverWorld.setWeather(99999999, 0, false, false);
+                    }
+                }
+                break;
             default:
-                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.25)) == 0) {
+                if (serverWorld.random.nextInt((int) Math.ceil(updateSpeed * 0.125)) <= 1) {
+                    setSnow(serverWorld, blockPos);
                     setSnowBlock(serverWorld, blockPos);
                     setLeafDecay(serverWorld, blockPos);
                     setPodzol(serverWorld, blockPos);
