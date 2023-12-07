@@ -36,7 +36,7 @@ public abstract class ApocalypseEffectsMixin {
             return;
         }
 
-        if (!FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled()) {
+        if (!FrozenApocalypse.FROZEN_APOCALYPSE_ENABLED) {
             return;
         }
 

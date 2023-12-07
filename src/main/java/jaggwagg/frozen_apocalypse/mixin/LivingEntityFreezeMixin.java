@@ -23,7 +23,7 @@ public abstract class LivingEntityFreezeMixin {
         LivingEntity livingEntity = ((LivingEntity) (Object) this);
         World world = livingEntity.getWorld();
 
-        if (!FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled()) {
+        if (!FrozenApocalypse.FROZEN_APOCALYPSE_ENABLED) {
             return;
         }
 

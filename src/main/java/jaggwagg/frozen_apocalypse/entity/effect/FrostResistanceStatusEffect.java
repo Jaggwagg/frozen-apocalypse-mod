@@ -7,6 +7,4 @@ public class FrostResistanceStatusEffect extends StatusEffect {
     public FrostResistanceStatusEffect() {
         super(StatusEffectCategory.BENEFICIAL, 0x35CEFF);
     }
-
-
 }

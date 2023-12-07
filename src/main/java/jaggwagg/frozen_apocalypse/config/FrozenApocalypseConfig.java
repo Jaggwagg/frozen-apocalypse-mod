@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class FrozenApocalypseConfig {
-    private static final String CURRENT_VERSION = "1.1.1";
+    private static final String CURRENT_VERSION = "1.1.2";
     private static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/";
     private static final HashSet<Block> currentHeatBlocks = new HashSet<>();
     private final String VERSION;
