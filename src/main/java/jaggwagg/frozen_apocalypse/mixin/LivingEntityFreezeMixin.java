@@ -39,20 +39,29 @@ public abstract class LivingEntityFreezeMixin {
             return;
         }
 
-        if (FrozenApocalypse.frozenApocalypseLevel == 1) {
-            freezeLivingEntity(150, 7, 1.0f, 32, livingEntity, world);
-        } else if (FrozenApocalypse.frozenApocalypseLevel == 2) {
-            freezeLivingEntity(112, 7, 1.0f, 32, livingEntity, world);
-        } else if (FrozenApocalypse.frozenApocalypseLevel == 3) {
-            freezeLivingEntity(84, 5, 1.0f, 32, livingEntity, world);
-        } else if (FrozenApocalypse.frozenApocalypseLevel == 4) {
-            freezeLivingEntity(62, 5, 1.0f, 32, livingEntity, world);
-        } else if (FrozenApocalypse.frozenApocalypseLevel == 5) {
-            freezeLivingEntity(45, 5, 2.0f, 16, livingEntity, world);
-        } else if (FrozenApocalypse.frozenApocalypseLevel == 6) {
-            freezeLivingEntity(30, 3, 2.0f, 16, livingEntity, world);
-        } else if (FrozenApocalypse.frozenApocalypseLevel > 6) {
-            freezeLivingEntity(20, 3, 2.5f, 16, livingEntity, world);
+        switch(FrozenApocalypse.frozenApocalypseLevel) {
+            case 0:
+                return;
+            case 1:
+                freezeLivingEntity(150, 7, 1.0f, 32, livingEntity, world);
+                break;
+            case 2:
+                freezeLivingEntity(112, 7, 1.0f, 32, livingEntity, world);
+                break;
+            case 3:
+                freezeLivingEntity(84, 7, 1.0f, 32, livingEntity, world);
+                break;
+            case 4:
+                freezeLivingEntity(62, 7, 1.0f, 32, livingEntity, world);
+                break;
+            case 5:
+                freezeLivingEntity(45, 7, 1.0f, 32, livingEntity, world);
+                break;
+            case 6:
+                freezeLivingEntity(30, 7, 1.0f, 32, livingEntity, world);
+                break;
+            default:
+                freezeLivingEntity(20, 3, 2.5f, 16, livingEntity, world);
         }
     }
 
