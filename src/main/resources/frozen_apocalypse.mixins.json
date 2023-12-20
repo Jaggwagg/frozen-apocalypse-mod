@@ -3,10 +3,12 @@
   "package": "jaggwagg.frozen_apocalypse.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AnimalEntityMixin",
     "ApocalypseEffectsMixin",
     "LivingEntityFreezeMixin",
     "MobEntityMixin",
-    "PowderSnowBlockMixin"
+    "PowderSnowBlockMixin",
+    "WaterCreatureEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
