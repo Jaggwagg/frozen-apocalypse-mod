@@ -8,7 +8,6 @@ import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 
 import java.io.File;
 import java.io.FileWriter;
