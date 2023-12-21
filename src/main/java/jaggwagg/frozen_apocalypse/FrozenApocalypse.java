@@ -16,7 +16,6 @@ public class FrozenApocalypse implements ModInitializer {
     public static final String MOD_ID = "frozen_apocalypse";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static final FrozenApocalypseConfig CONFIG = FrozenApocalypseConfig.getConfig();
-    public static final boolean FROZEN_APOCALYPSE_ENABLED = CONFIG.getFrozenApocalypseEnabled();
     public static int frozenApocalypseLevel = 0;
 
     @Override
