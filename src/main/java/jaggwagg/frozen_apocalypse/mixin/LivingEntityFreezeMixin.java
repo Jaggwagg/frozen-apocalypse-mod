@@ -3,11 +3,14 @@ package jaggwagg.frozen_apocalypse.mixin;
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.entity.effect.FrozenApocalypseStatusEffects;
 import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
+import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.mob.StrayEntity;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,8 +19,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.HashSet;
+
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityFreezeMixin {
+    @Unique
+    private static boolean hasInitializedHeatBlocks = false;
+
     @Inject(method = "tickMovement", at = @At("HEAD"))
     private void tickMovement(CallbackInfo ci) {
         LivingEntity livingEntity = ((LivingEntity) (Object) this);
@@ -66,6 +74,23 @@ public abstract class LivingEntityFreezeMixin {
     }
 
     @Unique
+    private void initializeHeatBlocks() {
+        HashSet<Block> heatBlocks = new HashSet<>();
+
+        FrozenApocalypse.CONFIG.getHeatBlockStrings().forEach(value -> {
+            Identifier blockId = new Identifier(value);
+
+            if (Registries.BLOCK.containsId(blockId)) {
+                heatBlocks.add(Registries.BLOCK.get(new Identifier(value)));
+            } else {
+                FrozenApocalypse.LOGGER.warn(value + " does not exist");
+            }
+        });
+
+        FrozenApocalypse.CONFIG.setHeatBlocks(heatBlocks);
+    }
+
+    @Unique
     private boolean notNearHeatSource(int size, World world, LivingEntity livingEntity) {
         BlockPos livingEntityBlockPos = livingEntity.getBlockPos();
 
@@ -86,6 +111,11 @@ public abstract class LivingEntityFreezeMixin {
 
     @Unique
     private void freezeLivingEntity(int aboveY, int heatSize, float damage, int random, LivingEntity livingEntity, World world) {
+        if (!hasInitializedHeatBlocks) {
+            initializeHeatBlocks();
+            hasInitializedHeatBlocks = true;
+        }
+
         if (livingEntity.getY() > aboveY) {
             if (notNearHeatSource(heatSize, world, livingEntity)) {
                 if (livingEntity instanceof PlayerEntity playerEntity) {

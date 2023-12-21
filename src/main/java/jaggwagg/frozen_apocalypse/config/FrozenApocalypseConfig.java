@@ -23,15 +23,15 @@ import java.util.List;
 public class FrozenApocalypseConfig {
     private static final String CURRENT_VERSION = "1.1.2";
     private static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/";
-    private static final HashSet<Block> currentHeatBlocks = new HashSet<>();
+    private static HashSet<Block> currentHeatBlocks = new HashSet<>();
     private final String VERSION;
     private final boolean FROZEN_APOCALYPSE_ENABLED;
-    private final ArrayList<String> HEAT_BLOCKS;
+    private final ArrayList<String> HEAT_BLOCK_STRINGS;
 
     public FrozenApocalypseConfig() {
         this.VERSION = CURRENT_VERSION;
         this.FROZEN_APOCALYPSE_ENABLED = true;
-        this.HEAT_BLOCKS = new ArrayList<>();
+        this.HEAT_BLOCK_STRINGS = new ArrayList<>();
 
         ArrayList<Block> heatBlocks = new ArrayList<>(List.of(
                 Blocks.TORCH, Blocks.WALL_TORCH, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH, Blocks.FIRE, Blocks.SOUL_FIRE,
@@ -39,7 +39,7 @@ public class FrozenApocalypseConfig {
                 Blocks.LAVA, Blocks.LAVA_CAULDRON, Blocks.MAGMA_BLOCK, Blocks.JACK_O_LANTERN, Blocks.SEA_LANTERN
         ));
 
-        heatBlocks.forEach(value -> this.HEAT_BLOCKS.add(Registries.BLOCK.getId(value).toString()));
+        heatBlocks.forEach(value -> this.HEAT_BLOCK_STRINGS.add(Registries.BLOCK.getId(value).toString()));
     }
 
     private static FrozenApocalypseConfig createNewDefaultConfig(File configFile, Gson gson) throws IOException {
@@ -94,16 +94,6 @@ public class FrozenApocalypseConfig {
                 }
             }
 
-            config.HEAT_BLOCKS.forEach(value -> {
-                Identifier blockId = new Identifier(value);
-
-                if (Registries.BLOCK.containsId(blockId)) {
-                    currentHeatBlocks.add(Registries.BLOCK.get(new Identifier(value)));
-                } else {
-                    FrozenApocalypse.LOGGER.warn(value + " does not exist");
-                }
-            });
-
             FrozenApocalypse.LOGGER.info("Successfully read config file");
         } catch (IOException e) {
             FrozenApocalypse.LOGGER.error("Could not read or create config file: " + e.getMessage());
@@ -117,7 +107,15 @@ public class FrozenApocalypseConfig {
         return this.FROZEN_APOCALYPSE_ENABLED;
     }
 
+    public ArrayList<String> getHeatBlockStrings() {
+        return this.HEAT_BLOCK_STRINGS;
+    }
+
     public HashSet<Block> getHeatBlocks() {
         return currentHeatBlocks;
+    }
+
+    public void setHeatBlocks(HashSet<Block> heatBlocks) {
+        currentHeatBlocks = heatBlocks;
     }
 }
