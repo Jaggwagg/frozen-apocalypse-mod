@@ -28,6 +28,10 @@ public abstract class MobEntityMixin {
 
     @Inject(method = "canMobSpawn", at = @At("RETURN"), cancellable = true)
     private static void canMobSpawn(EntityType<? extends MobEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
+        if (type.equals(EntityType.ZOMBIE) || type.equals(EntityType.SKELETON) || type.equals(EntityType.STRAY)) {
+            return;
+        }
+
         if (FrozenApocalypseSpawningOverride.canMobNotSpawn(world, spawnReason, pos)) {
             cir.setReturnValue(false);
         }
