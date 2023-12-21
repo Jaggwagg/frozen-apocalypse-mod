@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MobEntityMixin {
     @Inject(method = "isAffectedByDaylight", at = @At("HEAD"), cancellable = true)
     private void isAffectedByDaylight(CallbackInfoReturnable<Boolean> cir) {
-        if (!FrozenApocalypse.FROZEN_APOCALYPSE_ENABLED) {
+        if (!FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_ENABLED) {
             return;
         }
 
