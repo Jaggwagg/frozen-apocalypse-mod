@@ -33,9 +33,9 @@ public class FrozenApocalypseConfig {
         this.HEAT_BLOCK_STRINGS = new ArrayList<>();
 
         ArrayList<Block> heatBlocks = new ArrayList<>(List.of(
-                Blocks.TORCH, Blocks.WALL_TORCH, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH, Blocks.FIRE, Blocks.SOUL_FIRE,
-                Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE, Blocks.LANTERN, Blocks.SOUL_LANTERN,
-                Blocks.LAVA, Blocks.LAVA_CAULDRON, Blocks.MAGMA_BLOCK, Blocks.JACK_O_LANTERN, Blocks.SEA_LANTERN
+                Blocks.BEACON, Blocks.CAMPFIRE, Blocks.CONDUIT, Blocks.END_ROD, Blocks.FIRE, Blocks.OCHRE_FROGLIGHT, Blocks.PEARLESCENT_FROGLIGHT, Blocks.VERDANT_FROGLIGHT,
+                Blocks.GLOW_LICHEN, Blocks.GLOWSTONE, Blocks.JACK_O_LANTERN, Blocks.LANTERN, Blocks.LAVA, Blocks.LAVA_CAULDRON, Blocks.MAGMA_BLOCK, Blocks.REDSTONE_TORCH,
+                Blocks.SEA_LANTERN, Blocks.SHROOMLIGHT, Blocks.SOUL_CAMPFIRE, Blocks.SOUL_LANTERN, Blocks.SOUL_TORCH, Blocks.TORCH, Blocks.WALL_TORCH, Blocks.SOUL_WALL_TORCH, Blocks.REDSTONE_WALL_TORCH
         ));
 
         heatBlocks.forEach(value -> this.HEAT_BLOCK_STRINGS.add(Registries.BLOCK.getId(value).toString()));
