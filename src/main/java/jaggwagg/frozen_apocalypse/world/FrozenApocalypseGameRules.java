@@ -14,8 +14,6 @@ public class FrozenApocalypseGameRules {
     public static final CustomGameRuleCategory CATEGORY = new CustomGameRuleCategory(CATEGORY_IDENTIFIER, Text.translatable("gamerule.category." + FrozenApocalypse.MOD_ID).formatted(Formatting.AQUA, Formatting.BOLD));
     public static final GameRules.Key<GameRules.IntRule> FROZEN_APOCALYPSE_LEVEL =
             GameRuleRegistry.register("frozenApocalypseLevel", CATEGORY, GameRuleFactory.createIntRule(0));
-    public static final GameRules.Key<GameRules.IntRule> FROZEN_APOCALYPSE_MAX_LEVEL =
-            GameRuleRegistry.register("frozenApocalypseMaxLevel", CATEGORY, GameRuleFactory.createIntRule(8));
     public static final GameRules.Key<GameRules.BooleanRule> FROZEN_APOCALYPSE_LEVEL_OVERRIDE =
             GameRuleRegistry.register("frozenApocalypseLevelOverride", CATEGORY, GameRuleFactory.createBooleanRule(false));
 
