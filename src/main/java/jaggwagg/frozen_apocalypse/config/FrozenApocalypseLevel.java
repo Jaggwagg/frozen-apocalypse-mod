@@ -1,7 +1,5 @@
 package jaggwagg.frozen_apocalypse.config;
 
-import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-
 public class FrozenApocalypseLevel {
     public final Integer APOCALYPSE_LEVEL;
     public final int STARTING_DAY;

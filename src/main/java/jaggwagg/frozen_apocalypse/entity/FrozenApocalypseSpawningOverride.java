@@ -7,8 +7,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.util.Optional;
-
 public class FrozenApocalypseSpawningOverride {
     @Unique
     public static boolean canMobNotSpawn(WorldAccess world, SpawnReason spawnReason, BlockPos pos) {
