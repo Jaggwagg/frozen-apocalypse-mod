@@ -1,10 +1,13 @@
 package jaggwagg.frozen_apocalypse.entity;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
+import jaggwagg.frozen_apocalypse.config.FrozenApocalypseLevel;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Unique;
+
+import java.util.Optional;
 
 public class FrozenApocalypseSpawningOverride {
     @Unique
@@ -17,16 +20,13 @@ public class FrozenApocalypseSpawningOverride {
             return false;
         }
 
-        return switch (FrozenApocalypse.frozenApocalypseLevel) {
-            case 0 -> false;
-            case 1 -> shouldNotSpawn(pos.getY(), 150);
-            case 2 -> shouldNotSpawn(pos.getY(), 112);
-            case 3 -> shouldNotSpawn(pos.getY(), 84);
-            case 4 -> shouldNotSpawn(pos.getY(), 62);
-            case 5 -> shouldNotSpawn(pos.getY(), 45);
-            case 6 -> shouldNotSpawn(pos.getY(), 30);
-            default -> shouldNotSpawn(pos.getY(), 20);
-        };
+        for (FrozenApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+            if (frozenApocalypseLevel.APOCALYPSE_LEVEL == FrozenApocalypse.frozenApocalypseLevel) {
+                return shouldNotSpawn(pos.getY(), frozenApocalypseLevel.FREEZING_Y_LEVEL);
+            }
+        }
+
+        return false;
     }
 
     @Unique

@@ -1,6 +1,7 @@
 package jaggwagg.frozen_apocalypse.mixin;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
+import jaggwagg.frozen_apocalypse.config.FrozenApocalypseLevel;
 import jaggwagg.frozen_apocalypse.entity.effect.FrozenApocalypseStatusEffects;
 import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
 import net.minecraft.block.Block;
@@ -19,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityFreezeMixin {
@@ -31,7 +32,7 @@ public abstract class LivingEntityFreezeMixin {
         LivingEntity livingEntity = ((LivingEntity) (Object) this);
         World world = livingEntity.getWorld();
 
-        if (!FrozenApocalypse.FROZEN_APOCALYPSE_ENABLED) {
+        if (!FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_ENABLED) {
             return;
         }
 
@@ -47,37 +48,19 @@ public abstract class LivingEntityFreezeMixin {
             return;
         }
 
-        switch(FrozenApocalypse.frozenApocalypseLevel) {
-            case 0:
-                return;
-            case 1:
-                freezeLivingEntity(150, 7, 1.0f, 32, livingEntity, world);
+        for (FrozenApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+            if (frozenApocalypseLevel.APOCALYPSE_LEVEL == FrozenApocalypse.frozenApocalypseLevel) {
+                freezeLivingEntity(frozenApocalypseLevel.FREEZING_Y_LEVEL, frozenApocalypseLevel.FREEZE_DAMAGE, frozenApocalypseLevel.FREEZE_DAMAGE_DELAY, livingEntity, world);
                 break;
-            case 2:
-                freezeLivingEntity(112, 7, 1.0f, 32, livingEntity, world);
-                break;
-            case 3:
-                freezeLivingEntity(84, 7, 1.0f, 32, livingEntity, world);
-                break;
-            case 4:
-                freezeLivingEntity(62, 7, 1.0f, 32, livingEntity, world);
-                break;
-            case 5:
-                freezeLivingEntity(45, 7, 1.0f, 32, livingEntity, world);
-                break;
-            case 6:
-                freezeLivingEntity(30, 7, 1.0f, 32, livingEntity, world);
-                break;
-            default:
-                freezeLivingEntity(20, 3, 2.5f, 16, livingEntity, world);
+            }
         }
     }
 
     @Unique
     private void initializeHeatBlocks() {
-        HashSet<Block> heatBlocks = new HashSet<>();
+        LinkedHashSet<Block> heatBlocks = new LinkedHashSet<>();
 
-        FrozenApocalypse.CONFIG.getHeatBlockStrings().forEach(value -> {
+        FrozenApocalypse.CONFIG.HEAT_BLOCK_IDS.forEach(value -> {
             Identifier blockId = new Identifier(value);
 
             if (Registries.BLOCK.containsId(blockId)) {
@@ -91,12 +74,12 @@ public abstract class LivingEntityFreezeMixin {
     }
 
     @Unique
-    private boolean notNearHeatSource(int size, World world, LivingEntity livingEntity) {
+    private boolean notNearHeatSource(World world, LivingEntity livingEntity) {
         BlockPos livingEntityBlockPos = livingEntity.getBlockPos();
 
-        for (int x = -size; x <= size; x++) {
-            for (int z = -size; z <= size; z++) {
-                for (int y = -size; y <= size; y++) {
+        for (int x = -5; x <= 5; x++) {
+            for (int z = -5; z <= 5; z++) {
+                for (int y = -5; y <= 5; y++) {
                     BlockPos blockPos = new BlockPos(livingEntityBlockPos.getX() + x, livingEntityBlockPos.getY() + y, livingEntityBlockPos.getZ() + z);
 
                     if (FrozenApocalypse.CONFIG.getHeatBlocks().contains(world.getBlockState(blockPos).getBlock())) {
@@ -110,14 +93,14 @@ public abstract class LivingEntityFreezeMixin {
     }
 
     @Unique
-    private void freezeLivingEntity(int aboveY, int heatSize, float damage, int random, LivingEntity livingEntity, World world) {
+    private void freezeLivingEntity(int aboveY, float damage, int random, LivingEntity livingEntity, World world) {
         if (!hasInitializedHeatBlocks) {
             initializeHeatBlocks();
             hasInitializedHeatBlocks = true;
         }
 
         if (livingEntity.getY() > aboveY) {
-            if (notNearHeatSource(heatSize, world, livingEntity)) {
+            if (notNearHeatSource(world, livingEntity)) {
                 if (livingEntity instanceof PlayerEntity playerEntity) {
                     if (playerEntity.isCreative() || playerEntity.isSpectator()) {
                         return;
@@ -125,6 +108,10 @@ public abstract class LivingEntityFreezeMixin {
                 }
 
                 if (livingEntity instanceof SkeletonEntity || livingEntity instanceof StrayEntity || livingEntity instanceof ZombieEntity) {
+                    return;
+                }
+
+                if (random < 1) {
                     return;
                 }
 

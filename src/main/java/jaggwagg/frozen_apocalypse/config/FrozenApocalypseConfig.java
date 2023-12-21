@@ -16,21 +16,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class FrozenApocalypseConfig {
-    private static final String CURRENT_VERSION = "1.1.2";
-    private static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/";
-    private static HashSet<Block> currentHeatBlocks = new HashSet<>();
-    private final String VERSION;
-    private final boolean FROZEN_APOCALYPSE_ENABLED;
-    private final ArrayList<String> HEAT_BLOCK_STRINGS;
+    public static final String CURRENT_VERSION = "1.1.2";
+    public static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/";
+    public static LinkedHashSet<Block> currentHeatBlocks = new LinkedHashSet<>();
+    public final String VERSION;
+    public final boolean FROZEN_APOCALYPSE_ENABLED;
+    public final LinkedHashSet<FrozenApocalypseLevel> FROZEN_APOCALYPSE_LEVELS;
+    public final LinkedHashSet<String> HEAT_BLOCK_IDS;
 
     public FrozenApocalypseConfig() {
         this.VERSION = CURRENT_VERSION;
         this.FROZEN_APOCALYPSE_ENABLED = true;
-        this.HEAT_BLOCK_STRINGS = new ArrayList<>();
+        this.FROZEN_APOCALYPSE_LEVELS = new LinkedHashSet<>();
+        this.HEAT_BLOCK_IDS = new LinkedHashSet<>();
 
         ArrayList<Block> heatBlocks = new ArrayList<>(List.of(
                 Blocks.BEACON, Blocks.CAMPFIRE, Blocks.CONDUIT, Blocks.END_ROD, Blocks.FIRE, Blocks.OCHRE_FROGLIGHT, Blocks.PEARLESCENT_FROGLIGHT, Blocks.VERDANT_FROGLIGHT,
@@ -38,7 +40,19 @@ public class FrozenApocalypseConfig {
                 Blocks.SEA_LANTERN, Blocks.SHROOMLIGHT, Blocks.SOUL_CAMPFIRE, Blocks.SOUL_LANTERN, Blocks.SOUL_TORCH, Blocks.TORCH, Blocks.WALL_TORCH, Blocks.SOUL_WALL_TORCH, Blocks.REDSTONE_WALL_TORCH
         ));
 
-        heatBlocks.forEach(value -> this.HEAT_BLOCK_STRINGS.add(Registries.BLOCK.getId(value).toString()));
+        heatBlocks.forEach(value -> this.HEAT_BLOCK_IDS.add(Registries.BLOCK.getId(value).toString()));
+
+        this.FROZEN_APOCALYPSE_LEVELS.addAll(List.of(
+                new FrozenApocalypseLevel.Builder(0, 0).build(),
+                new FrozenApocalypseLevel.Builder(1, 1).freezeEntities(150, 32, 1.0f).leafDecay().grassToPodzol().build(),
+                new FrozenApocalypseLevel.Builder(2, 2).freezeEntities(112, 32, 1.0f).leafDecay().grassToPodzol().build(),
+                new FrozenApocalypseLevel.Builder(3, 3).freezeEntities(84, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().build(),
+                new FrozenApocalypseLevel.Builder(4, 4).freezeEntities(62, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().build(),
+                new FrozenApocalypseLevel.Builder(5, 5).freezeEntities(45, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().build(),
+                new FrozenApocalypseLevel.Builder(6, 6).freezeEntities(30, 32, 1.5f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().disableWeather().build(),
+                new FrozenApocalypseLevel.Builder(7, 7).freezeEntities(20, 16, 1.5f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().disableWeather().build(),
+                new FrozenApocalypseLevel.Builder(8, 8).freezeEntities(20, 16, 2.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().disableWeather().build()
+        ));
     }
 
     private static FrozenApocalypseConfig createNewDefaultConfig(File configFile, Gson gson) throws IOException {
@@ -102,19 +116,11 @@ public class FrozenApocalypseConfig {
         return config;
     }
 
-    public boolean getFrozenApocalypseEnabled() {
-        return this.FROZEN_APOCALYPSE_ENABLED;
-    }
-
-    public ArrayList<String> getHeatBlockStrings() {
-        return this.HEAT_BLOCK_STRINGS;
-    }
-
-    public HashSet<Block> getHeatBlocks() {
+    public LinkedHashSet<Block> getHeatBlocks() {
         return currentHeatBlocks;
     }
 
-    public void setHeatBlocks(HashSet<Block> heatBlocks) {
+    public void setHeatBlocks(LinkedHashSet<Block> heatBlocks) {
         currentHeatBlocks = heatBlocks;
     }
 }
