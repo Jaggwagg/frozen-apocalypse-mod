@@ -1,7 +1,7 @@
 package jaggwagg.frozen_apocalypse.mixin;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.config.FrozenApocalypseLevel;
+import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
 import jaggwagg.frozen_apocalypse.world.FrozenApocalypseGameRules;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
@@ -51,7 +51,7 @@ public abstract class ApocalypseEffectsMixin {
         }
 
         if (!serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL_OVERRIDE).get()) {
-            for (FrozenApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+            for (ApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
                 if (frozenApocalypseLevel.STARTING_DAY == calculateDay(serverWorld)) {
                     serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(frozenApocalypseLevel.APOCALYPSE_LEVEL, serverWorld.getServer());
                     break;
@@ -70,7 +70,7 @@ public abstract class ApocalypseEffectsMixin {
         }
 
         if (serverWorld.getRandom().nextInt(updateSpeed) <= 1) {
-            for (FrozenApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+            for (ApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
                 if (frozenApocalypseLevel.APOCALYPSE_LEVEL == FrozenApocalypse.frozenApocalypseLevel) {
                     if (frozenApocalypseLevel.LEAF_DECAY) {
                         setLeafDecay(serverWorld, blockPos);
@@ -101,7 +101,7 @@ public abstract class ApocalypseEffectsMixin {
                     }
 
                     if (frozenApocalypseLevel.DISABLE_WEATHER) {
-                        if (serverWorld.isRaining()) {
+                        if (serverWorld.isRaining() || serverWorld.isThundering()) {
                             serverWorld.setWeather(99999999, 0, false, false);
                         }
                     }
