@@ -21,17 +21,24 @@ public class FrozenApocalypse implements ModInitializer {
     @Override
     public void onInitialize() {
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, isAlive) -> {
-            if (newPlayer.getWorld().getGameRules().getBoolean(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION)) {
-                if (!newPlayer.isCreative() && !newPlayer.isSpectator()) {
-                    int length = newPlayer.getWorld().getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION);
+            if (frozenApocalypseLevel < 1) {
+                return;
+            }
 
-                    if (length < 1) {
-                        Objects.requireNonNull(newPlayer.getWorld().getServer()).getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION).set(1, newPlayer.getWorld().getServer());
-                        length = newPlayer.getWorld().getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION);
-                    }
+            if (!newPlayer.getWorld().getGameRules().getBoolean(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION)) {
+                return;
+            }
 
-                    newPlayer.addStatusEffect(new StatusEffectInstance(FrozenApocalypseStatusEffects.FROST_RESISTANCE, length));
+
+            if (!newPlayer.isCreative() && !newPlayer.isSpectator()) {
+                int length = newPlayer.getWorld().getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION);
+
+                if (length < 1) {
+                    Objects.requireNonNull(newPlayer.getWorld().getServer()).getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION).set(1, newPlayer.getWorld().getServer());
+                    length = newPlayer.getWorld().getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION);
                 }
+
+                newPlayer.addStatusEffect(new StatusEffectInstance(FrozenApocalypseStatusEffects.FROST_RESISTANCE, length));
             }
         });
 
