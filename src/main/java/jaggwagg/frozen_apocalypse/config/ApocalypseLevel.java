@@ -1,6 +1,6 @@
 package jaggwagg.frozen_apocalypse.config;
 
-public class FrozenApocalypseLevel {
+public class ApocalypseLevel {
     public final Integer APOCALYPSE_LEVEL;
     public final int STARTING_DAY;
     public final boolean FREEZE_ENTITIES;
@@ -16,7 +16,7 @@ public class FrozenApocalypseLevel {
     public final boolean LAVA_TO_OBSIDIAN;
     public final boolean PLACE_SNOW_BLOCK;
 
-    private FrozenApocalypseLevel(Builder builder) {
+    private ApocalypseLevel(Builder builder) {
         this.APOCALYPSE_LEVEL = builder.APOCALYPSE_LEVEL;
         this.STARTING_DAY = builder.STARTING_DAY;
         this.FREEZE_ENTITIES = builder.freezeEntities;
@@ -54,8 +54,8 @@ public class FrozenApocalypseLevel {
             this.STARTING_DAY = startingDay;
         }
 
-        public FrozenApocalypseLevel build() {
-            return new FrozenApocalypseLevel(this);
+        public ApocalypseLevel build() {
+            return new ApocalypseLevel(this);
         }
 
         public Builder freezeEntities(int freezingYLevel, int freezeDamageDelay, float freezeDamage) {

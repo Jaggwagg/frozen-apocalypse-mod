@@ -1,7 +1,7 @@
 package jaggwagg.frozen_apocalypse.entity;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.config.FrozenApocalypseLevel;
+import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
@@ -18,7 +18,7 @@ public class FrozenApocalypseSpawningOverride {
             return false;
         }
 
-        for (FrozenApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+        for (ApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
             if (frozenApocalypseLevel.APOCALYPSE_LEVEL == FrozenApocalypse.frozenApocalypseLevel) {
                 return shouldNotSpawn(pos.getY(), frozenApocalypseLevel.FREEZING_Y_LEVEL);
             }
