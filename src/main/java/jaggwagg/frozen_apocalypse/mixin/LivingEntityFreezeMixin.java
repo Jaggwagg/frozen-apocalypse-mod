@@ -1,10 +1,10 @@
 package jaggwagg.frozen_apocalypse.mixin;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.config.FrozenApocalypseLevel;
+import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
+import jaggwagg.frozen_apocalypse.config.HeatBlock;
 import jaggwagg.frozen_apocalypse.entity.effect.FrozenApocalypseStatusEffects;
 import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
-import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.mob.StrayEntity;
@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -20,12 +21,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityFreezeMixin {
+public class LivingEntityFreezeMixin {
+    @Unique
+    private static final long HEAT_SOURCE_DELAY = 30L;
     @Unique
     private static boolean hasInitializedHeatBlocks = false;
+    @Unique
+    private boolean nearHeatSource = true;
+    @Unique
+    private long checkNearHeatSourceDelay = HEAT_SOURCE_DELAY;
 
     @Inject(method = "tickMovement", at = @At("HEAD"))
     private void tickMovement(CallbackInfo ci) {
@@ -33,24 +42,50 @@ public abstract class LivingEntityFreezeMixin {
         World world = livingEntity.getWorld();
 
         if (!FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_ENABLED) {
+            this.nearHeatSource = true;
             return;
         }
 
         if (!world.getDimension().bedWorks()) {
+            this.nearHeatSource = true;
             return;
         }
 
         if (livingEntity.hasStatusEffect(FrozenApocalypseStatusEffects.FROST_RESISTANCE)) {
+            this.nearHeatSource = true;
             return;
         }
 
         if (ThermalArmorItem.wearingThermalArmor(livingEntity)) {
+            this.nearHeatSource = true;
             return;
         }
 
-        for (FrozenApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+        if (livingEntity instanceof PlayerEntity playerEntity) {
+            if (playerEntity.isCreative() || playerEntity.isSpectator()) {
+                this.nearHeatSource = true;
+                return;
+            }
+        }
+
+        if (livingEntity instanceof SkeletonEntity || livingEntity instanceof StrayEntity || livingEntity instanceof ZombieEntity) {
+            this.nearHeatSource = true;
+            return;
+        }
+
+        for (ApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
             if (frozenApocalypseLevel.APOCALYPSE_LEVEL == FrozenApocalypse.frozenApocalypseLevel) {
-                freezeLivingEntity(frozenApocalypseLevel.FREEZING_Y_LEVEL, frozenApocalypseLevel.FREEZE_DAMAGE, frozenApocalypseLevel.FREEZE_DAMAGE_DELAY, livingEntity, world);
+                if (!frozenApocalypseLevel.FREEZE_ENTITIES) {
+                    this.nearHeatSource = true;
+                    return;
+                }
+
+                if (livingEntity.getY() < frozenApocalypseLevel.FREEZING_Y_LEVEL) {
+                    this.nearHeatSource = true;
+                    return;
+                }
+
+                freezeLivingEntity(frozenApocalypseLevel.FREEZE_DAMAGE, frozenApocalypseLevel.FREEZE_DAMAGE_DELAY + 1, livingEntity, world);
                 break;
             }
         }
@@ -58,73 +93,91 @@ public abstract class LivingEntityFreezeMixin {
 
     @Unique
     private void initializeHeatBlocks() {
-        LinkedHashSet<Block> heatBlocks = new LinkedHashSet<>();
-
-        FrozenApocalypse.CONFIG.HEAT_BLOCK_IDS.forEach(value -> {
-            Identifier blockId = new Identifier(value);
+        FrozenApocalypse.CONFIG.HEAT_BLOCKS.forEach(value -> {
+            Identifier blockId = new Identifier(value.ID);
 
             if (Registries.BLOCK.containsId(blockId)) {
-                heatBlocks.add(Registries.BLOCK.get(new Identifier(value)));
+                value.setBlock(Registries.BLOCK.get(new Identifier(value.ID)));
             } else {
                 FrozenApocalypse.LOGGER.warn(value + " does not exist");
             }
         });
 
-        FrozenApocalypse.CONFIG.setHeatBlocks(heatBlocks);
+        hasInitializedHeatBlocks = true;
     }
 
     @Unique
-    private boolean notNearHeatSource(World world, LivingEntity livingEntity) {
-        BlockPos livingEntityBlockPos = livingEntity.getBlockPos();
+    private boolean checkNearHeatSource(World world, LivingEntity livingEntity) {
+        BlockPos startingBlockPos = livingEntity.getBlockPos();
+        int lightLevel = world.getLightLevel(LightType.BLOCK, startingBlockPos);
+        HashSet<BlockPos> visitedBlockPositions = new HashSet<>();
+        Queue<BlockPos> queue = new LinkedList<>();
 
-        for (int x = -5; x <= 5; x++) {
-            for (int z = -5; z <= 5; z++) {
-                for (int y = -5; y <= 5; y++) {
-                    BlockPos blockPos = new BlockPos(livingEntityBlockPos.getX() + x, livingEntityBlockPos.getY() + y, livingEntityBlockPos.getZ() + z);
-
-                    if (FrozenApocalypse.CONFIG.getHeatBlocks().contains(world.getBlockState(blockPos).getBlock())) {
-                        return false;
-                    }
-                }
-            }
+        if (world.getLightLevel(LightType.BLOCK, startingBlockPos) < 1) {
+            return false;
         }
 
-        return true;
+        queue.add(startingBlockPos);
+
+        while (!queue.isEmpty()) {
+            BlockPos blockPos = queue.poll();
+
+            if (world.getLightLevel(LightType.BLOCK, blockPos) < lightLevel) {
+                continue;
+            }
+
+            if (visitedBlockPositions.contains(blockPos)) {
+                continue;
+            }
+
+            for (HeatBlock heatBlock : FrozenApocalypse.CONFIG.HEAT_BLOCKS) {
+                if (heatBlock.getBlock().equals(world.getBlockState(blockPos).getBlock())) {
+                    return world.getLightLevel(LightType.BLOCK, startingBlockPos) >= world.getLightLevel(LightType.BLOCK, blockPos) - heatBlock.MAX_DISTANCE + 1;
+                }
+            }
+
+            lightLevel += 1;
+            visitedBlockPositions.add(blockPos);
+
+            queue.add(new BlockPos(blockPos.getX() - 1, blockPos.getY(), blockPos.getZ()));
+            queue.add(new BlockPos(blockPos.getX() + 1, blockPos.getY(), blockPos.getZ()));
+            queue.add(new BlockPos(blockPos.getX(), blockPos.getY() - 1, blockPos.getZ()));
+            queue.add(new BlockPos(blockPos.getX(), blockPos.getY() + 1, blockPos.getZ()));
+            queue.add(new BlockPos(blockPos.getX(), blockPos.getY(), blockPos.getZ() - 1));
+            queue.add(new BlockPos(blockPos.getX(), blockPos.getY(), blockPos.getZ() + 1));
+        }
+
+        return false;
     }
 
     @Unique
-    private void freezeLivingEntity(int aboveY, float damage, int random, LivingEntity livingEntity, World world) {
+    private void freezeLivingEntity(float damage, int random, LivingEntity livingEntity, World world) {
         if (!hasInitializedHeatBlocks) {
             initializeHeatBlocks();
-            hasInitializedHeatBlocks = true;
         }
 
-        if (livingEntity.getY() > aboveY) {
-            if (notNearHeatSource(world, livingEntity)) {
-                if (livingEntity instanceof PlayerEntity playerEntity) {
-                    if (playerEntity.isCreative() || playerEntity.isSpectator()) {
-                        return;
-                    }
-                }
-
-                if (livingEntity instanceof SkeletonEntity || livingEntity instanceof StrayEntity || livingEntity instanceof ZombieEntity) {
-                    return;
-                }
-
-                if (random < 1) {
-                    return;
-                }
-
-                if (world.getRandom().nextInt(random) == 0) {
-                    livingEntity.damage(world.getDamageSources().freeze(), damage);
-                }
-
+        if (!this.nearHeatSource) {
+            if (!livingEntity.inPowderSnow) {
                 livingEntity.setInPowderSnow(true);
+            }
 
-                if (!world.isClient) {
-                    livingEntity.setOnFire(false);
-                }
+            if (world.getRandom().nextInt(random) == 1) {
+                livingEntity.damage(world.getDamageSources().freeze(), damage);
+            }
+
+            if (!world.isClient) {
+                livingEntity.setOnFire(false);
             }
         }
+
+        this.checkNearHeatSourceDelay--;
+
+        if (this.checkNearHeatSourceDelay != 0L) {
+            return;
+        }
+
+        this.checkNearHeatSourceDelay = HEAT_SOURCE_DELAY;
+
+        this.nearHeatSource = checkNearHeatSource(world, livingEntity);
     }
 }
