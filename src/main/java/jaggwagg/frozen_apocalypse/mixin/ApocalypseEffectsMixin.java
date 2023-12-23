@@ -60,10 +60,12 @@ public abstract class ApocalypseEffectsMixin {
         }
 
         if (!serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL_OVERRIDE).get()) {
+            int max = 0;
+
             for (ApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
-                if (frozenApocalypseLevel.STARTING_DAY == calculateDay(serverWorld)) {
+                if (frozenApocalypseLevel.STARTING_DAY <= calculateDay(serverWorld) && frozenApocalypseLevel.STARTING_DAY >= max) {
                     serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(frozenApocalypseLevel.APOCALYPSE_LEVEL, serverWorld.getServer());
-                    break;
+                    max = frozenApocalypseLevel.STARTING_DAY;
                 }
             }
         }
