@@ -5,6 +5,7 @@ public class ApocalypseLevel {
     public final int STARTING_DAY;
     public final int WORLD_UPDATE_SPEED;
     public final float SUN_SIZE;
+    public final boolean ALL_BIOMES_CAN_SNOW;
     public final boolean DISABLE_MOBS_BURN_DURING_DAYLIGHT;
     public final boolean FREEZE_ENTITIES;
     public final int FREEZING_Y_LEVEL;
@@ -24,6 +25,7 @@ public class ApocalypseLevel {
         this.STARTING_DAY = builder.STARTING_DAY;
         this.WORLD_UPDATE_SPEED = builder.WORLD_UPDATE_SPEED;
         this.SUN_SIZE = builder.SUN_SIZE;
+        this.ALL_BIOMES_CAN_SNOW = builder.allBiomesCanSnow;
         this.DISABLE_MOBS_BURN_DURING_DAYLIGHT = builder.disableMobsBurnDuringDaylight;
         this.FREEZE_ENTITIES = builder.freezeEntities;
         this.FREEZING_Y_LEVEL = builder.freezingYLevel;
@@ -44,6 +46,7 @@ public class ApocalypseLevel {
         private final int STARTING_DAY;
         private final int WORLD_UPDATE_SPEED;
         private final float SUN_SIZE;
+        private boolean allBiomesCanSnow;
         private boolean disableMobsBurnDuringDaylight;
         private boolean freezeEntities;
         private int freezingYLevel;
@@ -67,6 +70,11 @@ public class ApocalypseLevel {
 
         public ApocalypseLevel build() {
             return new ApocalypseLevel(this);
+        }
+
+        public Builder allBiomesCanSnow() {
+            this.allBiomesCanSnow = true;
+            return this;
         }
 
         public Builder disableMobsBurnDuringDaylight() {

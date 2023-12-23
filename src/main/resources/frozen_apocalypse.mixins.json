@@ -5,6 +5,7 @@
   "mixins": [
     "AnimalEntityMixin",
     "ApocalypseEffectsMixin",
+    "BiomeMixin",
     "LivingEntityFreezeMixin",
     "MobEntityMixin",
     "PowderSnowBlockMixin",
