@@ -10,8 +10,6 @@ import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.mob.StrayEntity;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
@@ -29,8 +27,6 @@ import java.util.Queue;
 public class LivingEntityFreezeMixin {
     @Unique
     private static final long HEAT_SOURCE_DELAY = 30L;
-    @Unique
-    private static boolean hasInitializedHeatBlocks = false;
     @Unique
     private boolean nearHeatSource = true;
     @Unique
@@ -92,21 +88,6 @@ public class LivingEntityFreezeMixin {
     }
 
     @Unique
-    private void initializeHeatBlocks() {
-        FrozenApocalypse.CONFIG.HEAT_BLOCKS.forEach(value -> {
-            Identifier blockId = new Identifier(value.ID);
-
-            if (Registries.BLOCK.containsId(blockId)) {
-                value.setBlock(Registries.BLOCK.get(new Identifier(value.ID)));
-            } else {
-                FrozenApocalypse.LOGGER.warn(value + " does not exist");
-            }
-        });
-
-        hasInitializedHeatBlocks = true;
-    }
-
-    @Unique
     private boolean checkNearHeatSource(World world, LivingEntity livingEntity) {
         BlockPos startingBlockPos = livingEntity.getBlockPos();
         int lightLevel = world.getLightLevel(LightType.BLOCK, startingBlockPos);
@@ -152,10 +133,6 @@ public class LivingEntityFreezeMixin {
 
     @Unique
     private void freezeLivingEntity(float damage, int random, LivingEntity livingEntity, World world) {
-        if (!hasInitializedHeatBlocks) {
-            initializeHeatBlocks();
-        }
-
         if (!this.nearHeatSource) {
             if (!livingEntity.inPowderSnow) {
                 livingEntity.setInPowderSnow(true);

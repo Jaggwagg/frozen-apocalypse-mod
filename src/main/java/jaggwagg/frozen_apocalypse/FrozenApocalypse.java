@@ -6,7 +6,10 @@ import jaggwagg.frozen_apocalypse.item.FrozenApocalypseItems;
 import jaggwagg.frozen_apocalypse.world.FrozenApocalypseGameRules;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,6 +44,16 @@ public class FrozenApocalypse implements ModInitializer {
                 newPlayer.addStatusEffect(new StatusEffectInstance(FrozenApocalypseStatusEffects.FROST_RESISTANCE, length));
             }
         });
+
+        ServerWorldEvents.LOAD.register((server, serverWorld) -> CONFIG.HEAT_BLOCKS.forEach(value -> {
+            Identifier blockId = new Identifier(value.ID);
+
+            if (Registries.BLOCK.containsId(blockId)) {
+                value.setBlock(Registries.BLOCK.get(new Identifier(value.ID)));
+            } else {
+                FrozenApocalypse.LOGGER.warn(value + " does not exist");
+            }
+        }));
 
         FrozenApocalypseGameRules.init();
         FrozenApocalypseItems.init();
