@@ -2,10 +2,15 @@ package jaggwagg.frozen_apocalypse.mixin;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
+import jaggwagg.frozen_apocalypse.network.FrozenApocalypseNetworking;
 import jaggwagg.frozen_apocalypse.world.FrozenApocalypseGameRules;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.LeavesBlock;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -18,6 +23,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
+
 @Mixin(ServerWorld.class)
 public abstract class ApocalypseEffectsMixin {
     @Unique
@@ -28,6 +35,8 @@ public abstract class ApocalypseEffectsMixin {
     @Inject(method = "tickChunk", at = @At("HEAD"))
     private void tickChunk(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
         ServerWorld serverWorld = ((ServerWorld) (Object) this);
+        List<ServerPlayerEntity> playerList = serverWorld.getPlayers();
+        PacketByteBuf buf = PacketByteBufs.create();
         ChunkPos chunkPos = chunk.getPos();
         BlockPos blockPos = serverWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING, serverWorld.getRandomPosInChunk(chunkPos.getStartX(), 0, chunkPos.getStartZ(), 15));
         FrozenApocalypse.frozenApocalypseLevel = serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL);
@@ -56,6 +65,14 @@ public abstract class ApocalypseEffectsMixin {
                     serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(frozenApocalypseLevel.APOCALYPSE_LEVEL, serverWorld.getServer());
                     break;
                 }
+            }
+        }
+
+        buf.writeInt(FrozenApocalypse.frozenApocalypseLevel);
+
+        for (ServerPlayerEntity player : playerList) {
+            if (player != null) {
+                ServerPlayNetworking.send(player, FrozenApocalypseNetworking.FROZEN_APOCALYPSE_LEVEL_ID, buf);
             }
         }
 
