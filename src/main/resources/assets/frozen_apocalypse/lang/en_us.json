@@ -6,7 +6,7 @@
   "gamerule.frozenApocalypseLevel": "Apocalypse level",
   "gamerule.frozenApocalypseLevelOverride": "Apocalypse level override",
   "gamerule.frozenApocalypseMaxLevel": "Apocalypse maximum level",
-  "gamerule.frozenApocalypseUpdateSpeed": "Apocalypse update speed",
+  "gamerule.frozenApocalypseWorldUpdateSpeed": "Apocalypse world update speed",
   "group.frozen_apocalypse.general": "Frozen Apocalypse",
   "item.frozen_apocalypse.diamond_thermal_boots": "Diamond Thermal Boots",
   "item.frozen_apocalypse.diamond_thermal_chestplate": "Diamond Thermal Chestplate",
