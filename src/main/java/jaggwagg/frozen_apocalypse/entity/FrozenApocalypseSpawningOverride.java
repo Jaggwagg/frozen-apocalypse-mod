@@ -14,21 +14,16 @@ public class FrozenApocalypseSpawningOverride {
             return false;
         }
 
-        if (!spawnReason.equals(SpawnReason.NATURAL)) {
-            return false;
-        }
-
-        for (ApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
-            if (frozenApocalypseLevel.APOCALYPSE_LEVEL == FrozenApocalypse.frozenApocalypseLevel) {
-                return shouldNotSpawn(pos.getY(), frozenApocalypseLevel.FREEZING_Y_LEVEL);
+        if (spawnReason.equals(SpawnReason.NATURAL) || spawnReason.equals(SpawnReason.CHUNK_GENERATION)) {
+            for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+                if (apocalypseLevel.APOCALYPSE_LEVEL == FrozenApocalypse.frozenApocalypseLevel) {
+                    if (apocalypseLevel.FREEZE_ENTITIES) {
+                        return pos.getY() > apocalypseLevel.FREEZING_Y_LEVEL;
+                    }
+                }
             }
         }
 
         return false;
-    }
-
-    @Unique
-    public static boolean shouldNotSpawn(int posY, int yLevelFreezingPoint) {
-        return posY > yLevelFreezingPoint;
     }
 }
