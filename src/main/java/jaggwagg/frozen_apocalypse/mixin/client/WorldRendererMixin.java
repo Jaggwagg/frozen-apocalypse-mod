@@ -22,7 +22,7 @@ public abstract class WorldRendererMixin {
         Matrix4f copy = new Matrix4f(in);
         sunMatrixCopy = new Matrix4f(copy);
 
-        if (!FrozenApocalypse.isFrozenApocalypseEnabled) {
+        if (!FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_ENABLED) {
             return copy;
         }
 

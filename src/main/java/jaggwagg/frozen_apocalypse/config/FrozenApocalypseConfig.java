@@ -8,7 +8,6 @@ import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,29 +16,41 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class FrozenApocalypseConfig {
-    private static final String CURRENT_VERSION = "1.1.1";
-    private static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/";
-    private static final HashSet<Block> currentHeatBlocks = new HashSet<>();
-    private final String VERSION;
-    private final boolean FROZEN_APOCALYPSE_ENABLED;
-    private final ArrayList<String> HEAT_BLOCKS;
+    public static final String CURRENT_VERSION = "1.1.2";
+    public static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/";
+    public final String VERSION;
+    public final boolean FROZEN_APOCALYPSE_ENABLED;
+    public final ArrayList<ApocalypseLevel> FROZEN_APOCALYPSE_LEVELS;
+    public final ArrayList<HeatBlock> HEAT_BLOCKS;
 
     public FrozenApocalypseConfig() {
         this.VERSION = CURRENT_VERSION;
         this.FROZEN_APOCALYPSE_ENABLED = true;
+        this.FROZEN_APOCALYPSE_LEVELS = new ArrayList<>();
         this.HEAT_BLOCKS = new ArrayList<>();
 
         ArrayList<Block> heatBlocks = new ArrayList<>(List.of(
-                Blocks.TORCH, Blocks.WALL_TORCH, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH, Blocks.FIRE, Blocks.SOUL_FIRE,
-                Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE, Blocks.LANTERN, Blocks.SOUL_LANTERN,
-                Blocks.LAVA, Blocks.LAVA_CAULDRON, Blocks.MAGMA_BLOCK, Blocks.JACK_O_LANTERN, Blocks.SEA_LANTERN
+                Blocks.BEACON, Blocks.CAMPFIRE, Blocks.CONDUIT, Blocks.END_ROD, Blocks.FIRE, Blocks.OCHRE_FROGLIGHT, Blocks.PEARLESCENT_FROGLIGHT, Blocks.VERDANT_FROGLIGHT,
+                Blocks.GLOWSTONE, Blocks.JACK_O_LANTERN, Blocks.LANTERN, Blocks.LAVA, Blocks.LAVA_CAULDRON, Blocks.MAGMA_BLOCK, Blocks.REDSTONE_TORCH, Blocks.SEA_LANTERN,
+                Blocks.SHROOMLIGHT, Blocks.SOUL_CAMPFIRE, Blocks.SOUL_LANTERN, Blocks.SOUL_TORCH, Blocks.TORCH, Blocks.WALL_TORCH, Blocks.SOUL_WALL_TORCH, Blocks.REDSTONE_WALL_TORCH
         ));
 
-        heatBlocks.forEach(value -> this.HEAT_BLOCKS.add(Registries.BLOCK.getId(value).toString()));
+        heatBlocks.forEach(value -> this.HEAT_BLOCKS.add(new HeatBlock(Registries.BLOCK.getId(value).toString(), value.getDefaultState().getLuminance(), Blocks.GLOWSTONE)));
+
+        this.FROZEN_APOCALYPSE_LEVELS.addAll(List.of(
+                new ApocalypseLevel.Builder(0, 0).build(),
+                new ApocalypseLevel.Builder(1, 1).freezeEntities(150, 32, 1.0f).leafDecay().grassToPodzol().build(),
+                new ApocalypseLevel.Builder(2, 2).freezeEntities(112, 32, 1.0f).leafDecay().grassToPodzol().build(),
+                new ApocalypseLevel.Builder(3, 3).freezeEntities(84, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().build(),
+                new ApocalypseLevel.Builder(4, 4).freezeEntities(62, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().build(),
+                new ApocalypseLevel.Builder(5, 5).freezeEntities(45, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().build(),
+                new ApocalypseLevel.Builder(6, 6).freezeEntities(30, 32, 1.5f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().disableWeather().build(),
+                new ApocalypseLevel.Builder(7, 7).freezeEntities(20, 16, 1.5f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().disableWeather().build(),
+                new ApocalypseLevel.Builder(8, 8).freezeEntities(20, 16, 2.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().disableWeather().build()
+        ));
     }
 
     private static FrozenApocalypseConfig createNewDefaultConfig(File configFile, Gson gson) throws IOException {
@@ -94,16 +105,6 @@ public class FrozenApocalypseConfig {
                 }
             }
 
-            config.HEAT_BLOCKS.forEach(value -> {
-                Identifier blockId = new Identifier(value);
-
-                if (Registries.BLOCK.containsId(blockId)) {
-                    currentHeatBlocks.add(Registries.BLOCK.get(new Identifier(value)));
-                } else {
-                    FrozenApocalypse.LOGGER.warn(value + " does not exist");
-                }
-            });
-
             FrozenApocalypse.LOGGER.info("Successfully read config file");
         } catch (IOException e) {
             FrozenApocalypse.LOGGER.error("Could not read or create config file: " + e.getMessage());
@@ -111,13 +112,5 @@ public class FrozenApocalypseConfig {
         }
 
         return config;
-    }
-
-    public boolean getFrozenApocalypseEnabled() {
-        return this.FROZEN_APOCALYPSE_ENABLED;
-    }
-
-    public HashSet<Block> getHeatBlocks() {
-        return currentHeatBlocks;
     }
 }

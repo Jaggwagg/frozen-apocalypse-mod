@@ -1,10 +1,16 @@
 package jaggwagg.frozen_apocalypse.mixin;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
+import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
+import jaggwagg.frozen_apocalypse.network.FrozenApocalypseNetworking;
 import jaggwagg.frozen_apocalypse.world.FrozenApocalypseGameRules;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.LeavesBlock;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -17,6 +23,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
+
 @Mixin(ServerWorld.class)
 public abstract class ApocalypseEffectsMixin {
     @Unique
@@ -27,6 +35,8 @@ public abstract class ApocalypseEffectsMixin {
     @Inject(method = "tickChunk", at = @At("HEAD"))
     private void tickChunk(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
         ServerWorld serverWorld = ((ServerWorld) (Object) this);
+        List<ServerPlayerEntity> playerList = serverWorld.getPlayers();
+        PacketByteBuf buf = PacketByteBufs.create();
         ChunkPos chunkPos = chunk.getPos();
         BlockPos blockPos = serverWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING, serverWorld.getRandomPosInChunk(chunkPos.getStartX(), 0, chunkPos.getStartZ(), 15));
         FrozenApocalypse.frozenApocalypseLevel = serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL);
@@ -36,7 +46,7 @@ public abstract class ApocalypseEffectsMixin {
             return;
         }
 
-        if (!FrozenApocalypse.CONFIG.getFrozenApocalypseEnabled()) {
+        if (!FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_ENABLED) {
             return;
         }
 
@@ -44,13 +54,25 @@ public abstract class ApocalypseEffectsMixin {
             return;
         }
 
-        if (!serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL_OVERRIDE).get()) {
-            serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(calculateDay(serverWorld), serverWorld.getServer());
+        if (FrozenApocalypse.frozenApocalypseLevel < 0) {
+            serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(0, serverWorld.getServer());
             FrozenApocalypse.frozenApocalypseLevel = serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL);
+        }
 
-            if (FrozenApocalypse.frozenApocalypseLevel > serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_MAX_LEVEL)) {
-                serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_MAX_LEVEL), serverWorld.getServer());
-                FrozenApocalypse.frozenApocalypseLevel = serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL);
+        if (!serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL_OVERRIDE).get()) {
+            for (ApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+                if (frozenApocalypseLevel.STARTING_DAY == calculateDay(serverWorld)) {
+                    serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(frozenApocalypseLevel.APOCALYPSE_LEVEL, serverWorld.getServer());
+                    break;
+                }
+            }
+        }
+
+        buf.writeInt(FrozenApocalypse.frozenApocalypseLevel);
+
+        for (ServerPlayerEntity player : playerList) {
+            if (player != null) {
+                ServerPlayNetworking.send(player, FrozenApocalypseNetworking.FROZEN_APOCALYPSE_LEVEL_ID, buf);
             }
         }
 
@@ -65,26 +87,43 @@ public abstract class ApocalypseEffectsMixin {
         }
 
         if (serverWorld.getRandom().nextInt(updateSpeed) <= 1) {
-            if (FrozenApocalypse.frozenApocalypseLevel > 0) {
-                setLeafDecay(serverWorld, blockPos);
-                setPodzol(serverWorld, blockPos);
-            }
+            for (ApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+                if (frozenApocalypseLevel.APOCALYPSE_LEVEL == FrozenApocalypse.frozenApocalypseLevel) {
+                    if (frozenApocalypseLevel.LEAF_DECAY) {
+                        setLeafDecay(serverWorld, blockPos);
+                    }
 
-            if (FrozenApocalypse.frozenApocalypseLevel > 2) {
-                setIce(serverWorld, blockPos);
-                setSnow(serverWorld, blockPos);
-            }
+                    if (frozenApocalypseLevel.GRASS_TO_PODZOL) {
+                        setPodzol(serverWorld, blockPos);
+                    }
 
-            if (FrozenApocalypse.frozenApocalypseLevel > 4) {
-                setPackedIce(serverWorld, blockPos);
-                setObsidian(serverWorld, blockPos);
-            }
+                    if (frozenApocalypseLevel.WATER_TO_ICE) {
+                        setIce(serverWorld, blockPos);
+                    }
 
-            if (FrozenApocalypse.frozenApocalypseLevel > 5) {
-                setSnowBlock(serverWorld, blockPos);
+                    if (frozenApocalypseLevel.PLACE_SNOW) {
+                        setSnow(serverWorld, blockPos);
+                    }
 
-                if (serverWorld.isRaining()) {
-                    serverWorld.setWeather(99999999, 0, false, false);
+                    if (frozenApocalypseLevel.ICE_TO_PACKED_ICE) {
+                        setPackedIce(serverWorld, blockPos);
+                    }
+
+                    if (frozenApocalypseLevel.LAVA_TO_OBSIDIAN) {
+                        setObsidian(serverWorld, blockPos);
+                    }
+
+                    if (frozenApocalypseLevel.PLACE_SNOW_BLOCK) {
+                        setSnowBlock(serverWorld, blockPos);
+                    }
+
+                    if (frozenApocalypseLevel.DISABLE_WEATHER) {
+                        if (serverWorld.isRaining() || serverWorld.isThundering()) {
+                            serverWorld.setWeather(99999999, 0, false, false);
+                        }
+                    }
+
+                    break;
                 }
             }
         }
