@@ -7,6 +7,6 @@ public class FrozenApocalypseClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        FrozenApocalypse.LOGGER.info("Successfully initialized client!");
+        FrozenApocalypse.LOGGER.info(FrozenApocalypse.MOD_ID + ": successfully initialized client");
     }
 }

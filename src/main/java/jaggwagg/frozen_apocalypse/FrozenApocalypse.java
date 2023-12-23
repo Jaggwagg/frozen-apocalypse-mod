@@ -51,13 +51,13 @@ public class FrozenApocalypse implements ModInitializer {
             if (Registries.BLOCK.containsId(blockId)) {
                 value.setBlock(Registries.BLOCK.get(new Identifier(value.ID)));
             } else {
-                FrozenApocalypse.LOGGER.warn(value + " does not exist");
+                LOGGER.info(MOD_ID + ": " + value + " does not exist");
             }
         }));
 
         FrozenApocalypseGameRules.init();
         FrozenApocalypseItems.init();
         FrozenApocalypseStatusEffects.init();
-        LOGGER.info("Successfully initialized common!");
+        LOGGER.info(MOD_ID + ": successfully initialized common");
     }
 }

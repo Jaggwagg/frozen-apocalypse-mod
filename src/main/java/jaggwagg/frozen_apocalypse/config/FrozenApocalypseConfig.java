@@ -19,10 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FrozenApocalypseConfig {
-    public static final String CURRENT_VERSION = "1.1.3";
+    public static final String CURRENT_VERSION = "1.2.0";
     public static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/";
     public final String VERSION;
     public final boolean FROZEN_APOCALYPSE_ENABLED;
+    public final boolean ALL_BIOMES_CAN_SNOW_ENABLED;
     public final boolean SUN_SIZE_CHANGES_ENABLED;
     public final ArrayList<ApocalypseLevel> FROZEN_APOCALYPSE_LEVELS;
     public final ArrayList<HeatBlock> HEAT_BLOCKS;
@@ -30,6 +31,7 @@ public class FrozenApocalypseConfig {
     public FrozenApocalypseConfig() {
         this.VERSION = CURRENT_VERSION;
         this.FROZEN_APOCALYPSE_ENABLED = true;
+        this.ALL_BIOMES_CAN_SNOW_ENABLED = true;
         this.SUN_SIZE_CHANGES_ENABLED = true;
         this.FROZEN_APOCALYPSE_LEVELS = new ArrayList<>();
         this.HEAT_BLOCKS = new ArrayList<>();
@@ -46,12 +48,12 @@ public class FrozenApocalypseConfig {
                 new ApocalypseLevel.Builder(0, 0, 0, 1.0f).build(),
                 new ApocalypseLevel.Builder(1, 1, 1, 0.9f).freezeEntities(150, 32, 1.0f).leafDecay().grassToPodzol().build(),
                 new ApocalypseLevel.Builder(2, 2, 2, 0.8f).disableMobsBurnDuringDaylight().freezeEntities(112, 32, 1.0f).leafDecay().grassToPodzol().build(),
-                new ApocalypseLevel.Builder(3, 3, 3, 0.7f).disableMobsBurnDuringDaylight().freezeEntities(84, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().build(),
-                new ApocalypseLevel.Builder(4, 4, 4, 0.6f).disableMobsBurnDuringDaylight().freezeEntities(62, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().build(),
-                new ApocalypseLevel.Builder(5, 5, 5, 0.5f).disableMobsBurnDuringDaylight().freezeEntities(45, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().build(),
-                new ApocalypseLevel.Builder(6, 6, 6, 0.4f).disableMobsBurnDuringDaylight().freezeEntities(30, 32, 1.5f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().disableWeather().build(),
-                new ApocalypseLevel.Builder(7, 7, 7, 0.3f).disableMobsBurnDuringDaylight().freezeEntities(20, 16, 1.5f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().disableWeather().build(),
-                new ApocalypseLevel.Builder(8, 8, 8, 0.3f).disableMobsBurnDuringDaylight().freezeEntities(20, 16, 2.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().disableWeather().build()
+                new ApocalypseLevel.Builder(3, 3, 3, 0.7f).allBiomesCanSnow().disableMobsBurnDuringDaylight().freezeEntities(84, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().build(),
+                new ApocalypseLevel.Builder(4, 4, 4, 0.6f).allBiomesCanSnow().disableMobsBurnDuringDaylight().freezeEntities(62, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().build(),
+                new ApocalypseLevel.Builder(5, 5, 5, 0.5f).allBiomesCanSnow().disableMobsBurnDuringDaylight().freezeEntities(45, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().build(),
+                new ApocalypseLevel.Builder(6, 6, 6, 0.4f).allBiomesCanSnow().disableMobsBurnDuringDaylight().freezeEntities(30, 32, 1.5f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().build(),
+                new ApocalypseLevel.Builder(7, 7, 7, 0.3f).allBiomesCanSnow().disableMobsBurnDuringDaylight().freezeEntities(20, 16, 1.5f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().build(),
+                new ApocalypseLevel.Builder(8, 8, 8, 0.3f).allBiomesCanSnow().disableMobsBurnDuringDaylight().freezeEntities(20, 16, 2.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().disableWeather().build()
         ));
     }
 
@@ -75,7 +77,7 @@ public class FrozenApocalypseConfig {
                 .create();
 
         if (new File(CONFIG_PATH).mkdir()) {
-            FrozenApocalypse.LOGGER.info("Created config directory because it could not be found");
+            FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": created config directory because it could not be found");
         }
 
         File configFile = new File(CONFIG_PATH + FrozenApocalypse.MOD_ID + ".json");
@@ -83,7 +85,7 @@ public class FrozenApocalypseConfig {
         try {
             if (configFile.createNewFile()) {
                 config = createNewDefaultConfig(configFile, gson);
-                FrozenApocalypse.LOGGER.warn("Created a new config file because it could not be found");
+                FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": created a new config file because it could not be found");
             } else {
                 boolean makeBackup = false;
                 String json = Files.readString(Path.of(CONFIG_PATH + FrozenApocalypse.MOD_ID + ".json"));
@@ -101,16 +103,16 @@ public class FrozenApocalypseConfig {
                 if (makeBackup) {
                     File configFileBackup = new File(CONFIG_PATH + FrozenApocalypse.MOD_ID + "_backup.json");
                     Files.copy(configFile.toPath(), configFileBackup.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    FrozenApocalypse.LOGGER.warn("Invalid config file, overwriting with default config and made a backup of current file");
+                    FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": invalid config file, overwriting with default config and made a backup of current file");
 
                     config = createNewDefaultConfig(configFile, gson);
                 }
             }
 
-            FrozenApocalypse.LOGGER.info("Successfully read config file");
+            FrozenApocalypse.LOGGER.info(FrozenApocalypse.MOD_ID + ": successfully read config file");
         } catch (IOException e) {
-            FrozenApocalypse.LOGGER.error("Could not read or create config file: " + e.getMessage());
-            FrozenApocalypse.LOGGER.error("This might cause unintended side effects");
+            FrozenApocalypse.LOGGER.error(FrozenApocalypse.MOD_ID + ": could not read or create config file : " + e.getMessage());
+            FrozenApocalypse.LOGGER.error(FrozenApocalypse.MOD_ID + ": this might cause unintended side effects");
         }
 
         return config;
