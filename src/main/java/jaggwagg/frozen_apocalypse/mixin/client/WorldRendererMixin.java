@@ -2,6 +2,7 @@ package jaggwagg.frozen_apocalypse.mixin.client;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.client.FrozenApocalypseClient;
+import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.WorldRenderer;
@@ -26,16 +27,17 @@ public abstract class WorldRendererMixin {
             return copy;
         }
 
-        return switch (FrozenApocalypseClient.frozenApocalypseLevelClient) {
-            case 0 -> copy;
-            case 1 -> copy.scale(0.9f, 1.0f, 0.9f);
-            case 2 -> copy.scale(0.8f, 1.0f, 0.8f);
-            case 3 -> copy.scale(0.7f, 1.0f, 0.7f);
-            case 4 -> copy.scale(0.6f, 1.0f, 0.6f);
-            case 5 -> copy.scale(0.5f, 1.0f, 0.5f);
-            case 6 -> copy.scale(0.4f, 1.0f, 0.4f);
-            default -> copy.scale(0.3f, 1.0f, 0.3f);
-        };
+        if (!FrozenApocalypse.CONFIG.SUN_SIZE_CHANGES_ENABLED) {
+            return copy;
+        }
+
+        for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+            if (FrozenApocalypseClient.frozenApocalypseLevelClient == apocalypseLevel.APOCALYPSE_LEVEL) {
+                return copy.scale(apocalypseLevel.SUN_SIZE, 1.0f, apocalypseLevel.SUN_SIZE);
+            }
+        }
+
+        return copy;
     }
 
     @ModifyVariable(method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lorg/joml/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderTexture(ILnet/minecraft/util/Identifier;)V", ordinal = 1), ordinal = 1)

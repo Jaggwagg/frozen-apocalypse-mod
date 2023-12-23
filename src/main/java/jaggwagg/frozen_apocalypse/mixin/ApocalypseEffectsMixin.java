@@ -60,26 +60,30 @@ public abstract class ApocalypseEffectsMixin {
         }
 
         if (!serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL_OVERRIDE).get()) {
+            int max = 0;
+
             for (ApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
-                if (frozenApocalypseLevel.STARTING_DAY == calculateDay(serverWorld)) {
+                if (frozenApocalypseLevel.STARTING_DAY <= calculateDay(serverWorld) && frozenApocalypseLevel.STARTING_DAY >= max) {
                     serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(frozenApocalypseLevel.APOCALYPSE_LEVEL, serverWorld.getServer());
-                    break;
+                    max = frozenApocalypseLevel.STARTING_DAY;
                 }
             }
         }
 
-        buf.writeInt(FrozenApocalypse.frozenApocalypseLevel);
+        if (FrozenApocalypse.CONFIG.SUN_SIZE_CHANGES_ENABLED) {
+            buf.writeInt(FrozenApocalypse.frozenApocalypseLevel);
 
-        for (ServerPlayerEntity player : playerList) {
-            if (player != null) {
-                ServerPlayNetworking.send(player, FrozenApocalypseNetworking.FROZEN_APOCALYPSE_LEVEL_ID, buf);
+            for (ServerPlayerEntity player : playerList) {
+                if (player != null) {
+                    ServerPlayNetworking.send(player, FrozenApocalypseNetworking.FROZEN_APOCALYPSE_LEVEL_ID, buf);
+                }
             }
         }
 
-        if (serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED) == 0) {
+        if (serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_WORLD_UPDATE_SPEED) == 0) {
             updateSpeed = 0;
         } else {
-            updateSpeed = (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED) * 128) / FrozenApocalypse.frozenApocalypseLevel));
+            updateSpeed = (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_WORLD_UPDATE_SPEED) * 128) / FrozenApocalypse.frozenApocalypseLevel));
         }
 
         if (updateSpeed < 1) {
