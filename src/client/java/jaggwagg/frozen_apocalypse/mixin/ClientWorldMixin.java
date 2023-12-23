@@ -21,9 +21,7 @@ public class ClientWorldMixin {
         ClientPlayNetworking.registerGlobalReceiver(FrozenApocalypseNetworking.FROZEN_APOCALYPSE_LEVEL_ID, (client, handler, buf, responseSender) -> {
             int apocalypseLevel = buf.readInt();
 
-            client.execute(() -> {
-                FrozenApocalypseClient.frozenApocalypseLevelClient = apocalypseLevel;
-            });
+            client.execute(() -> FrozenApocalypseClient.frozenApocalypseLevelClient = apocalypseLevel);
         });
     }
 }
