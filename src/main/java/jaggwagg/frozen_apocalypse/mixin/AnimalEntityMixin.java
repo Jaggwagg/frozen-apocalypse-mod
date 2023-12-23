@@ -16,11 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class AnimalEntityMixin {
     @Inject(method = "isValidNaturalSpawn", at = @At("RETURN"), cancellable = true)
     private static void isValidNaturalSpawn(EntityType<? extends AnimalEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
-        if(spawnReason.equals(SpawnReason.CHUNK_GENERATION)) {
-            cir.setReturnValue(false);
-            return;
-        }
-
         if (FrozenApocalypseSpawningOverride.canMobNotSpawn(world, spawnReason, pos)) {
             cir.setReturnValue(false);
         }
