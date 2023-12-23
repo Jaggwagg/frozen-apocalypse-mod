@@ -80,10 +80,10 @@ public abstract class ApocalypseEffectsMixin {
             }
         }
 
-        if (serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED) == 0) {
+        if (serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_WORLD_UPDATE_SPEED) == 0) {
             updateSpeed = 0;
         } else {
-            updateSpeed = (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_UPDATE_SPEED) * 128) / FrozenApocalypse.frozenApocalypseLevel));
+            updateSpeed = (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_WORLD_UPDATE_SPEED) * 128) / FrozenApocalypse.frozenApocalypseLevel));
         }
 
         if (updateSpeed < 1) {
