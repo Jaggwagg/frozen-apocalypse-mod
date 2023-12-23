@@ -68,11 +68,13 @@ public abstract class ApocalypseEffectsMixin {
             }
         }
 
-        buf.writeInt(FrozenApocalypse.frozenApocalypseLevel);
+        if (FrozenApocalypse.CONFIG.SUN_SIZE_CHANGES_ENABLED) {
+            buf.writeInt(FrozenApocalypse.frozenApocalypseLevel);
 
-        for (ServerPlayerEntity player : playerList) {
-            if (player != null) {
-                ServerPlayNetworking.send(player, FrozenApocalypseNetworking.FROZEN_APOCALYPSE_LEVEL_ID, buf);
+            for (ServerPlayerEntity player : playerList) {
+                if (player != null) {
+                    ServerPlayNetworking.send(player, FrozenApocalypseNetworking.FROZEN_APOCALYPSE_LEVEL_ID, buf);
+                }
             }
         }
 

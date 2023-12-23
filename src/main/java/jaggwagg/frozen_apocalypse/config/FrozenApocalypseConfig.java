@@ -19,16 +19,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FrozenApocalypseConfig {
-    public static final String CURRENT_VERSION = "1.1.2";
+    public static final String CURRENT_VERSION = "1.1.3";
     public static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/";
     public final String VERSION;
     public final boolean FROZEN_APOCALYPSE_ENABLED;
+    public final boolean SUN_SIZE_CHANGES_ENABLED;
     public final ArrayList<ApocalypseLevel> FROZEN_APOCALYPSE_LEVELS;
     public final ArrayList<HeatBlock> HEAT_BLOCKS;
 
     public FrozenApocalypseConfig() {
         this.VERSION = CURRENT_VERSION;
         this.FROZEN_APOCALYPSE_ENABLED = true;
+        this.SUN_SIZE_CHANGES_ENABLED = true;
         this.FROZEN_APOCALYPSE_LEVELS = new ArrayList<>();
         this.HEAT_BLOCKS = new ArrayList<>();
 

@@ -26,6 +26,10 @@ public abstract class WorldRendererMixin {
             return copy;
         }
 
+        if (!FrozenApocalypse.CONFIG.SUN_SIZE_CHANGES_ENABLED) {
+            return copy;
+        }
+
         return switch (FrozenApocalypseClient.frozenApocalypseLevelClient) {
             case 0 -> copy;
             case 1 -> copy.scale(0.9f, 1.0f, 0.9f);
