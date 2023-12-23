@@ -17,8 +17,8 @@ public class FrozenApocalypseGameRules {
     public static final GameRules.Key<GameRules.BooleanRule> FROZEN_APOCALYPSE_LEVEL_OVERRIDE =
             GameRuleRegistry.register("frozenApocalypseLevelOverride", CATEGORY, GameRuleFactory.createBooleanRule(false));
 
-    public static final GameRules.Key<GameRules.IntRule> FROZEN_APOCALYPSE_WORLD_UPDATE_SPEED =
-            GameRuleRegistry.register("frozenApocalypseWorldUpdateSpeed", CATEGORY, GameRuleFactory.createIntRule(3));
+    public static final GameRules.Key<GameRules.IntRule> FROZEN_APOCALYPSE_UPDATE_SPEED =
+            GameRuleRegistry.register("frozenApocalypseUpdateSpeed", CATEGORY, GameRuleFactory.createIntRule(3));
     public static final GameRules.Key<GameRules.BooleanRule> FROZEN_APOCALYPSE_DEATH_PROTECTION =
             GameRuleRegistry.register("frozenApocalypseDeathProtection", CATEGORY, GameRuleFactory.createBooleanRule(true));
     public static final GameRules.Key<GameRules.IntRule> FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION =
