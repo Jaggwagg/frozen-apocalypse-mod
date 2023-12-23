@@ -3,6 +3,8 @@ package jaggwagg.frozen_apocalypse.config;
 public class ApocalypseLevel {
     public final Integer APOCALYPSE_LEVEL;
     public final int STARTING_DAY;
+    public final float SUN_SIZE;
+    public final boolean DISABLE_MOBS_BURN_DURING_DAYLIGHT;
     public final boolean FREEZE_ENTITIES;
     public final int FREEZING_Y_LEVEL;
     public final float FREEZE_DAMAGE;
@@ -19,6 +21,8 @@ public class ApocalypseLevel {
     private ApocalypseLevel(Builder builder) {
         this.APOCALYPSE_LEVEL = builder.APOCALYPSE_LEVEL;
         this.STARTING_DAY = builder.STARTING_DAY;
+        this.SUN_SIZE = builder.SUN_SIZE;
+        this.DISABLE_MOBS_BURN_DURING_DAYLIGHT = builder.disableMobsBurnDuringDaylight;
         this.FREEZE_ENTITIES = builder.freezeEntities;
         this.FREEZING_Y_LEVEL = builder.freezingYLevel;
         this.FREEZE_DAMAGE = builder.freezeDamage;
@@ -36,6 +40,8 @@ public class ApocalypseLevel {
     public static class Builder {
         private final Integer APOCALYPSE_LEVEL;
         private final int STARTING_DAY;
+        private final float SUN_SIZE;
+        private boolean disableMobsBurnDuringDaylight;
         private boolean freezeEntities;
         private int freezingYLevel;
         private float freezeDamage;
@@ -49,13 +55,19 @@ public class ApocalypseLevel {
         private boolean lavaToObsidian;
         private boolean placeSnowBlock;
 
-        public Builder(Integer apocalypseLevel, int startingDay) {
+        public Builder(Integer apocalypseLevel, int startingDay, float sunSize) {
             this.APOCALYPSE_LEVEL = apocalypseLevel;
             this.STARTING_DAY = startingDay;
+            this.SUN_SIZE = sunSize;
         }
 
         public ApocalypseLevel build() {
             return new ApocalypseLevel(this);
+        }
+
+        public Builder disableMobsBurnDuringDaylight() {
+            this.disableMobsBurnDuringDaylight = true;
+            return this;
         }
 
         public Builder freezeEntities(int freezingYLevel, int freezeDamageDelay, float freezeDamage) {

@@ -1,6 +1,7 @@
 package jaggwagg.frozen_apocalypse.mixin;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
+import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
 import jaggwagg.frozen_apocalypse.entity.FrozenApocalypseSpawningOverride;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -21,9 +22,15 @@ public abstract class MobEntityMixin {
             return;
         }
 
-        if (FrozenApocalypse.frozenApocalypseLevel > 1) {
-            cir.setReturnValue(false);
+        for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+            if (FrozenApocalypse.frozenApocalypseLevel == apocalypseLevel.APOCALYPSE_LEVEL) {
+                if (!apocalypseLevel.DISABLE_MOBS_BURN_DURING_DAYLIGHT) {
+                    return;
+                }
+            }
         }
+
+        cir.setReturnValue(false);
     }
 
     @Inject(method = "canMobSpawn", at = @At("RETURN"), cancellable = true)
