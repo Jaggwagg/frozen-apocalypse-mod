@@ -3,6 +3,7 @@ package jaggwagg.frozen_apocalypse.config;
 public class ApocalypseLevel {
     public final Integer APOCALYPSE_LEVEL;
     public final int STARTING_DAY;
+    public final int WORLD_UPDATE_SPEED;
     public final float SUN_SIZE;
     public final boolean DISABLE_MOBS_BURN_DURING_DAYLIGHT;
     public final boolean FREEZE_ENTITIES;
@@ -21,6 +22,7 @@ public class ApocalypseLevel {
     private ApocalypseLevel(Builder builder) {
         this.APOCALYPSE_LEVEL = builder.APOCALYPSE_LEVEL;
         this.STARTING_DAY = builder.STARTING_DAY;
+        this.WORLD_UPDATE_SPEED = builder.WORLD_UPDATE_SPEED;
         this.SUN_SIZE = builder.SUN_SIZE;
         this.DISABLE_MOBS_BURN_DURING_DAYLIGHT = builder.disableMobsBurnDuringDaylight;
         this.FREEZE_ENTITIES = builder.freezeEntities;
@@ -40,6 +42,7 @@ public class ApocalypseLevel {
     public static class Builder {
         private final Integer APOCALYPSE_LEVEL;
         private final int STARTING_DAY;
+        private final int WORLD_UPDATE_SPEED;
         private final float SUN_SIZE;
         private boolean disableMobsBurnDuringDaylight;
         private boolean freezeEntities;
@@ -55,9 +58,10 @@ public class ApocalypseLevel {
         private boolean lavaToObsidian;
         private boolean placeSnowBlock;
 
-        public Builder(Integer apocalypseLevel, int startingDay, float sunSize) {
+        public Builder(Integer apocalypseLevel, int startingDay, int worldUpdateSpeed, float sunSize) {
             this.APOCALYPSE_LEVEL = apocalypseLevel;
             this.STARTING_DAY = startingDay;
+            this.WORLD_UPDATE_SPEED = worldUpdateSpeed;
             this.SUN_SIZE = sunSize;
         }
 

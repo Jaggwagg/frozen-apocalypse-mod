@@ -40,7 +40,7 @@ public abstract class ApocalypseEffectsMixin {
         ChunkPos chunkPos = chunk.getPos();
         BlockPos blockPos = serverWorld.getTopPosition(Heightmap.Type.MOTION_BLOCKING, serverWorld.getRandomPosInChunk(chunkPos.getStartX(), 0, chunkPos.getStartZ(), 15));
         FrozenApocalypse.frozenApocalypseLevel = serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL);
-        int updateSpeed;
+        int updateSpeed = 0;
 
         if (serverWorld.isClient()) {
             return;
@@ -62,10 +62,10 @@ public abstract class ApocalypseEffectsMixin {
         if (!serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL_OVERRIDE).get()) {
             int max = 0;
 
-            for (ApocalypseLevel frozenApocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
-                if (frozenApocalypseLevel.STARTING_DAY <= calculateDay(serverWorld) && frozenApocalypseLevel.STARTING_DAY >= max) {
-                    serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(frozenApocalypseLevel.APOCALYPSE_LEVEL, serverWorld.getServer());
-                    max = frozenApocalypseLevel.STARTING_DAY;
+            for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+                if (apocalypseLevel.STARTING_DAY <= calculateDay(serverWorld) && apocalypseLevel.STARTING_DAY >= max) {
+                    serverWorld.getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_LEVEL).set(apocalypseLevel.APOCALYPSE_LEVEL, serverWorld.getServer());
+                    max = apocalypseLevel.STARTING_DAY;
                 }
             }
         }
@@ -80,10 +80,13 @@ public abstract class ApocalypseEffectsMixin {
             }
         }
 
-        if (serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_WORLD_UPDATE_SPEED) == 0) {
-            updateSpeed = 0;
-        } else {
-            updateSpeed = (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_WORLD_UPDATE_SPEED) * 128) / FrozenApocalypse.frozenApocalypseLevel));
+        if (serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_WORLD_UPDATE_SPEED) > 0) {
+            for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
+                if (apocalypseLevel.APOCALYPSE_LEVEL == FrozenApocalypse.frozenApocalypseLevel) {
+                    updateSpeed = (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_WORLD_UPDATE_SPEED) * 128) / apocalypseLevel.WORLD_UPDATE_SPEED));
+                    break;
+                }
+            }
         }
 
         if (updateSpeed < 1) {
