@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FrozenApocalypseConfig {
-    public static final String CURRENT_VERSION = "1.2.0";
+    public static final String CURRENT_VERSION = "1.1.4";
     public static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/";
     public final String VERSION;
     public final boolean FROZEN_APOCALYPSE_ENABLED;
