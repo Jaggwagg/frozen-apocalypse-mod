@@ -1,9 +1,11 @@
 package jaggwagg.frozen_apocalypse.item;
 
+import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseItems;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
+import net.minecraft.item.Item;
 
 public class ThermalArmorItem extends ArmorItem {
     public ThermalArmorItem(ArmorMaterial material, Type type, Settings settings) {
@@ -11,27 +13,18 @@ public class ThermalArmorItem extends ArmorItem {
     }
 
     public static boolean wearingThermalArmor(LivingEntity livingEntity) {
-        boolean wearingThermalBoots = false;
-        boolean wearingThermalLeggings = false;
-        boolean wearingThermalChestplate = false;
-        boolean wearingThermalHelmet = false;
+        Item thermalBoots = FrozenApocalypseItems.Items.IRON_THERMAL_BOOTS.getItem();
+        Item thermalLeggings = FrozenApocalypseItems.Items.IRON_THERMAL_LEGGINGS.getItem();
+        Item thermalChestplate = FrozenApocalypseItems.Items.IRON_THERMAL_CHESTPLATE.getItem();
+        Item thermalHelmet = FrozenApocalypseItems.Items.IRON_THERMAL_HELMET.getItem();
 
-        if (livingEntity.getEquippedStack(EquipmentSlot.FEET).getItem().getClass() == FrozenApocalypseItems.Armor.IRON_THERMAL_BOOTS.item.getClass()) {
-            wearingThermalBoots = true;
-        }
+        return isWearingItem(livingEntity, EquipmentSlot.FEET, thermalBoots) &&
+                isWearingItem(livingEntity, EquipmentSlot.LEGS, thermalLeggings) &&
+                isWearingItem(livingEntity, EquipmentSlot.CHEST, thermalChestplate) &&
+                isWearingItem(livingEntity, EquipmentSlot.HEAD, thermalHelmet);
+    }
 
-        if (livingEntity.getEquippedStack(EquipmentSlot.LEGS).getItem().getClass() == FrozenApocalypseItems.Armor.IRON_THERMAL_LEGGINGS.item.getClass()) {
-            wearingThermalLeggings = true;
-        }
-
-        if (livingEntity.getEquippedStack(EquipmentSlot.CHEST).getItem().getClass() == FrozenApocalypseItems.Armor.IRON_THERMAL_CHESTPLATE.item.getClass()) {
-            wearingThermalChestplate = true;
-        }
-
-        if (livingEntity.getEquippedStack(EquipmentSlot.HEAD).getItem().getClass() == FrozenApocalypseItems.Armor.IRON_THERMAL_HELMET.item.getClass()) {
-            wearingThermalHelmet = true;
-        }
-
-        return wearingThermalBoots && wearingThermalLeggings && wearingThermalChestplate && wearingThermalHelmet;
+    private static boolean isWearingItem(LivingEntity livingEntity, EquipmentSlot slot, Item item) {
+        return livingEntity.getEquippedStack(slot).getItem() == item;
     }
 }

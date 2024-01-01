@@ -1,63 +1,32 @@
 package jaggwagg.frozen_apocalypse;
 
+import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
 import jaggwagg.frozen_apocalypse.config.FrozenApocalypseConfig;
-import jaggwagg.frozen_apocalypse.entity.effect.FrozenApocalypseStatusEffects;
-import jaggwagg.frozen_apocalypse.item.FrozenApocalypseItems;
-import jaggwagg.frozen_apocalypse.world.FrozenApocalypseGameRules;
+import jaggwagg.frozen_apocalypse.config.FrozenApocalypseConfigManager;
+import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseStatusEffects;
+import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseEvents;
+import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseItems;
+import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseGameRules;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Objects;
+import java.io.File;
 
 public class FrozenApocalypse implements ModInitializer {
     public static final String MOD_ID = "frozen_apocalypse";
-    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
-    public static final FrozenApocalypseConfig CONFIG = FrozenApocalypseConfig.getConfig();
-    public static int frozenApocalypseLevel = 0;
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final String CONFIG_FILE_PATH = System.getProperty("user.dir") + File.separator + "/config/" + MOD_ID + ".json";
+    public static final FrozenApocalypseConfig CONFIG = FrozenApocalypseConfigManager.loadConfig(CONFIG_FILE_PATH);
+    public static ApocalypseLevel frozenApocalypseLevel = CONFIG.getApocalypseLevels().get(0);
 
     @Override
     public void onInitialize() {
-        ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, isAlive) -> {
-            if (frozenApocalypseLevel < 1) {
-                return;
-            }
-
-            if (!newPlayer.getWorld().getGameRules().getBoolean(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION)) {
-                return;
-            }
-
-
-            if (!newPlayer.isCreative() && !newPlayer.isSpectator()) {
-                int length = newPlayer.getWorld().getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION);
-
-                if (length < 1) {
-                    Objects.requireNonNull(newPlayer.getWorld().getServer()).getGameRules().get(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION).set(1, newPlayer.getWorld().getServer());
-                    length = newPlayer.getWorld().getGameRules().getInt(FrozenApocalypseGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION);
-                }
-
-                newPlayer.addStatusEffect(new StatusEffectInstance(FrozenApocalypseStatusEffects.FROST_RESISTANCE, length));
-            }
-        });
-
-        ServerWorldEvents.LOAD.register((server, serverWorld) -> CONFIG.HEAT_BLOCKS.forEach(value -> {
-            Identifier blockId = new Identifier(value.ID);
-
-            if (Registries.BLOCK.containsId(blockId)) {
-                value.setBlock(Registries.BLOCK.get(new Identifier(value.ID)));
-            } else {
-                LOGGER.info(MOD_ID + ": " + value + " does not exist");
-            }
-        }));
-
         FrozenApocalypseGameRules.init();
-        FrozenApocalypseItems.init();
         FrozenApocalypseStatusEffects.init();
-        LOGGER.info(MOD_ID + ": successfully initialized common");
+        FrozenApocalypseItems.init();
+        FrozenApocalypseEvents.init();
+
+        LOGGER.info(MOD_ID + ": Initialized common successfully");
     }
 }
