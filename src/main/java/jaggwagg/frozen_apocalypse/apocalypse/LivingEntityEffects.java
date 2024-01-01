@@ -4,11 +4,9 @@ import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.config.FreezingImmuneEntity;
 import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
 import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseStatusEffects;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 
