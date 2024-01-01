@@ -45,15 +45,7 @@ public class FrozenApocalypseConfigDeserializer implements JsonDeserializer<Froz
                 }
 
                 if (fieldValue.isJsonPrimitive()) {
-                    JsonPrimitive jsonPrimitive = fieldValue.getAsJsonPrimitive();
-
-                    if (field.getType().equals(boolean.class) && !jsonPrimitive.isBoolean()) {
-                        throw new JsonParseException("Invalid boolean value for field: " + field.getName());
-                    }
-
-                    if (field.getType().equals(int.class) && !jsonPrimitive.isNumber()) {
-                        throw new JsonParseException("Invalid number value for field: " + field.getName());
-                    }
+                    JsonPrimitive jsonPrimitive = getJsonPrimitive(field, fieldValue);
 
                     if (field.getType().equals(String.class) && !jsonPrimitive.isString() || jsonPrimitive.getAsString().isEmpty()) {
                         throw new JsonParseException("Invalid string value for field: " + field.getName());
@@ -96,6 +88,20 @@ public class FrozenApocalypseConfigDeserializer implements JsonDeserializer<Froz
         }
     }
 
+    private static JsonPrimitive getJsonPrimitive(Field field, JsonElement fieldValue) {
+        JsonPrimitive jsonPrimitive = fieldValue.getAsJsonPrimitive();
+
+        if (field.getType().equals(boolean.class) && !jsonPrimitive.isBoolean()) {
+            throw new JsonParseException("Invalid boolean value for field: " + field.getName());
+        }
+
+        if (field.getType().equals(int.class) && !jsonPrimitive.isNumber()) {
+            throw new JsonParseException("Invalid number value for field: " + field.getName());
+        }
+
+        return jsonPrimitive;
+    }
+
     private void setFieldAccessibleAndSetValue(Field field, Object target, Object value) throws IllegalAccessException {
         field.setAccessible(true);
         field.set(target, value);
@@ -103,8 +109,15 @@ public class FrozenApocalypseConfigDeserializer implements JsonDeserializer<Froz
 
     private void checkMissingOrUnknownFields(JsonObject jsonObject, Set<Field> requiredFields) {
         Set<String> jsonObjectKeyNames = new HashSet<>(jsonObject.keySet());
-        Set<String> missingOrUnknownFieldNames = requiredFields.stream().map(Field::getName).collect(Collectors.toSet());
-        missingOrUnknownFieldNames.removeAll(jsonObjectKeyNames);
+        Set<String> requiredFieldNames = requiredFields.stream().map(Field::getName).collect(Collectors.toSet());
+        Set<String> missingFieldNames = new HashSet<>(requiredFieldNames);
+        Set<String> unknownFieldNames = new HashSet<>(jsonObjectKeyNames);
+        Set<String> missingOrUnknownFieldNames = new HashSet<>();
+
+        missingFieldNames.removeAll(jsonObjectKeyNames);
+        unknownFieldNames.removeAll(requiredFieldNames);
+        missingOrUnknownFieldNames.addAll(missingFieldNames);
+        missingOrUnknownFieldNames.addAll(unknownFieldNames);
 
         if (!missingOrUnknownFieldNames.isEmpty()) {
             throw new JsonParseException("Missing or unknown field(s): " + missingOrUnknownFieldNames);
