@@ -30,9 +30,6 @@ public final class WorldEffects {
                 FrozenApocalypse.frozenApocalypseLevel = apocalypseLevel;
             }
         }
-
-        /* OLD CODE BELOW */
-        //FrozenApocalypse.frozenApocalypseLevel = Math.max(0, serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.IntegerGameRules.APOCALYPSE_LEVEL.getKey()));
     }
 
     public static void updateFrozenApocalypseLevel(ServerWorld serverWorld) {
