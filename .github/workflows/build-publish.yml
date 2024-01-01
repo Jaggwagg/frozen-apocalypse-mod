@@ -1,0 +1,39 @@
+name: Build and publish on GitHub, Modrinth, and CurseForge
+
+on: [ workflow_dispatch ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: 17
+
+      - name: Make Gradle Wrapper Executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew clean build
+
+      - name: Publish (GitHub/Modrinth/CurseForge)
+        uses: Kir-Antipov/mc-publish@v3.2
+        with:
+          github-token: "${{secrets.GITHUB_TOKEN}}"
+
+          modrinth-id: lP4Oae7B
+          modrinth-token: "${{secrets.MODRINTH_TOKEN}}"
+
+          curseforge-id: 815733
+          curseforge-token: "${{secrets.CURSEFORGE_TOKEN}}"
