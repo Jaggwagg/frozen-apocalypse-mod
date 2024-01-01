@@ -29,7 +29,7 @@ public abstract class MobEntityMixin {
     @Inject(method = "isAffectedByDaylight", at = @At("HEAD"), cancellable = true)
     private void isAffectedByDaylight(CallbackInfoReturnable<Boolean> cir) {
         if (FrozenApocalypse.CONFIG.isFrozenApocalypseEnabled()) {
-            if (FrozenApocalypse.frozenApocalypseLevel.canMobsSurviveDaylight()) {
+            if (FrozenApocalypse.apocalypseLevel.canMobsSurviveDaylight()) {
                 cir.setReturnValue(false);
             }
         }

@@ -14,8 +14,8 @@ public class SpawnEffects {
         }
 
         if (spawnReason.equals(SpawnReason.NATURAL) || spawnReason.equals(SpawnReason.CHUNK_GENERATION)) {
-            if (FrozenApocalypse.frozenApocalypseLevel.canFreezeEntities()) {
-                return pos.getY() > FrozenApocalypse.frozenApocalypseLevel.getFreezingYLevel();
+            if (FrozenApocalypse.apocalypseLevel.canFreezeEntities()) {
+                return pos.getY() > FrozenApocalypse.apocalypseLevel.getFreezingYLevel();
             }
         }
 

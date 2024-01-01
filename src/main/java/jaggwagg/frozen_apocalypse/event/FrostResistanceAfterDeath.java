@@ -14,7 +14,7 @@ public class FrostResistanceAfterDeath implements ServerPlayerEvents.AfterRespaw
 
     @Override
     public void afterRespawn(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive) {
-        if (FrozenApocalypse.frozenApocalypseLevel.getApocalypseLevel() < MINIMUM_FROZEN_APOCALYPSE_LEVEL) {
+        if (FrozenApocalypse.apocalypseLevel.getApocalypseLevel() < MINIMUM_FROZEN_APOCALYPSE_LEVEL) {
             return;
         }
 

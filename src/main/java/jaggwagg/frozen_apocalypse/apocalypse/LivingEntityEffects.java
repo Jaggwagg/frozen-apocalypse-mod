@@ -16,7 +16,7 @@ public class LivingEntityEffects {
     public static boolean isNearHeatSource(World world, LivingEntity livingEntity) {
         int livingEntityBlockPosLightLevel = world.getLightLevel(LightType.BLOCK, livingEntity.getBlockPos());
 
-        return livingEntityBlockPosLightLevel > FrozenApocalypse.frozenApocalypseLevel.getApocalypseLevel();
+        return livingEntityBlockPosLightLevel > FrozenApocalypse.apocalypseLevel.getApocalypseLevel();
     }
 
     public static boolean shouldSkipFreezingChecks(World world, LivingEntity livingEntity) {

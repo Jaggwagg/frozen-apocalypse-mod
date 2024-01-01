@@ -18,7 +18,7 @@ public class FrozenApocalypse implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final String CONFIG_FILE_PATH = System.getProperty("user.dir") + File.separator + "/config/" + MOD_ID + ".json";
     public static final FrozenApocalypseConfig CONFIG = FrozenApocalypseConfigManager.loadConfig(CONFIG_FILE_PATH);
-    public static ApocalypseLevel frozenApocalypseLevel = CONFIG.getApocalypseLevels().get(0);
+    public static ApocalypseLevel apocalypseLevel = CONFIG.getApocalypseLevels().get(0);
 
     @Override
     public void onInitialize() {

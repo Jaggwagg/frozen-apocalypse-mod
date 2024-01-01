@@ -27,7 +27,7 @@ public final class WorldEffects {
     public static void initializeFrozenApocalypseLevel(ServerWorld serverWorld) {
         for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.getApocalypseLevels()) {
             if (apocalypseLevel.getApocalypseLevel() == Math.max(0, serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.IntegerGameRules.APOCALYPSE_LEVEL.getKey()))) {
-                FrozenApocalypse.frozenApocalypseLevel = apocalypseLevel;
+                FrozenApocalypse.apocalypseLevel = apocalypseLevel;
             }
         }
     }
@@ -47,7 +47,7 @@ public final class WorldEffects {
 
     public static void sendFrozenApocalypseLevelToPlayers(ServerWorld serverWorld) {
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeVarInt(FrozenApocalypse.frozenApocalypseLevel.getApocalypseLevel());
+        buf.writeVarInt(FrozenApocalypse.apocalypseLevel.getApocalypseLevel());
 
         serverWorld.getPlayers().forEach(player -> {
             if (ServerPlayNetworking.canSend(player, FrozenApocalypseNetwork.FROZEN_APOCALYPSE_LEVEL_ID)) {
@@ -57,18 +57,18 @@ public final class WorldEffects {
     }
 
     public static int calculateUpdateSpeed(ServerWorld serverWorld) {
-        return (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.IntegerGameRules.WORLD_UPDATE_SPEED.getKey()) * 128) / FrozenApocalypse.frozenApocalypseLevel.getWorldUpdateSpeed()));
+        return (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.IntegerGameRules.WORLD_UPDATE_SPEED.getKey()) * 128) / FrozenApocalypse.apocalypseLevel.getWorldUpdateSpeed()));
     }
 
     public static void applyApocalypseEffects(ServerWorld serverWorld, BlockPos blockPos) {
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.frozenApocalypseLevel.canLeavesDecay(), WorldEffects::setLeafDecay);
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.frozenApocalypseLevel.canGrassTurnToPodzol(), WorldEffects::setPodzol);
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.frozenApocalypseLevel.canWaterTurnToIce(), WorldEffects::setIce);
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.frozenApocalypseLevel.canPlaceSnow(), WorldEffects::setSnow);
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.frozenApocalypseLevel.canIceTurnToPackedIce(), WorldEffects::setPackedIce);
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.frozenApocalypseLevel.canLavaTurnToObsidian(), WorldEffects::setObsidian);
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.frozenApocalypseLevel.canPlaceSnowBlock(), WorldEffects::setSnowBlock);
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.frozenApocalypseLevel.isWeatherDisabled(), (serverWorld1, blockPos1) -> {
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canLeavesDecay(), WorldEffects::setLeafDecay);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canGrassTurnToPodzol(), WorldEffects::setPodzol);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canWaterTurnToIce(), WorldEffects::setIce);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canPlaceSnow(), WorldEffects::setSnow);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canIceTurnToPackedIce(), WorldEffects::setPackedIce);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canLavaTurnToObsidian(), WorldEffects::setObsidian);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canPlaceSnowBlock(), WorldEffects::setSnowBlock);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.isWeatherDisabled(), (serverWorld1, blockPos1) -> {
             if (serverWorld.isRaining() || serverWorld.isThundering()) {
                 serverWorld.setWeather(99999999, 0, false, false);
             }
