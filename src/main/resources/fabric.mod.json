@@ -3,7 +3,7 @@
   "id": "frozen_apocalypse",
   "version": "${version}",
   "name": "Frozen Apocalypse",
-  "description": "A mod which turns your Minecraft world into a frozen wasteland! Warning! This will destroy your world! Make backups!",
+  "description": "A mod which turns your Minecraft world into a frozen wasteland!\nWarning! This will destroy your world! Make backups!",
   "authors": [
     "Jaggwagg"
   ],
@@ -31,7 +31,7 @@
     }
   ],
   "depends": {
-    "fabricloader": ">=0.14.21",
+    "fabricloader": ">=0.15.3",
     "minecraft": "~1.20.1",
     "java": ">=17",
     "fabric-api": "*"

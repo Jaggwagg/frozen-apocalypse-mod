@@ -1,12 +1,13 @@
 {
   "required": true,
-  "package": "jaggwagg.frozen_apocalypse.mixin",
+  "package": "jaggwagg.frozen_apocalypse.mixin.client",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "ClientWorldMixin",
-    "WorldRendererMixin"
+    "render.BackgroundRendererMixin",
+    "render.WorldRendererMixin",
+    "world.ClientWorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+	}
 }

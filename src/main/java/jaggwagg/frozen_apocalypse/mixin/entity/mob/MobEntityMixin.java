@@ -1,8 +1,7 @@
-package jaggwagg.frozen_apocalypse.mixin;
+package jaggwagg.frozen_apocalypse.mixin.entity.mob;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
-import jaggwagg.frozen_apocalypse.entity.FrozenApocalypseSpawningOverride;
+import jaggwagg.frozen_apocalypse.apocalypse.SpawnEffects;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
@@ -16,31 +15,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MobEntity.class)
 public abstract class MobEntityMixin {
-    @Inject(method = "isAffectedByDaylight", at = @At("HEAD"), cancellable = true)
-    private void isAffectedByDaylight(CallbackInfoReturnable<Boolean> cir) {
-        if (!FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_ENABLED) {
-            return;
-        }
-
-        for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.FROZEN_APOCALYPSE_LEVELS) {
-            if (FrozenApocalypse.frozenApocalypseLevel == apocalypseLevel.APOCALYPSE_LEVEL) {
-                if (!apocalypseLevel.DISABLE_MOBS_BURN_DURING_DAYLIGHT) {
-                    return;
-                }
-            }
-        }
-
-        cir.setReturnValue(false);
-    }
-
     @Inject(method = "canMobSpawn", at = @At("RETURN"), cancellable = true)
     private static void canMobSpawn(EntityType<? extends MobEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
         if (type.equals(EntityType.ZOMBIE) || type.equals(EntityType.SKELETON) || type.equals(EntityType.STRAY)) {
             return;
         }
 
-        if (FrozenApocalypseSpawningOverride.canMobNotSpawn(world, spawnReason, pos)) {
+        if (SpawnEffects.canMobNotSpawn(world, spawnReason, pos)) {
             cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(method = "isAffectedByDaylight", at = @At("HEAD"), cancellable = true)
+    private void isAffectedByDaylight(CallbackInfoReturnable<Boolean> cir) {
+        if (FrozenApocalypse.CONFIG.isFrozenApocalypseEnabled()) {
+            if (FrozenApocalypse.frozenApocalypseLevel.canMobsSurviveDaylight()) {
+                cir.setReturnValue(false);
+            }
         }
     }
 }

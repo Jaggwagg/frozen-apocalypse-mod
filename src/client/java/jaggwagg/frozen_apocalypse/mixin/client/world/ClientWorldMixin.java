@@ -1,7 +1,7 @@
-package jaggwagg.frozen_apocalypse.mixin;
+package jaggwagg.frozen_apocalypse.mixin.client.world;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypseClient;
-import jaggwagg.frozen_apocalypse.network.FrozenApocalypseNetworking;
+import jaggwagg.frozen_apocalypse.network.FrozenApocalypseNetwork;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -18,8 +18,8 @@ import java.util.function.BooleanSupplier;
 public class ClientWorldMixin {
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(BooleanSupplier shouldKeepTicking, CallbackInfo ci) {
-        ClientPlayNetworking.registerGlobalReceiver(FrozenApocalypseNetworking.FROZEN_APOCALYPSE_LEVEL_ID, (client, handler, buf, responseSender) -> {
-            int apocalypseLevel = buf.readInt();
+        ClientPlayNetworking.registerGlobalReceiver(FrozenApocalypseNetwork.FROZEN_APOCALYPSE_LEVEL_ID, (client, handler, buf, responseSender) -> {
+            int apocalypseLevel = buf.readVarInt();
 
             client.execute(() -> FrozenApocalypseClient.frozenApocalypseLevelClient = apocalypseLevel);
         });

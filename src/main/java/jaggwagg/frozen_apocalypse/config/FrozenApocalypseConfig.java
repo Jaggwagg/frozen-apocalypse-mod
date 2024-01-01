@@ -1,120 +1,82 @@
 package jaggwagg.frozen_apocalypse.config;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.registry.Registries;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FrozenApocalypseConfig {
-    public static final String CURRENT_VERSION = "1.1.4";
-    public static final String CONFIG_PATH = System.getProperty("user.dir") + File.separator + "/config/";
-    public final String VERSION;
-    public final boolean FROZEN_APOCALYPSE_ENABLED;
-    public final boolean ALL_BIOMES_CAN_SNOW_ENABLED;
-    public final boolean SUN_SIZE_CHANGES_ENABLED;
-    public final ArrayList<ApocalypseLevel> FROZEN_APOCALYPSE_LEVELS;
-    public final ArrayList<HeatBlock> HEAT_BLOCKS;
+    private final boolean isFrozenApocalypseEnabled;
+    private final boolean isSunSizeChangesEnabled;
+    private final long heatSourceCheckDelay;
+    private final List<AffectedDimension> affectedDimensions;
+    private final List<FreezingImmuneEntity> freezingImmuneEntities;
+    private final List<ApocalypseLevel> apocalypseLevels;
 
     public FrozenApocalypseConfig() {
-        this.VERSION = CURRENT_VERSION;
-        this.FROZEN_APOCALYPSE_ENABLED = true;
-        this.ALL_BIOMES_CAN_SNOW_ENABLED = true;
-        this.SUN_SIZE_CHANGES_ENABLED = true;
-        this.FROZEN_APOCALYPSE_LEVELS = new ArrayList<>();
-        this.HEAT_BLOCKS = new ArrayList<>();
+        this.isFrozenApocalypseEnabled = true;
+        this.isSunSizeChangesEnabled = true;
+        this.heatSourceCheckDelay = 20L;
+        this.affectedDimensions = new ArrayList<>();
+        this.freezingImmuneEntities = new ArrayList<>();
+        this.apocalypseLevels = new ArrayList<>();
 
-        ArrayList<Block> heatBlocks = new ArrayList<>(List.of(
-                Blocks.BEACON, Blocks.CAMPFIRE, Blocks.CONDUIT, Blocks.END_ROD, Blocks.FIRE, Blocks.OCHRE_FROGLIGHT, Blocks.PEARLESCENT_FROGLIGHT, Blocks.VERDANT_FROGLIGHT,
-                Blocks.GLOWSTONE, Blocks.JACK_O_LANTERN, Blocks.LANTERN, Blocks.LAVA, Blocks.LAVA_CAULDRON, Blocks.MAGMA_BLOCK, Blocks.REDSTONE_TORCH, Blocks.SEA_LANTERN,
-                Blocks.SHROOMLIGHT, Blocks.SOUL_CAMPFIRE, Blocks.SOUL_LANTERN, Blocks.SOUL_TORCH, Blocks.TORCH, Blocks.WALL_TORCH, Blocks.SOUL_WALL_TORCH, Blocks.REDSTONE_WALL_TORCH
+        addDefaultAffectedDimensions();
+        addDefaultFreezingImmuneEntities();
+        addDefaultApocalypseLevels();
+    }
+
+    private void addDefaultAffectedDimensions() {
+        this.affectedDimensions.add(new AffectedDimension("minecraft:overworld"));
+    }
+
+    private void addDefaultFreezingImmuneEntities() {
+        this.freezingImmuneEntities.addAll(List.of(
+                new FreezingImmuneEntity("minecraft:ender_dragon"),
+                new FreezingImmuneEntity("minecraft:polar_bear"),
+                new FreezingImmuneEntity("minecraft:skeleton"),
+                new FreezingImmuneEntity("minecraft:stray"),
+                new FreezingImmuneEntity("minecraft:warden"),
+                new FreezingImmuneEntity("minecraft:wither"),
+                new FreezingImmuneEntity("minecraft:wither_skeleton"),
+                new FreezingImmuneEntity("minecraft:zombie")
         ));
+    }
 
-        heatBlocks.forEach(value -> this.HEAT_BLOCKS.add(new HeatBlock(Registries.BLOCK.getId(value).toString(), value.getDefaultState().getLuminance(), Blocks.GLOWSTONE)));
-
-        this.FROZEN_APOCALYPSE_LEVELS.addAll(List.of(
+    private void addDefaultApocalypseLevels() {
+        this.apocalypseLevels.addAll(List.of(
                 new ApocalypseLevel.Builder(0, 0, 0, 1.0f).build(),
-                new ApocalypseLevel.Builder(1, 1, 1, 0.9f).freezeEntities(150, 32, 1.0f).leafDecay().grassToPodzol().build(),
-                new ApocalypseLevel.Builder(2, 2, 2, 0.8f).disableMobsBurnDuringDaylight().freezeEntities(112, 32, 1.0f).leafDecay().grassToPodzol().build(),
-                new ApocalypseLevel.Builder(3, 3, 3, 0.7f).allBiomesCanSnow().disableMobsBurnDuringDaylight().freezeEntities(84, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().build(),
-                new ApocalypseLevel.Builder(4, 4, 4, 0.6f).allBiomesCanSnow().disableMobsBurnDuringDaylight().freezeEntities(62, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().build(),
-                new ApocalypseLevel.Builder(5, 5, 5, 0.5f).allBiomesCanSnow().disableMobsBurnDuringDaylight().freezeEntities(45, 32, 1.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().build(),
-                new ApocalypseLevel.Builder(6, 6, 6, 0.4f).allBiomesCanSnow().disableMobsBurnDuringDaylight().freezeEntities(30, 32, 1.5f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().build(),
-                new ApocalypseLevel.Builder(7, 7, 7, 0.3f).allBiomesCanSnow().disableMobsBurnDuringDaylight().freezeEntities(20, 16, 1.5f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().build(),
-                new ApocalypseLevel.Builder(8, 8, 8, 0.3f).allBiomesCanSnow().disableMobsBurnDuringDaylight().freezeEntities(20, 16, 2.0f).leafDecay().grassToPodzol().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().disableWeather().build()
+                new ApocalypseLevel.Builder(1, 1, 1, 0.9f).freezeEntities(150, 1, 32, 1.0f).leafDecay().grassToPodzol().build(),
+                new ApocalypseLevel.Builder(2, 2, 1, 0.8f).freezeEntities(112, 2, 32, 1.0f).leafDecay().grassToPodzol().build(),
+                new ApocalypseLevel.Builder(3, 3, 2, 0.7f).freezeEntities(84, 3, 32, 1.0f).leafDecay().grassToPodzol().mobsCanSurviveDaylight().allBiomesSnow().waterToIce().placeSnow().build(),
+                new ApocalypseLevel.Builder(4, 4, 2, 0.6f).freezeEntities(62, 4, 32, 1.0f).leafDecay().grassToPodzol().mobsCanSurviveDaylight().allBiomesSnow().waterToIce().placeSnow().build(),
+                new ApocalypseLevel.Builder(5, 5, 3, 0.5f).freezeEntities(45, 5, 32, 1.0f).leafDecay().grassToPodzol().mobsCanSurviveDaylight().allBiomesSnow().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().build(),
+                new ApocalypseLevel.Builder(6, 6, 3, 0.4f).freezeEntities(30, 6, 32, 1.5f).leafDecay().grassToPodzol().mobsCanSurviveDaylight().allBiomesSnow().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().build(),
+                new ApocalypseLevel.Builder(7, 7, 4, 0.3f).freezeEntities(20, 7, 16, 1.5f).leafDecay().grassToPodzol().mobsCanSurviveDaylight().allBiomesSnow().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().build(),
+                new ApocalypseLevel.Builder(8, 8, 4, 0.2f).freezeEntities(20, 8, 16, 2.0f).leafDecay().grassToPodzol().mobsCanSurviveDaylight().allBiomesSnow().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().build(),
+                new ApocalypseLevel.Builder(9, 9, 5, 0.1f).freezeEntities(20, 9, 16, 2.5f).leafDecay().grassToPodzol().mobsCanSurviveDaylight().allBiomesSnow().waterToIce().placeSnow().iceToPackedIce().lavaToObsidian().placeSnowBlock().weatherDisabled().build()
         ));
     }
 
-    private static FrozenApocalypseConfig createNewDefaultConfig(File configFile, Gson gson) throws IOException {
-        FileWriter writer = new FileWriter(configFile);
-        FrozenApocalypseConfig config = new FrozenApocalypseConfig();
-
-        writer.write(gson.toJson(config));
-        writer.close();
-
-        return config;
+    public boolean isFrozenApocalypseEnabled() {
+        return this.isFrozenApocalypseEnabled;
     }
 
-    public static FrozenApocalypseConfig getConfig() {
-        FrozenApocalypseConfig config = new FrozenApocalypseConfig();
-        Gson gson = new GsonBuilder()
-                .disableHtmlEscaping()
-                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                .setPrettyPrinting()
-                .serializeNulls()
-                .create();
+    public boolean isSunSizeChangesEnabled() {
+        return this.isSunSizeChangesEnabled;
+    }
 
-        if (new File(CONFIG_PATH).mkdir()) {
-            FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": created config directory because it could not be found");
-        }
+    public long getHeatSourceCheckDelay() {
+        return this.heatSourceCheckDelay;
+    }
 
-        File configFile = new File(CONFIG_PATH + FrozenApocalypse.MOD_ID + ".json");
+    public List<AffectedDimension> getAffectedDimensions() {
+        return this.affectedDimensions;
+    }
 
-        try {
-            if (configFile.createNewFile()) {
-                config = createNewDefaultConfig(configFile, gson);
-                FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": created a new config file because it could not be found");
-            } else {
-                boolean makeBackup = false;
-                String json = Files.readString(Path.of(CONFIG_PATH + FrozenApocalypse.MOD_ID + ".json"));
+    public List<FreezingImmuneEntity> getFreezingImmuneEntities() {
+        return this.freezingImmuneEntities;
+    }
 
-                try {
-                    config = gson.fromJson(json, FrozenApocalypseConfig.class);
-                } catch (JsonSyntaxException e) {
-                    makeBackup = true;
-                }
-
-                if (config == null || !config.VERSION.equals(CURRENT_VERSION)) {
-                    makeBackup = true;
-                }
-
-                if (makeBackup) {
-                    File configFileBackup = new File(CONFIG_PATH + FrozenApocalypse.MOD_ID + "_backup.json");
-                    Files.copy(configFile.toPath(), configFileBackup.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": invalid config file, overwriting with default config and made a backup of current file");
-
-                    config = createNewDefaultConfig(configFile, gson);
-                }
-            }
-
-            FrozenApocalypse.LOGGER.info(FrozenApocalypse.MOD_ID + ": successfully read config file");
-        } catch (IOException e) {
-            FrozenApocalypse.LOGGER.error(FrozenApocalypse.MOD_ID + ": could not read or create config file : " + e.getMessage());
-            FrozenApocalypse.LOGGER.error(FrozenApocalypse.MOD_ID + ": this might cause unintended side effects");
-        }
-
-        return config;
+    public List<ApocalypseLevel> getApocalypseLevels() {
+        return this.apocalypseLevels;
     }
 }

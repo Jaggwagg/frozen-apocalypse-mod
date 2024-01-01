@@ -4,7 +4,7 @@
   "gamerule.frozenApocalypseDeathProtection": "Death protection",
   "gamerule.frozenApocalypseDeathProtectionDuration": "Death protection duration",
   "gamerule.frozenApocalypseLevel": "Apocalypse level",
-  "gamerule.frozenApocalypseLevelOverride": "Apocalypse level override",
+  "gamerule.frozenApocalypseLevelUpdatesEachDay": "Apocalypse level updates each day",
   "gamerule.frozenApocalypseMaxLevel": "Apocalypse maximum level",
   "gamerule.frozenApocalypseWorldUpdateSpeed": "Apocalypse world update speed",
   "group.frozen_apocalypse.general": "Frozen Apocalypse",
