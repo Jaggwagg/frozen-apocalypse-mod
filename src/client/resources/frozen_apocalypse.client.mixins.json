@@ -4,8 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "render.BackgroundRendererMixin",
-    "render.WorldRendererMixin",
-    "world.ClientWorldMixin"
+    "render.WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
