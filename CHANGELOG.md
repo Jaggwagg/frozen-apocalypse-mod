@@ -3,19 +3,23 @@
 ### <ins>v1.2.0 - Unreleased</ins>
 
 ##### Added
-- Added a 9th apocalypse stage,
+- Added a 9th apocalypse stage
 - Added config option for minimum light level to each apocalypse level, further levels increase the minimum light level
 - Added config option for freezing immune entities
+- Added config option for determining affected dimensions
 
 ##### Changed
 - Almost everything, major rewrite
 - All blocks that produce light are now considered heat sources
+- Config file warns the user via logs and makes a backup when there are syntax errors, type mismatches, and missing/unknown fields
+- Config file now can back up into different file names
 
 ##### Fixed
 - Apocalypse now lags the world even less due to multiple optimizations and feature removal
 
 ##### Removed
 - Removed the ability to add custom light source check (contributed to significant performance issues)
+- Removed heat source check delay as it doesn't improve performance
 
 ### <ins>v1.1.4 - Released 2023-12-23</ins>
 
@@ -89,7 +93,7 @@
 ##### Removed
 - Simplified Chinese is no longer supported due to the renaming of items and effects
 
-#### <ins>v1.0.1 - Released 2023-03-15</ins>
+### <ins>v1.0.1 - Released 2023-03-15</ins>
 
 ##### Added
 - Simplified Chinese support (thanks @Kasualix!)
