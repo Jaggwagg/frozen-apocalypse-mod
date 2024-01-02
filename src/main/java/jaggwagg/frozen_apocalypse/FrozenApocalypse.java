@@ -3,10 +3,7 @@ package jaggwagg.frozen_apocalypse;
 import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
 import jaggwagg.frozen_apocalypse.config.FrozenApocalypseConfig;
 import jaggwagg.frozen_apocalypse.config.FrozenApocalypseConfigManager;
-import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseStatusEffects;
-import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseEvents;
-import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseItems;
-import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseGameRules;
+import jaggwagg.frozen_apocalypse.registry.*;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +19,11 @@ public class FrozenApocalypse implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        FrozenApocalypseEvents.init();
         FrozenApocalypseGameRules.init();
         FrozenApocalypseStatusEffects.init();
         FrozenApocalypseItems.init();
-        FrozenApocalypseEvents.init();
+        FrozenApocalypseBlocks.init();
 
         LOGGER.info(MOD_ID + ": Initialized common successfully");
     }
