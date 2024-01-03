@@ -11,6 +11,26 @@ import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 
 public class LivingEntityEffects {
+    public static void freezeLivingEntity(World world, LivingEntity livingEntity) {
+        if (!LivingEntityEffects.isNearHeatSource(world, livingEntity)) {
+            if (FrozenApocalypse.apocalypseLevel.canFreezeEntities() && livingEntity.getY() >= FrozenApocalypse.apocalypseLevel.getFreezingYLevel()) {
+                if (!livingEntity.inPowderSnow) {
+                    livingEntity.setInPowderSnow(true);
+                }
+
+                if (!world.isClient) {
+                    livingEntity.setOnFire(false);
+                }
+
+                if (FrozenApocalypse.apocalypseLevel.getFreezeDamageDelay() > 0 && FrozenApocalypse.apocalypseLevel.getFreezeDamage() > 0) {
+                    if (world.getRandom().nextInt(FrozenApocalypse.apocalypseLevel.getFreezeDamageDelay() + 1) == 1) {
+                        livingEntity.damage(world.getDamageSources().freeze(), FrozenApocalypse.apocalypseLevel.getFreezeDamage());
+                    }
+                }
+            }
+        }
+    }
+
     public static boolean isNearHeatSource(World world, LivingEntity livingEntity) {
         int livingEntityBlockPosLightLevel = world.getLightLevel(LightType.BLOCK, livingEntity.getBlockPos());
 
