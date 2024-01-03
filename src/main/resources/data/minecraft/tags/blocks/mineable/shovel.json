@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "frozen_apocalypse:dead_grass_block",
+    "frozen_apocalypse:frosted_grass_block",
+    "frozen_apocalypse:permafrost"
+  ]
+}
