@@ -16,4 +16,11 @@ public class BiomeMixin {
             cir.setReturnValue(false);
         }
     }
+
+    @Inject(method = "hasPrecipitation", at = @At("RETURN"), cancellable = true)
+    public void hasPrecipitation(CallbackInfoReturnable<Boolean> cir) {
+        if (FrozenApocalypse.apocalypseLevel.canAllBiomesSnow()) {
+            cir.setReturnValue(true);
+        }
+    }
 }
