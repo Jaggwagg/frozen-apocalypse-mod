@@ -15,7 +15,7 @@ public class FrozenApocalypseStatusEffects {
     public static void init() {
         StringJoiner joiner = new StringJoiner(", ");
 
-        Arrays.stream(StatusEffects.values()).forEach(value -> {
+        Arrays.stream(RegisteredStatusEffects.values()).forEach(value -> {
             registerStatusEffect(value.getStatusEffect(), value.getName());
             joiner.add(value.getName());
         });
@@ -27,13 +27,13 @@ public class FrozenApocalypseStatusEffects {
         Registry.register(Registries.STATUS_EFFECT, new Identifier(FrozenApocalypse.MOD_ID, name), statusEffect);
     }
 
-    public enum StatusEffects {
+    public enum RegisteredStatusEffects {
         FROST_RESISTANCE(new FrostResistanceStatusEffect());
 
         private final String name;
         private final StatusEffect statusEffect;
 
-        <T extends StatusEffect> StatusEffects(T statusEffect) {
+        <T extends StatusEffect> RegisteredStatusEffects(T statusEffect) {
             this.name = this.toString().toLowerCase(Locale.ROOT);
             this.statusEffect = statusEffect;
         }

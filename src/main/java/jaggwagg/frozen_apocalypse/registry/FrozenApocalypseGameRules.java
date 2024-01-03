@@ -21,19 +21,19 @@ public class FrozenApocalypseGameRules {
     public static void init() {
         StringJoiner joiner = new StringJoiner(", ");
 
-        Arrays.stream(BooleanGameRules.values()).forEach(value -> joiner.add(value.getKey().getName()));
-        Arrays.stream(IntegerGameRules.values()).forEach(value -> joiner.add(value.getKey().getName()));
+        Arrays.stream(RegisteredBooleanGameRules.values()).forEach(value -> joiner.add(value.getKey().getName()));
+        Arrays.stream(RegisteredIntegerGameRules.values()).forEach(value -> joiner.add(value.getKey().getName()));
 
         FrozenApocalypse.LOGGER.info(FrozenApocalypse.MOD_ID + ": Initialized game rules: " + joiner);
     }
 
-    public enum BooleanGameRules {
+    public enum RegisteredBooleanGameRules {
         DEATH_PROTECTION("frozenApocalypseDeathProtection", GameRuleFactory.createBooleanRule(true)),
         LEVEL_UPDATES_EACH_DAY("frozenApocalypseLevelUpdatesEachDay", GameRuleFactory.createBooleanRule(true));
 
         private final Key<BooleanRule> key;
 
-        BooleanGameRules(String name, GameRules.Type<BooleanRule> type) {
+        RegisteredBooleanGameRules(String name, GameRules.Type<BooleanRule> type) {
             this.key = GameRuleRegistry.register(name, CATEGORY, type);
         }
 
@@ -42,14 +42,14 @@ public class FrozenApocalypseGameRules {
         }
     }
 
-    public enum IntegerGameRules {
+    public enum RegisteredIntegerGameRules {
         APOCALYPSE_LEVEL("frozenApocalypseLevel", GameRuleFactory.createIntRule(0)),
         DEATH_PROTECTION_DURATION("frozenApocalypseDeathProtectionDuration", GameRuleFactory.createIntRule(2400)),
         WORLD_UPDATE_SPEED("frozenApocalypseWorldUpdateSpeed", GameRuleFactory.createIntRule(3));
 
         private final Key<IntRule> key;
 
-        IntegerGameRules(String name, GameRules.Type<IntRule> type) {
+        RegisteredIntegerGameRules(String name, GameRules.Type<IntRule> type) {
             this.key = GameRuleRegistry.register(name, CATEGORY, type);
         }
 

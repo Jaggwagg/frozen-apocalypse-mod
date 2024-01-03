@@ -13,10 +13,10 @@ public class ThermalArmorItem extends ArmorItem {
     }
 
     public static boolean wearingThermalArmor(LivingEntity livingEntity) {
-        Item thermalBoots = FrozenApocalypseItems.Items.IRON_THERMAL_BOOTS.getItem();
-        Item thermalLeggings = FrozenApocalypseItems.Items.IRON_THERMAL_LEGGINGS.getItem();
-        Item thermalChestplate = FrozenApocalypseItems.Items.IRON_THERMAL_CHESTPLATE.getItem();
-        Item thermalHelmet = FrozenApocalypseItems.Items.IRON_THERMAL_HELMET.getItem();
+        Item thermalBoots = FrozenApocalypseItems.RegisteredItems.IRON_THERMAL_BOOTS.getItem();
+        Item thermalLeggings = FrozenApocalypseItems.RegisteredItems.IRON_THERMAL_LEGGINGS.getItem();
+        Item thermalChestplate = FrozenApocalypseItems.RegisteredItems.IRON_THERMAL_CHESTPLATE.getItem();
+        Item thermalHelmet = FrozenApocalypseItems.RegisteredItems.IRON_THERMAL_HELMET.getItem();
 
         return isWearingItem(livingEntity, EquipmentSlot.FEET, thermalBoots) &&
                 isWearingItem(livingEntity, EquipmentSlot.LEGS, thermalLeggings) &&

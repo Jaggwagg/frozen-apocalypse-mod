@@ -18,21 +18,21 @@ public class FrostResistanceAfterDeath implements ServerPlayerEvents.AfterRespaw
             return;
         }
 
-        if (!newPlayer.getWorld().getGameRules().getBoolean(FrozenApocalypseGameRules.BooleanGameRules.DEATH_PROTECTION.getKey())) {
+        if (!newPlayer.getWorld().getGameRules().getBoolean(FrozenApocalypseGameRules.RegisteredBooleanGameRules.DEATH_PROTECTION.getKey())) {
             return;
         }
 
         if (!newPlayer.isCreative() || !newPlayer.isSpectator()) {
-            int length = newPlayer.getWorld().getGameRules().getInt(FrozenApocalypseGameRules.IntegerGameRules.DEATH_PROTECTION_DURATION.getKey());
+            int length = newPlayer.getWorld().getGameRules().getInt(FrozenApocalypseGameRules.RegisteredIntegerGameRules.DEATH_PROTECTION_DURATION.getKey());
 
             if (length < MINIMUM_DEATH_PROTECTION_DURATION) {
                 ServerWorld serverWorld = newPlayer.getServerWorld();
 
-                serverWorld.getGameRules().get(FrozenApocalypseGameRules.IntegerGameRules.DEATH_PROTECTION_DURATION.getKey()).set(MINIMUM_DEATH_PROTECTION_DURATION, newPlayer.getWorld().getServer());
-                length = newPlayer.getWorld().getGameRules().getInt(FrozenApocalypseGameRules.IntegerGameRules.DEATH_PROTECTION_DURATION.getKey());
+                serverWorld.getGameRules().get(FrozenApocalypseGameRules.RegisteredIntegerGameRules.DEATH_PROTECTION_DURATION.getKey()).set(MINIMUM_DEATH_PROTECTION_DURATION, newPlayer.getWorld().getServer());
+                length = newPlayer.getWorld().getGameRules().getInt(FrozenApocalypseGameRules.RegisteredIntegerGameRules.DEATH_PROTECTION_DURATION.getKey());
             }
 
-            newPlayer.addStatusEffect(new StatusEffectInstance(FrozenApocalypseStatusEffects.StatusEffects.FROST_RESISTANCE.getStatusEffect(), length));
+            newPlayer.addStatusEffect(new StatusEffectInstance(FrozenApocalypseStatusEffects.RegisteredStatusEffects.FROST_RESISTANCE.getStatusEffect(), length));
         }
     }
 }

@@ -26,19 +26,19 @@ public final class WorldEffects {
 
     public static void initializeFrozenApocalypseLevel(ServerWorld serverWorld) {
         for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.getApocalypseLevels()) {
-            if (apocalypseLevel.getApocalypseLevel() == Math.max(0, serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.IntegerGameRules.APOCALYPSE_LEVEL.getKey()))) {
+            if (apocalypseLevel.getApocalypseLevel() == Math.max(0, serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.RegisteredIntegerGameRules.APOCALYPSE_LEVEL.getKey()))) {
                 FrozenApocalypse.apocalypseLevel = apocalypseLevel;
             }
         }
     }
 
     public static void updateFrozenApocalypseLevel(ServerWorld serverWorld) {
-        if (serverWorld.getGameRules().get(FrozenApocalypseGameRules.BooleanGameRules.LEVEL_UPDATES_EACH_DAY.getKey()).get()) {
+        if (serverWorld.getGameRules().get(FrozenApocalypseGameRules.RegisteredBooleanGameRules.LEVEL_UPDATES_EACH_DAY.getKey()).get()) {
             int maxStartingDay = 0;
 
             for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.getApocalypseLevels()) {
                 if (apocalypseLevel.getStartingDay() <= calculateDay(serverWorld) && apocalypseLevel.getStartingDay() >= maxStartingDay) {
-                    serverWorld.getGameRules().get(FrozenApocalypseGameRules.IntegerGameRules.APOCALYPSE_LEVEL.getKey()).set(apocalypseLevel.getApocalypseLevel(), serverWorld.getServer());
+                    serverWorld.getGameRules().get(FrozenApocalypseGameRules.RegisteredIntegerGameRules.APOCALYPSE_LEVEL.getKey()).set(apocalypseLevel.getApocalypseLevel(), serverWorld.getServer());
                     maxStartingDay = apocalypseLevel.getStartingDay();
                 }
             }
@@ -57,7 +57,7 @@ public final class WorldEffects {
     }
 
     public static int calculateUpdateSpeed(ServerWorld serverWorld) {
-        return (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.IntegerGameRules.WORLD_UPDATE_SPEED.getKey()) * 128) / FrozenApocalypse.apocalypseLevel.getWorldUpdateSpeed()));
+        return (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.RegisteredIntegerGameRules.WORLD_UPDATE_SPEED.getKey()) * 128) / FrozenApocalypse.apocalypseLevel.getWorldUpdateSpeed()));
     }
 
     public static void applyApocalypseEffects(ServerWorld serverWorld, BlockPos blockPos) {

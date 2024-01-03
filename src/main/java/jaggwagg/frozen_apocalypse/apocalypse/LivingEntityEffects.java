@@ -26,7 +26,7 @@ public class LivingEntityEffects {
 
     public static boolean isImmuneToFreezing(LivingEntity livingEntity) {
         return !FrozenApocalypse.CONFIG.isFrozenApocalypseEnabled() ||
-                livingEntity.hasStatusEffect(FrozenApocalypseStatusEffects.StatusEffects.FROST_RESISTANCE.getStatusEffect()) ||
+                livingEntity.hasStatusEffect(FrozenApocalypseStatusEffects.RegisteredStatusEffects.FROST_RESISTANCE.getStatusEffect()) ||
                 isCreativeOrSpectator(livingEntity) ||
                 isWearingThermalArmor(livingEntity);
     }
