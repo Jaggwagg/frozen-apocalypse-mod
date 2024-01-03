@@ -1,0 +1,24 @@
+{
+  "variants": {
+    "snowy=false": [
+      {
+        "model": "frozen_apocalypse:block/dead_grass_block"
+      },
+      {
+        "model": "frozen_apocalypse:block/dead_grass_block",
+        "y": 90
+      },
+      {
+        "model": "frozen_apocalypse:block/dead_grass_block",
+        "y": 180
+      },
+      {
+        "model": "frozen_apocalypse:block/dead_grass_block",
+        "y": 270
+      }
+    ],
+    "snowy=true": {
+      "model": "frozen_apocalypse:block/dead_grass_block_snow"
+    }
+  }
+}
