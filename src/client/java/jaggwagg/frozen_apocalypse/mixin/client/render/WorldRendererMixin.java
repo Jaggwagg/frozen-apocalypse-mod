@@ -23,17 +23,11 @@ public abstract class WorldRendererMixin {
         Matrix4f copy = new Matrix4f(in);
         sunMatrixCopy = new Matrix4f(copy);
 
-        if (!FrozenApocalypse.CONFIG.isFrozenApocalypseEnabled()) {
-            return copy;
-        }
-
-        if (!FrozenApocalypse.CONFIG.isSunSizeChangesEnabled()) {
-            return copy;
-        }
-
-        for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.getApocalypseLevels()) {
-            if (FrozenApocalypseClient.frozenApocalypseLevelClient == apocalypseLevel.getApocalypseLevel()) {
-                return copy.scale(apocalypseLevel.getSunSize(), 1.0f, apocalypseLevel.getSunSize());
+        if (FrozenApocalypse.CONFIG.isFrozenApocalypseEnabled() && FrozenApocalypse.CONFIG.isSunSizeChangesEnabled()) {
+            for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.getApocalypseLevels()) {
+                if (FrozenApocalypseClient.frozenApocalypseLevelClient == apocalypseLevel.getApocalypseLevel()) {
+                    return copy.scale(apocalypseLevel.getSunSize(), 1.0f, apocalypseLevel.getSunSize());
+                }
             }
         }
 
@@ -48,6 +42,8 @@ public abstract class WorldRendererMixin {
 
         return copy;
     }
+
+    /* TODO: MIGHT USE THESE TO CHANGE DAY TO NIGHT */
 
     /*
     @ModifyVariable(method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lorg/joml/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V", at = @At(value = "STORE"), ordinal = 1)
