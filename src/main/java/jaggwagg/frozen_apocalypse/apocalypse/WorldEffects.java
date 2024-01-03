@@ -3,6 +3,7 @@ package jaggwagg.frozen_apocalypse.apocalypse;
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
 import jaggwagg.frozen_apocalypse.network.FrozenApocalypseNetwork;
+import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseBlocks;
 import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseGameRules;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -61,18 +62,16 @@ public final class WorldEffects {
     }
 
     public static void applyApocalypseEffects(ServerWorld serverWorld, BlockPos blockPos) {
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canLeavesDecay(), WorldEffects::setLeafDecay);
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canGrassTurnToPodzol(), WorldEffects::setPodzol);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canGrassTurnToFrostedGrass(), WorldEffects::setFrostedGrass);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canWaterTurnToIce(), WorldEffects::setIce);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canPlaceSnow(), WorldEffects::setSnow);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canFrostedGrassTurnToDeadGrass(), WorldEffects::setDeadGrass);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canLeavesTurnToDeadLeaves(), WorldEffects::setDeadLeaves);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canIceTurnToPackedIce(), WorldEffects::setPackedIce);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canLavaTurnToObsidian(), WorldEffects::setObsidian);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canPlaceSnowBlock(), WorldEffects::setSnowBlock);
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.isWeatherDisabled(), (serverWorld1, blockPos1) -> {
-            if (serverWorld.isRaining() || serverWorld.isThundering()) {
-                serverWorld.setWeather(99999999, 0, false, false);
-            }
-        });
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canDeadGrassTurnToPermafrost(), WorldEffects::setPermafrost);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canLeavesDecay(), WorldEffects::setLeafDecay);
     }
 
     private static void applyEffectIfEnabled(ServerWorld serverWorld, BlockPos blockPos, boolean shouldApply, BiConsumer<ServerWorld, BlockPos> effect) {
@@ -81,9 +80,47 @@ public final class WorldEffects {
         }
     }
 
+    private static void setFrostedGrass(ServerWorld serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.GRASS_BLOCK)) {
+            serverWorld.setBlockState(blockPos.down(), FrozenApocalypseBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock().getDefaultState());
+        }
+    }
+
     private static void setIce(ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.WATER)) {
             serverWorld.setBlockState(blockPos.down(), Blocks.ICE.getDefaultState());
+        }
+    }
+
+    private static void setSnow(ServerWorld serverWorld, BlockPos blockPos) {
+        if (!(serverWorld.isRaining() || serverWorld.isThundering())) {
+            return;
+        }
+
+        if (serverWorld.getBlockState(blockPos.down()).contains(FluidBlock.LEVEL)) {
+            return;
+        }
+
+        if (serverWorld.getBlockState(blockPos.down()).contains(LeavesBlock.PERSISTENT)) {
+            return;
+        }
+
+        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.ICE) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.PACKED_ICE) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.AIR)) {
+            return;
+        }
+
+        serverWorld.setBlockState(blockPos, Blocks.SNOW.getDefaultState());
+    }
+
+    private static void setDeadGrass(ServerWorld serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.down()).isOf(FrozenApocalypseBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock())) {
+            serverWorld.setBlockState(blockPos.down(), FrozenApocalypseBlocks.RegisteredBlocks.DEAD_GRASS_BLOCK.getBlock().getDefaultState());
+        }
+    }
+
+    private static void setDeadLeaves(ServerWorld serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.down()).getBlock() instanceof LeavesBlock) {
+            serverWorld.setBlockState(blockPos.down(), FrozenApocalypseBlocks.RegisteredBlocks.DEAD_LEAVES.getBlock().getDefaultState());
         }
     }
 
@@ -102,35 +139,11 @@ public final class WorldEffects {
         }
     }
 
-    private static void setPodzol(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.GRASS_BLOCK)) {
-            serverWorld.setBlockState(blockPos.down(), Blocks.PODZOL.getDefaultState());
-        }
-    }
-
-    private static void setLeafDecay(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).contains(LeavesBlock.PERSISTENT)) {
-            serverWorld.removeBlock(blockPos.down(), true);
-        }
-    }
-
-    private static void setSnow(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).contains(FluidBlock.LEVEL)) {
-            return;
-        }
-
-        if (serverWorld.getBlockState(blockPos.down()).contains(LeavesBlock.PERSISTENT)) {
-            return;
-        }
-
-        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.ICE) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.PACKED_ICE) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.AIR)) {
-            return;
-        }
-
-        serverWorld.setBlockState(blockPos, Blocks.SNOW.getDefaultState());
-    }
-
     private static void setSnowBlock(ServerWorld serverWorld, BlockPos blockPos) {
+        if (!(serverWorld.isRaining() || serverWorld.isThundering())) {
+            return;
+        }
+
         if (serverWorld.getBlockState(blockPos.down()).contains(FluidBlock.LEVEL)) {
             return;
         }
@@ -144,5 +157,17 @@ public final class WorldEffects {
         }
 
         serverWorld.setBlockState(blockPos, Blocks.SNOW_BLOCK.getDefaultState());
+    }
+
+    private static void setPermafrost(ServerWorld serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.down()).isOf(FrozenApocalypseBlocks.RegisteredBlocks.DEAD_GRASS_BLOCK.getBlock())) {
+            serverWorld.setBlockState(blockPos.down(), FrozenApocalypseBlocks.RegisteredBlocks.PERMAFROST.getBlock().getDefaultState());
+        }
+    }
+
+    private static void setLeafDecay(ServerWorld serverWorld, BlockPos blockPos) {
+        if (serverWorld.getBlockState(blockPos.down()).contains(LeavesBlock.PERSISTENT)) {
+            serverWorld.removeBlock(blockPos.down(), true);
+        }
     }
 }

@@ -3,13 +3,13 @@
   "package": "jaggwagg.frozen_apocalypse.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "entity.passive.AnimalEntityMixin",
-    "world.biome.BiomeMixin",
+    "block.PowderSnowBlockMixin",
     "entity.LivingEntityMixin",
     "entity.mob.MobEntityMixin",
-    "block.PowderSnowBlockMixin",
+    "entity.mob.WaterCreatureEntityMixin",
+    "entity.passive.AnimalEntityMixin",
     "server.world.ServerWorldMixin",
-    "entity.mob.WaterCreatureEntityMixin"
+    "world.biome.BiomeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

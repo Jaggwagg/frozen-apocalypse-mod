@@ -12,14 +12,16 @@ public class ApocalypseLevel {
     private final int minimumHeatSourceDistance;
     private final int freezeDamageDelay;
     private final float freezeDamage;
-    private final boolean weatherDisabled;
-    private final boolean leafDecay;
-    private final boolean grassToPodzol;
+    private final boolean leavesDecay;
+    private final boolean grassToFrostedGrass;
     private final boolean waterToIce;
     private final boolean placeSnow;
+    private final boolean frostedGrassToDeadGrass;
+    private final boolean leavesToDeadLeaves;
     private final boolean iceToPackedIce;
     private final boolean lavaToObsidian;
     private final boolean placeSnowBlock;
+    private final boolean deadGrassToPermafrost;
 
     private ApocalypseLevel(Builder builder) {
         this.apocalypseLevel = builder.apocalypseLevel;
@@ -33,14 +35,16 @@ public class ApocalypseLevel {
         this.freezeDamage = builder.freezeDamage;
         this.freezeDamageDelay = builder.freezeDamageDelay;
         this.minimumHeatSourceDistance = builder.minimumHeatSourceDistance;
-        this.weatherDisabled = builder.weatherDisabled;
-        this.leafDecay = builder.leafDecay;
-        this.grassToPodzol = builder.grassToPodzol;
+        this.leavesDecay = builder.leavesDecay;
+        this.grassToFrostedGrass = builder.grassToFrostedGrass;
         this.waterToIce = builder.waterToIce;
         this.placeSnow = builder.placeSnow;
+        this.frostedGrassToDeadGrass = builder.frostedGrassToDeadGrass;
+        this.leavesToDeadLeaves = builder.leavesToDeadLeaves;
         this.iceToPackedIce = builder.iceToPackedIce;
         this.lavaToObsidian = builder.lavaToObsidian;
         this.placeSnowBlock = builder.placeSnowBlock;
+        this.deadGrassToPermafrost = builder.deadGrassToPermafrost;
     }
 
     public static class Builder {
@@ -55,14 +59,16 @@ public class ApocalypseLevel {
         private float freezeDamage;
         private int freezeDamageDelay;
         private int minimumHeatSourceDistance;
-        private boolean weatherDisabled;
-        private boolean leafDecay;
-        private boolean grassToPodzol;
+        private boolean leavesDecay;
+        private boolean grassToFrostedGrass;
         private boolean waterToIce;
         private boolean placeSnow;
+        private boolean frostedGrassToDeadGrass;
+        private boolean leavesToDeadLeaves;
         private boolean iceToPackedIce;
         private boolean lavaToObsidian;
         private boolean placeSnowBlock;
+        private boolean deadGrassToPermafrost;
 
         public Builder(Integer apocalypseLevel, int startingDay, int worldUpdateSpeed, float sunSize) {
             this.apocalypseLevel = apocalypseLevel;
@@ -94,18 +100,13 @@ public class ApocalypseLevel {
             return this;
         }
 
-        public Builder weatherDisabled() {
-            this.weatherDisabled = true;
+        public Builder leavesDecay() {
+            this.leavesDecay = true;
             return this;
         }
 
-        public Builder leafDecay() {
-            this.leafDecay = true;
-            return this;
-        }
-
-        public Builder grassToPodzol() {
-            this.grassToPodzol = true;
+        public Builder grassToFrostedGrass() {
+            this.grassToFrostedGrass = true;
             return this;
         }
 
@@ -116,6 +117,16 @@ public class ApocalypseLevel {
 
         public Builder placeSnow() {
             this.placeSnow = true;
+            return this;
+        }
+
+        public Builder frostedGrassToDeadGrass() {
+            this.frostedGrassToDeadGrass = true;
+            return this;
+        }
+
+        public Builder leavesToDeadLeaves() {
+            this.leavesToDeadLeaves = true;
             return this;
         }
 
@@ -131,6 +142,11 @@ public class ApocalypseLevel {
 
         public Builder placeSnowBlock() {
             this.placeSnowBlock = true;
+            return this;
+        }
+
+        public Builder deadGrassToPermafrost() {
+            this.deadGrassToPermafrost = true;
             return this;
         }
     }
@@ -179,16 +195,8 @@ public class ApocalypseLevel {
         return this.freezeDamage;
     }
 
-    public boolean isWeatherDisabled() {
-        return this.weatherDisabled;
-    }
-
-    public boolean canLeavesDecay() {
-        return this.leafDecay;
-    }
-
-    public boolean canGrassTurnToPodzol() {
-        return this.grassToPodzol;
+    public boolean canGrassTurnToFrostedGrass() {
+        return this.grassToFrostedGrass;
     }
 
     public boolean canWaterTurnToIce() {
@@ -197,6 +205,14 @@ public class ApocalypseLevel {
 
     public boolean canPlaceSnow() {
         return this.placeSnow;
+    }
+
+    public boolean canFrostedGrassTurnToDeadGrass() {
+        return this.frostedGrassToDeadGrass;
+    }
+
+    public boolean canLeavesTurnToDeadLeaves() {
+        return this.leavesToDeadLeaves;
     }
 
     public boolean canIceTurnToPackedIce() {
@@ -209,5 +225,13 @@ public class ApocalypseLevel {
 
     public boolean canPlaceSnowBlock() {
         return this.placeSnowBlock;
+    }
+
+    public boolean canDeadGrassTurnToPermafrost() {
+        return this.deadGrassToPermafrost;
+    }
+
+    public boolean canLeavesDecay() {
+        return this.leavesDecay;
     }
 }
