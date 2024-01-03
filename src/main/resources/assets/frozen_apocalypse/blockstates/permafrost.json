@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "frozen_apocalypse:block/permafrost"
+      },
+      {
+        "model": "frozen_apocalypse:block/permafrost",
+        "y": 90
+      },
+      {
+        "model": "frozen_apocalypse:block/permafrost",
+        "y": 180
+      },
+      {
+        "model": "frozen_apocalypse:block/permafrost",
+        "y": 270
+      }
+    ]
+  }
+}

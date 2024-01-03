@@ -1,4 +1,8 @@
 {
+  "block.frozen_apocalypse.dead_grass_block": "Dead Grass Block",
+  "block.frozen_apocalypse.dead_leaves": "Dead Leaves",
+  "block.frozen_apocalypse.frosted_grass_block": "Frosted Grass Block",
+  "block.frozen_apocalypse.permafrost": "Permafrost",
   "effect.frozen_apocalypse.frost_resistance": "Frost Resistance",
   "gamerule.category.frozen_apocalypse": "Frozen Apocalypse",
   "gamerule.frozenApocalypseDeathProtection": "Death protection",
