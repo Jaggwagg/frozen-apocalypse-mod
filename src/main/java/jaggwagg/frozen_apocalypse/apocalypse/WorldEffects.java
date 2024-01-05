@@ -89,7 +89,11 @@ public final class WorldEffects {
                 serverWorld.setBlockState(blockPos, Blocks.AIR.getDefaultState());
             }
 
-            serverWorld.setBlockState(blockPos.down(), FrozenApocalypseBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock().getStateWithProperties(blockState));
+            if (FrozenApocalypse.CONFIG.isPlacingCustomBlocksEnabled()) {
+                serverWorld.setBlockState(blockPos.down(), FrozenApocalypseBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock().getStateWithProperties(blockState));
+            } else {
+                serverWorld.setBlockState(blockPos.down(), Blocks.PODZOL.getDefaultState());
+            }
         }
     }
 

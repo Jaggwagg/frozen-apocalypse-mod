@@ -6,6 +6,7 @@ import java.util.List;
 public class FrozenApocalypseConfig {
     private final boolean isFrozenApocalypseEnabled;
     private final boolean isSunSizeChangesEnabled;
+    private final boolean isPlacingCustomBlocksEnabled;
     private final List<AffectedDimension> affectedDimensions;
     private final List<FreezingImmuneEntity> freezingImmuneEntities;
     private final List<ApocalypseLevel> apocalypseLevels;
@@ -13,6 +14,7 @@ public class FrozenApocalypseConfig {
     public FrozenApocalypseConfig() {
         this.isFrozenApocalypseEnabled = true;
         this.isSunSizeChangesEnabled = true;
+        this.isPlacingCustomBlocksEnabled = true;
         this.affectedDimensions = new ArrayList<>();
         this.freezingImmuneEntities = new ArrayList<>();
         this.apocalypseLevels = new ArrayList<>();
@@ -60,6 +62,10 @@ public class FrozenApocalypseConfig {
 
     public boolean isSunSizeChangesEnabled() {
         return this.isSunSizeChangesEnabled;
+    }
+
+    public boolean isPlacingCustomBlocksEnabled() {
+        return this.isPlacingCustomBlocksEnabled;
     }
 
     public List<AffectedDimension> getAffectedDimensions() {
