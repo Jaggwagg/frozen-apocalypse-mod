@@ -6,6 +6,7 @@ public class ApocalypseLevel {
     private final int worldUpdateSpeed;
     private final float sunSize;
     private final boolean canMobsSurviveDaylight;
+    private final boolean canMobsSpawnDaylight;
     private final boolean canAllBiomesSnow;
     private final boolean freezeEntities;
     private final int freezingYLevel;
@@ -29,6 +30,7 @@ public class ApocalypseLevel {
         this.worldUpdateSpeed = builder.worldUpdateSpeed;
         this.sunSize = builder.sunSize;
         this.canMobsSurviveDaylight = builder.canMobsSurviveDaylight;
+        this.canMobsSpawnDaylight = builder.canMobsSpawnDaylight;
         this.canAllBiomesSnow = builder.canAllBiomesSnow;
         this.freezeEntities = builder.freezeEntities;
         this.freezingYLevel = builder.freezingYLevel;
@@ -53,6 +55,7 @@ public class ApocalypseLevel {
         private final int worldUpdateSpeed;
         private final float sunSize;
         private boolean canMobsSurviveDaylight;
+        private boolean canMobsSpawnDaylight;
         private boolean canAllBiomesSnow;
         private boolean freezeEntities;
         private int freezingYLevel;
@@ -92,6 +95,11 @@ public class ApocalypseLevel {
 
         public Builder mobsCanSurviveDaylight() {
             this.canMobsSurviveDaylight = true;
+            return this;
+        }
+
+        public Builder mobsCanSpawnDaylight() {
+            this.canMobsSpawnDaylight = true;
             return this;
         }
 
@@ -169,6 +177,10 @@ public class ApocalypseLevel {
 
     public boolean canMobsSurviveDaylight() {
         return this.canMobsSurviveDaylight;
+    }
+
+    public boolean canMobsSpawnDaylight() {
+        return this.canMobsSpawnDaylight;
     }
 
     public boolean canAllBiomesSnow() {

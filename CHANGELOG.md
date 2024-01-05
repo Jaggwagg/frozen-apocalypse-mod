@@ -3,8 +3,9 @@
 ### <ins>v1.2.0 - Unreleased</ins>
 
 ##### Added
-- Added a 9th apocalypse stage
-- Added config option for minimum light level to each apocalypse level, further levels increase the minimum light level
+- Added a 9th apocalypse level, sun is now 90% smaller, entities freeze very quickly
+- Mobs can now spawn during the day after day 5, config option available
+- Added config option for minimum light level to avoid freezing for each apocalypse level, further levels increase the minimum light level
 - Added config option for freezing immune entities
 - Added config option for determining affected dimensions
 
