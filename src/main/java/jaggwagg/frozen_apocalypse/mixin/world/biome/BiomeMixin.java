@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Biome.class)
-public class BiomeMixin {
+public abstract class BiomeMixin {
     @Inject(method = "doesNotSnow", at = @At("RETURN"), cancellable = true)
     private void doesNotSnow(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (FrozenApocalypse.apocalypseLevel.canAllBiomesSnow()) {
