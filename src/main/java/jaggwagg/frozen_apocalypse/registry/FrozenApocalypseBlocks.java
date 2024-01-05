@@ -1,6 +1,8 @@
 package jaggwagg.frozen_apocalypse.registry;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
+import jaggwagg.frozen_apocalypse.block.DeadGrassBlock;
+import jaggwagg.frozen_apocalypse.block.FrostedGrassBlock;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -35,8 +37,8 @@ public class FrozenApocalypseBlocks {
     }
 
     public enum RegisteredBlocks {
-        FROSTED_GRASS_BLOCK(new GrassBlock(FabricBlockSettings.create().strength(0.6f).mapColor(MapColor.DARK_AQUA).sounds(BlockSoundGroup.GRASS))),
-        DEAD_GRASS_BLOCK(new GrassBlock(FabricBlockSettings.create().strength(0.6f).mapColor(MapColor.DIRT_BROWN).sounds(BlockSoundGroup.GRASS))),
+        FROSTED_GRASS_BLOCK(new FrostedGrassBlock(FabricBlockSettings.create().strength(0.6f).mapColor(MapColor.DARK_AQUA).ticksRandomly().sounds(BlockSoundGroup.GRASS))),
+        DEAD_GRASS_BLOCK(new DeadGrassBlock(FabricBlockSettings.create().strength(0.6f).mapColor(MapColor.DIRT_BROWN).ticksRandomly().sounds(BlockSoundGroup.GRASS))),
         PERMAFROST(new Block(FabricBlockSettings.create().strength(1.0f, 1.0f).mapColor(MapColor.DIRT_BROWN).sounds(BlockSoundGroup.GRAVEL))),
         DEAD_LEAVES(new LeavesBlock(FabricBlockSettings.create().strength(0.2f).mapColor(MapColor.DIRT_BROWN).ticksRandomly().sounds(BlockSoundGroup.GRASS).nonOpaque().allowsSpawning(net.minecraft.block.Blocks::canSpawnOnLeaves).suffocates(Blocks::never).blockVision(Blocks::never).burnable().pistonBehavior(PistonBehavior.DESTROY).solidBlock(Blocks::never)));
 
