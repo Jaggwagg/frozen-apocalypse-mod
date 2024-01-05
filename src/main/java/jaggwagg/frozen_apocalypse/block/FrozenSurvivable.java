@@ -8,7 +8,7 @@ import net.minecraft.world.WorldView;
 import net.minecraft.world.chunk.light.ChunkLightProvider;
 
 public interface FrozenSurvivable {
-    public static boolean canNotSurvive(BlockState state, WorldView world, BlockPos pos) {
+    static boolean canNotSurvive(BlockState state, WorldView world, BlockPos pos) {
         BlockPos blockPos = pos.up();
         BlockState blockState = world.getBlockState(blockPos);
 
