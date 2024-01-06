@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.05,
+  "ingredient": {
+    "item": "frozen_apocalypse:permafrost"
+  },
+  "result": "minecraft:dirt"
+}
