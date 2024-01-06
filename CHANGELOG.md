@@ -4,23 +4,30 @@
 
 ##### Added
 - Added a 9th apocalypse level, sun is now 90% smaller, entities freeze very quickly
-- Mobs can now spawn during the day after day 5, config option available
+- Added 4 new blocks: frosted grass, dead grass, dead leaves, and icicles
+- Each new block spawns during certain apocalypse levels
 - Added config option for minimum light level to avoid freezing for each apocalypse level, further levels increase the minimum light level
 - Added config option for freezing immune entities
 - Added config option for determining affected dimensions
 
 ##### Changed
-- Almost everything, major rewrite
+- Almost everything about the apocalypse levels, major rewrite
+- Reverted back to Minecraft 1.20.1, as multiple other mods are still stuck at this version
 - All blocks that produce light are now considered heat sources
+- Snow only spawns when snowing, instead of all the time
+- Dry biomes will now snow (deserts, badlands, etc.)
+- Mobs can now spawn during the day after day 5, config option available
 - Config file warns the user via logs and makes a backup when there are syntax errors, type mismatches, and missing/unknown fields
 - Config file now can back up into different file names
 
 ##### Fixed
 - Apocalypse now lags the world even less due to multiple optimizations and feature removal
+- Sun size change packet being registered every tick and returning incorrect data type
 
 ##### Removed
 - Removed the ability to add custom light source check (contributed to significant performance issues)
 - Removed heat source check delay as it doesn't improve performance
+- Removed severely outdated Simplified Chinese translation
 
 ### <ins>v1.1.4 - Released 2023-12-23</ins>
 

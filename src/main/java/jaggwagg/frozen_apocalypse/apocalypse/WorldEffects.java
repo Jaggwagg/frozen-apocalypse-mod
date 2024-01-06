@@ -1,6 +1,7 @@
 package jaggwagg.frozen_apocalypse.apocalypse;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
+import jaggwagg.frozen_apocalypse.block.IcicleBlock;
 import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
 import jaggwagg.frozen_apocalypse.network.FrozenApocalypseNetwork;
 import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseBlocks;
@@ -14,6 +15,7 @@ import net.minecraft.block.LeavesBlock;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 import java.util.function.BiConsumer;
 
@@ -66,6 +68,7 @@ public final class WorldEffects {
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canGrassTurnToFrostedGrass(), WorldEffects::setFrostedGrass);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canWaterTurnToIce(), WorldEffects::setIce);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canPlaceSnow(), WorldEffects::setSnow);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canPlaceIcicles(), WorldEffects::setIcicle);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canFrostedGrassTurnToDeadGrass(), WorldEffects::setDeadGrass);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canLeavesTurnToDeadLeaves(), WorldEffects::setDeadLeaves);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canIceTurnToPackedIce(), WorldEffects::setPackedIce);
@@ -123,6 +126,20 @@ public final class WorldEffects {
         serverWorld.setBlockState(blockPos, Blocks.SNOW.getDefaultState());
     }
 
+    private static void setIcicle(ServerWorld serverWorld, BlockPos blockPos) {
+        if (!FrozenApocalypse.CONFIG.isPlacingCustomBlocksEnabled()) {
+            return;
+        }
+
+        if (!(serverWorld.isRaining() || serverWorld.isThundering())) {
+            return;
+        }
+
+        if (serverWorld.getBlockState(blockPos.down(2)).isAir() && serverWorld.getRandom().nextInt(4) == 0 && serverWorld.getBlockState(blockPos.down()).isOpaque()) {
+            serverWorld.setBlockState(blockPos.down(2), FrozenApocalypseBlocks.RegisteredBlocks.ICICLE.getBlock().getDefaultState().with(IcicleBlock.VERTICAL_DIRECTION, Direction.DOWN).with(IcicleBlock.GROWTH, serverWorld.getRandom().nextInt(2)));
+        }
+    }
+
     private static void setDeadGrass(ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos.down()).isOf(FrozenApocalypseBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock())) {
             BlockState blockState = serverWorld.getBlockState(blockPos.down());
@@ -137,8 +154,20 @@ public final class WorldEffects {
 
     private static void setDeadLeaves(ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos.down()).getBlock() instanceof LeavesBlock) {
-            BlockState blockState = serverWorld.getBlockState(blockPos.down());
-            serverWorld.setBlockState(blockPos.down(), FrozenApocalypseBlocks.RegisteredBlocks.DEAD_LEAVES.getBlock().getStateWithProperties(blockState));
+            for (int x = -2; x < 1; x++) {
+                for (int z = -2; z < 1; z++) {
+                    for (int y = -2; y < 1; y++) {
+                        BlockPos currentBlockPos = new BlockPos(blockPos.getX() + x, blockPos.getY() + y, blockPos.getZ() + z);
+
+                        if (serverWorld.getBlockState(currentBlockPos).getBlock() instanceof LeavesBlock) {
+                            if (!serverWorld.getBlockState(currentBlockPos).isOf(FrozenApocalypseBlocks.RegisteredBlocks.DEAD_LEAVES.getBlock())) {
+                                BlockState blockState = serverWorld.getBlockState(currentBlockPos);
+                                serverWorld.setBlockState(currentBlockPos, FrozenApocalypseBlocks.RegisteredBlocks.DEAD_LEAVES.getBlock().getStateWithProperties(blockState));
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -184,8 +213,18 @@ public final class WorldEffects {
     }
 
     private static void setLeafDecay(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).contains(LeavesBlock.PERSISTENT)) {
-            serverWorld.removeBlock(blockPos.down(), true);
+        if (serverWorld.getBlockState(blockPos.down()).getBlock() instanceof LeavesBlock) {
+            for (int x = -2; x < 1; x++) {
+                for (int z = -2; z < 1; z++) {
+                    for (int y = -2; y < 1; y++) {
+                        BlockPos currentBlockPos = new BlockPos(blockPos.getX() + x, blockPos.down().getY() + y, blockPos.getZ() + z);
+
+                        if (serverWorld.getBlockState(currentBlockPos).getBlock() instanceof LeavesBlock) {
+                            serverWorld.removeBlock(currentBlockPos, true);
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "frozen_apocalypse:block/icicle",
+  "textures": {
+    "cross": "frozen_apocalypse:block/icicle_down_middle"
+  }
+}
