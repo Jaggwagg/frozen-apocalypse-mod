@@ -1,6 +1,7 @@
-package jaggwagg.frozen_apocalypse.network;
+package jaggwagg.frozen_apocalypse.client.network;
 
-import jaggwagg.frozen_apocalypse.FrozenApocalypseClient;
+import jaggwagg.frozen_apocalypse.client.FrozenApocalypseClient;
+import jaggwagg.frozen_apocalypse.network.FrozenApocalypseNetwork;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 public class FrozenApocalypseClientRecievers {

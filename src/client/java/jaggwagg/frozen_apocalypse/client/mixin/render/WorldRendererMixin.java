@@ -1,7 +1,7 @@
-package jaggwagg.frozen_apocalypse.mixin.client.render;
+package jaggwagg.frozen_apocalypse.client.mixin.render;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.FrozenApocalypseClient;
+import jaggwagg.frozen_apocalypse.client.FrozenApocalypseClient;
 import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -42,32 +42,4 @@ public abstract class WorldRendererMixin {
 
         return copy;
     }
-
-    /* TODO: MIGHT USE THESE TO CHANGE DAY TO NIGHT */
-
-    /*
-    @ModifyVariable(method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lorg/joml/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V", at = @At(value = "STORE"), ordinal = 1)
-    private float r(float in) {
-        return 0.0f;
-    }
-
-    @ModifyVariable(method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lorg/joml/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V", at = @At(value = "STORE"), ordinal = 2)
-    private float g(float in) {
-        return 0.0f;
-    }
-
-    @ModifyVariable(method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lorg/joml/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V", at = @At(value = "STORE"), ordinal = 3)
-    private float b(float in) {
-        return 0.0f;
-    }
-
-    @ModifyVariable(method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lorg/joml/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V", at = @At(value = "STORE"), ordinal = 8)
-    private float fogR(float in) {
-        return 0.0f;
-    }
-
-    @ModifyVariable(method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;Lorg/joml/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V", at = @At(value = "STORE"), ordinal = 10)
-    private float forceDarkness(float in) {
-        return 1.0f;
-    }*/
 }
