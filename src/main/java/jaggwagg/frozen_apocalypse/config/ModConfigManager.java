@@ -14,8 +14,8 @@ import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class FrozenApocalypseConfigManager {
-    public static void saveConfig(FrozenApocalypseConfig config, String filePath) {
+public class ModConfigManager {
+    public static void saveConfig(ModConfig config, String filePath) {
         try (FileWriter writer = new FileWriter(filePath)) {
             Gson gson = new GsonBuilder()
                     .disableHtmlEscaping()
@@ -29,16 +29,16 @@ public class FrozenApocalypseConfigManager {
         }
     }
 
-    public static FrozenApocalypseConfig loadConfig(String filePath) {
+    public static ModConfig loadConfig(String filePath) {
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(FrozenApocalypseConfig.class, new FrozenApocalypseConfigDeserializer())
+                .registerTypeAdapter(ModConfig.class, new ModConfigDeserializer())
                 .create();
-        FrozenApocalypseConfig loadedConfig = new FrozenApocalypseConfig();
+        ModConfig loadedConfig = new ModConfig();
         boolean shouldCreateNewConfig = false;
 
         try (FileReader reader = new FileReader(filePath)) {
             try {
-                loadedConfig = gson.fromJson(reader, FrozenApocalypseConfig.class);
+                loadedConfig = gson.fromJson(reader, ModConfig.class);
             } catch (JsonParseException e) {
                 FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": Invalid config file: \n" + e.getMessage());
                 shouldCreateNewConfig = true;
@@ -49,8 +49,8 @@ public class FrozenApocalypseConfigManager {
         }
 
         if (shouldCreateNewConfig) {
-            FrozenApocalypseConfigManager.backupConfig(filePath);
-            FrozenApocalypseConfigManager.saveConfig(loadedConfig, filePath);
+            ModConfigManager.backupConfig(filePath);
+            ModConfigManager.saveConfig(loadedConfig, filePath);
             FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": Config file not found or corrupted, creating a new default config file and backed up current one");
         } else {
             FrozenApocalypse.LOGGER.info(FrozenApocalypse.MOD_ID + ": Config loaded successfully");

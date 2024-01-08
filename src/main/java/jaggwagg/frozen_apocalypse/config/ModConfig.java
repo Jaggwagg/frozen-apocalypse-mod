@@ -3,7 +3,7 @@ package jaggwagg.frozen_apocalypse.config;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FrozenApocalypseConfig {
+public class ModConfig {
     private final boolean isFrozenApocalypseEnabled;
     private final boolean isSunSizeChangesEnabled;
     private final boolean isPlacingCustomBlocksEnabled;
@@ -11,7 +11,7 @@ public class FrozenApocalypseConfig {
     private final List<FreezingImmuneEntity> freezingImmuneEntities;
     private final List<ApocalypseLevel> apocalypseLevels;
 
-    public FrozenApocalypseConfig() {
+    public ModConfig() {
         this.isFrozenApocalypseEnabled = true;
         this.isSunSizeChangesEnabled = true;
         this.isPlacingCustomBlocksEnabled = true;

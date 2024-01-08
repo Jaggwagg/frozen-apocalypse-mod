@@ -3,9 +3,9 @@ package jaggwagg.frozen_apocalypse.apocalypse;
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.block.IcicleBlock;
 import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
-import jaggwagg.frozen_apocalypse.network.FrozenApocalypseNetwork;
-import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseBlocks;
-import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseGameRules;
+import jaggwagg.frozen_apocalypse.network.ModNetwork;
+import jaggwagg.frozen_apocalypse.init.ModBlocks;
+import jaggwagg.frozen_apocalypse.init.ModGameRules;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
@@ -30,19 +30,19 @@ public final class WorldEffects {
 
     public static void initializeFrozenApocalypseLevel(ServerWorld serverWorld) {
         for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.getApocalypseLevels()) {
-            if (apocalypseLevel.getApocalypseLevel() == Math.max(0, serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.RegisteredIntegerGameRules.APOCALYPSE_LEVEL.getKey()))) {
+            if (apocalypseLevel.getApocalypseLevel() == Math.max(0, serverWorld.getGameRules().getInt(ModGameRules.RegisteredIntegerGameRules.APOCALYPSE_LEVEL.getKey()))) {
                 FrozenApocalypse.apocalypseLevel = apocalypseLevel;
             }
         }
     }
 
     public static void updateFrozenApocalypseLevel(ServerWorld serverWorld) {
-        if (serverWorld.getGameRules().get(FrozenApocalypseGameRules.RegisteredBooleanGameRules.LEVEL_UPDATES_EACH_DAY.getKey()).get()) {
+        if (serverWorld.getGameRules().get(ModGameRules.RegisteredBooleanGameRules.LEVEL_UPDATES_EACH_DAY.getKey()).get()) {
             int maxStartingDay = 0;
 
             for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.getApocalypseLevels()) {
                 if (apocalypseLevel.getStartingDay() <= calculateDay(serverWorld) && apocalypseLevel.getStartingDay() >= maxStartingDay) {
-                    serverWorld.getGameRules().get(FrozenApocalypseGameRules.RegisteredIntegerGameRules.APOCALYPSE_LEVEL.getKey()).set(apocalypseLevel.getApocalypseLevel(), serverWorld.getServer());
+                    serverWorld.getGameRules().get(ModGameRules.RegisteredIntegerGameRules.APOCALYPSE_LEVEL.getKey()).set(apocalypseLevel.getApocalypseLevel(), serverWorld.getServer());
                     maxStartingDay = apocalypseLevel.getStartingDay();
                 }
             }
@@ -54,14 +54,14 @@ public final class WorldEffects {
         buf.writeVarInt(FrozenApocalypse.apocalypseLevel.getApocalypseLevel());
 
         serverWorld.getPlayers().forEach(player -> {
-            if (ServerPlayNetworking.canSend(player, FrozenApocalypseNetwork.FROZEN_APOCALYPSE_LEVEL_ID)) {
-                ServerPlayNetworking.send(player, FrozenApocalypseNetwork.FROZEN_APOCALYPSE_LEVEL_ID, buf);
+            if (ServerPlayNetworking.canSend(player, ModNetwork.FROZEN_APOCALYPSE_LEVEL_ID)) {
+                ServerPlayNetworking.send(player, ModNetwork.FROZEN_APOCALYPSE_LEVEL_ID, buf);
             }
         });
     }
 
     public static int calculateUpdateSpeed(ServerWorld serverWorld) {
-        return (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(FrozenApocalypseGameRules.RegisteredIntegerGameRules.WORLD_UPDATE_SPEED.getKey()) * 512) / FrozenApocalypse.apocalypseLevel.getWorldUpdateSpeed()));
+        return (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(ModGameRules.RegisteredIntegerGameRules.WORLD_UPDATE_SPEED.getKey()) * 512) / FrozenApocalypse.apocalypseLevel.getWorldUpdateSpeed()));
     }
 
     public static void applyApocalypseEffects(ServerWorld serverWorld, BlockPos blockPos) {
@@ -93,7 +93,7 @@ public final class WorldEffects {
             }
 
             if (FrozenApocalypse.CONFIG.isPlacingCustomBlocksEnabled()) {
-                serverWorld.setBlockState(blockPos.down(), FrozenApocalypseBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock().getStateWithProperties(blockState));
+                serverWorld.setBlockState(blockPos.down(), ModBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock().getStateWithProperties(blockState));
             } else {
                 serverWorld.setBlockState(blockPos.down(), Blocks.PODZOL.getDefaultState());
             }
@@ -135,34 +135,37 @@ public final class WorldEffects {
             return;
         }
 
-        if (serverWorld.getBlockState(blockPos.down(2)).isAir() && serverWorld.getRandom().nextInt(4) == 0 && serverWorld.getBlockState(blockPos.down()).isOpaque()) {
-            serverWorld.setBlockState(blockPos.down(2), FrozenApocalypseBlocks.RegisteredBlocks.ICICLE.getBlock().getDefaultState().with(IcicleBlock.VERTICAL_DIRECTION, Direction.DOWN).with(IcicleBlock.GROWTH, serverWorld.getRandom().nextInt(2)));
+        for (int y = 0; y < 5; y++) {
+            if (serverWorld.getBlockState(blockPos.down(y)).isAir() && serverWorld.getRandom().nextInt(4) == 0 && serverWorld.getBlockState(blockPos.down(y - 1)).isOpaque()) {
+                serverWorld.setBlockState(blockPos.down(y), ModBlocks.RegisteredBlocks.ICICLE.getBlock().getDefaultState().with(IcicleBlock.VERTICAL_DIRECTION, Direction.DOWN).with(IcicleBlock.GROWTH, serverWorld.getRandom().nextInt(2)));
+                break;
+            }
         }
     }
 
     private static void setDeadGrass(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).isOf(FrozenApocalypseBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock())) {
+        if (serverWorld.getBlockState(blockPos.down()).isOf(ModBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock())) {
             BlockState blockState = serverWorld.getBlockState(blockPos.down());
 
             if (!(serverWorld.getBlockState(blockPos).isOf(Blocks.SNOW) || serverWorld.getBlockState(blockPos).isOf(Blocks.SNOW_BLOCK) || serverWorld.getBlockState(blockPos).isOf(Blocks.POWDER_SNOW))) {
                 serverWorld.setBlockState(blockPos, Blocks.AIR.getDefaultState());
             }
 
-            serverWorld.setBlockState(blockPos.down(), FrozenApocalypseBlocks.RegisteredBlocks.DEAD_GRASS_BLOCK.getBlock().getStateWithProperties(blockState));
+            serverWorld.setBlockState(blockPos.down(), ModBlocks.RegisteredBlocks.DEAD_GRASS_BLOCK.getBlock().getStateWithProperties(blockState));
         }
     }
 
     private static void setDeadLeaves(ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos.down()).getBlock() instanceof LeavesBlock) {
-            for (int x = -2; x < 1; x++) {
-                for (int z = -2; z < 1; z++) {
-                    for (int y = -2; y < 1; y++) {
+            for (int x = -1; x <= 1; x++) {
+                for (int z = -1; z <= 1; z++) {
+                    for (int y = -3; y < 1; y++) {
                         BlockPos currentBlockPos = new BlockPos(blockPos.getX() + x, blockPos.getY() + y, blockPos.getZ() + z);
 
                         if (serverWorld.getBlockState(currentBlockPos).getBlock() instanceof LeavesBlock) {
-                            if (!serverWorld.getBlockState(currentBlockPos).isOf(FrozenApocalypseBlocks.RegisteredBlocks.DEAD_LEAVES.getBlock())) {
+                            if (!serverWorld.getBlockState(currentBlockPos).isOf(ModBlocks.RegisteredBlocks.DEAD_LEAVES.getBlock())) {
                                 BlockState blockState = serverWorld.getBlockState(currentBlockPos);
-                                serverWorld.setBlockState(currentBlockPos, FrozenApocalypseBlocks.RegisteredBlocks.DEAD_LEAVES.getBlock().getStateWithProperties(blockState));
+                                serverWorld.setBlockState(currentBlockPos, ModBlocks.RegisteredBlocks.DEAD_LEAVES.getBlock().getStateWithProperties(blockState));
                             }
                         }
                     }
@@ -207,16 +210,16 @@ public final class WorldEffects {
     }
 
     private static void setPermafrost(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).isOf(FrozenApocalypseBlocks.RegisteredBlocks.DEAD_GRASS_BLOCK.getBlock())) {
-            serverWorld.setBlockState(blockPos.down(), FrozenApocalypseBlocks.RegisteredBlocks.PERMAFROST.getBlock().getDefaultState());
+        if (serverWorld.getBlockState(blockPos.down()).isOf(ModBlocks.RegisteredBlocks.DEAD_GRASS_BLOCK.getBlock())) {
+            serverWorld.setBlockState(blockPos.down(), ModBlocks.RegisteredBlocks.PERMAFROST.getBlock().getDefaultState());
         }
     }
 
     private static void setLeafDecay(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).getBlock() instanceof LeavesBlock) {
-            for (int x = -2; x < 1; x++) {
-                for (int z = -2; z < 1; z++) {
-                    for (int y = -2; y < 1; y++) {
+        if (serverWorld.getBlockState(blockPos.down()).getBlock() instanceof LeavesBlock || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.VINE)) {
+            for (int x = -1; x <= 1; x++) {
+                for (int z = -1; z <= 1; z++) {
+                    for (int y = -3; y < 1; y++) {
                         BlockPos currentBlockPos = new BlockPos(blockPos.getX() + x, blockPos.down().getY() + y, blockPos.getZ() + z);
 
                         if (serverWorld.getBlockState(currentBlockPos).getBlock() instanceof LeavesBlock) {

@@ -1,4 +1,4 @@
-package jaggwagg.frozen_apocalypse.registry;
+package jaggwagg.frozen_apocalypse.init;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.item.DiamondThermalArmorMaterial;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.StringJoiner;
 
-public class FrozenApocalypseItems {
+public class ModItems {
     public static final RegistryKey<ItemGroup> ITEM_GROUP = RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier(FrozenApocalypse.MOD_ID, "general"));
 
     public static void init() {
@@ -28,10 +28,10 @@ public class FrozenApocalypseItems {
 
         Arrays.stream(RegisteredItems.values()).forEach(value -> {
             registerItem(value.getItem(), value.getName());
-            joiner.add(value.name());
+            joiner.add(value.getName());
         });
         Registry.register(Registries.ITEM_GROUP, ITEM_GROUP, FabricItemGroup.builder()
-                .icon(() -> new ItemStack(RegisteredItems.IRON_THERMAL_CHESTPLATE.item))
+                .icon(() -> new ItemStack(ModBlocks.RegisteredBlocks.DEAD_LEAVES.getBlock().asItem()))
                 .displayName(Text.translatable("group." + FrozenApocalypse.MOD_ID + ".general"))
                 .build());
 

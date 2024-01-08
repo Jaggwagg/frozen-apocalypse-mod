@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class FrozenApocalypseConfigDeserializer implements JsonDeserializer<FrozenApocalypseConfig> {
+public class ModConfigDeserializer implements JsonDeserializer<ModConfig> {
     @Override
-    public FrozenApocalypseConfig deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+    public ModConfig deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-        FrozenApocalypseConfig config = new FrozenApocalypseConfig();
-        Field[] fields = FrozenApocalypseConfig.class.getDeclaredFields();
+        ModConfig config = new ModConfig();
+        Field[] fields = ModConfig.class.getDeclaredFields();
         Set<Field> requiredFields = new HashSet<>();
 
         checkFields(jsonObject, config, fields, requiredFields, jsonDeserializationContext);

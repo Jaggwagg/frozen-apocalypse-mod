@@ -1,4 +1,4 @@
-package jaggwagg.frozen_apocalypse.registry;
+package jaggwagg.frozen_apocalypse.init;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.entity.effect.FrostResistanceStatusEffect;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.StringJoiner;
 
-public class FrozenApocalypseStatusEffects {
+public class ModStatusEffects {
     public static void init() {
         StringJoiner joiner = new StringJoiner(", ");
 

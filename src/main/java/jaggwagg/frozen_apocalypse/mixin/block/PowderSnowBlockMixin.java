@@ -1,8 +1,8 @@
 package jaggwagg.frozen_apocalypse.mixin.block;
 
 import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
-import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseItems;
-import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseStatusEffects;
+import jaggwagg.frozen_apocalypse.init.ModItems;
+import jaggwagg.frozen_apocalypse.init.ModStatusEffects;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PowderSnowBlock;
 import net.minecraft.entity.Entity;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PowderSnowBlockMixin {
     @Unique
     private static void hasFrostResistance(LivingEntity livingEntity) {
-        if (livingEntity.hasStatusEffect(FrozenApocalypseStatusEffects.RegisteredStatusEffects.FROST_RESISTANCE.getStatusEffect())) {
+        if (livingEntity.hasStatusEffect(ModStatusEffects.RegisteredStatusEffects.FROST_RESISTANCE.getStatusEffect())) {
             livingEntity.inPowderSnow = false;
         }
     }
@@ -31,7 +31,7 @@ public abstract class PowderSnowBlockMixin {
         if (entity instanceof LivingEntity livingEntity) {
             hasFrostResistance(livingEntity);
 
-            if (livingEntity.getEquippedStack(EquipmentSlot.FEET).isOf(FrozenApocalypseItems.RegisteredItems.IRON_THERMAL_BOOTS.getItem())) {
+            if (livingEntity.getEquippedStack(EquipmentSlot.FEET).isOf(ModItems.RegisteredItems.IRON_THERMAL_BOOTS.getItem())) {
                 cir.setReturnValue(true);
             }
         }

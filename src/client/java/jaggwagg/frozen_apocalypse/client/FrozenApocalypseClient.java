@@ -1,8 +1,8 @@
 package jaggwagg.frozen_apocalypse.client;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.client.network.FrozenApocalypseClientRecievers;
-import jaggwagg.frozen_apocalypse.client.render.block.ModBlockRenderLayerMaps;
+import jaggwagg.frozen_apocalypse.client.network.ModClientRecievers;
+import jaggwagg.frozen_apocalypse.client.init.ModBlockRenderLayerMaps;
 import net.fabricmc.api.ClientModInitializer;
 
 public class FrozenApocalypseClient implements ClientModInitializer {
@@ -10,7 +10,7 @@ public class FrozenApocalypseClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        FrozenApocalypseClientRecievers.init();
+        ModClientRecievers.init();
         ModBlockRenderLayerMaps.init();
 
         FrozenApocalypse.LOGGER.info(FrozenApocalypse.MOD_ID + ": Initialized client successfully");

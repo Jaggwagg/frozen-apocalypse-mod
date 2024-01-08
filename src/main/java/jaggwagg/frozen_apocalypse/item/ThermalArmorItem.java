@@ -1,6 +1,6 @@
 package jaggwagg.frozen_apocalypse.item;
 
-import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseItems;
+import jaggwagg.frozen_apocalypse.init.ModItems;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorItem;
@@ -13,10 +13,10 @@ public class ThermalArmorItem extends ArmorItem {
     }
 
     public static boolean wearingThermalArmor(LivingEntity livingEntity) {
-        Item thermalBoots = FrozenApocalypseItems.RegisteredItems.IRON_THERMAL_BOOTS.getItem();
-        Item thermalLeggings = FrozenApocalypseItems.RegisteredItems.IRON_THERMAL_LEGGINGS.getItem();
-        Item thermalChestplate = FrozenApocalypseItems.RegisteredItems.IRON_THERMAL_CHESTPLATE.getItem();
-        Item thermalHelmet = FrozenApocalypseItems.RegisteredItems.IRON_THERMAL_HELMET.getItem();
+        Item thermalBoots = ModItems.RegisteredItems.IRON_THERMAL_BOOTS.getItem();
+        Item thermalLeggings = ModItems.RegisteredItems.IRON_THERMAL_LEGGINGS.getItem();
+        Item thermalChestplate = ModItems.RegisteredItems.IRON_THERMAL_CHESTPLATE.getItem();
+        Item thermalHelmet = ModItems.RegisteredItems.IRON_THERMAL_HELMET.getItem();
 
         return isWearingItem(livingEntity, EquipmentSlot.FEET, thermalBoots) &&
                 isWearingItem(livingEntity, EquipmentSlot.LEGS, thermalLeggings) &&

@@ -13,11 +13,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Mixin(MobEntity.class)
 public abstract class MobEntityMixin {
     @Inject(method = "canMobSpawn", at = @At("RETURN"), cancellable = true)
     private static void canMobSpawn(EntityType<? extends MobEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
-        if (type.equals(EntityType.ZOMBIE) || type.equals(EntityType.SKELETON) || type.equals(EntityType.STRAY)) {
+        Set<EntityType<? extends MobEntity>> allowedEntities = new HashSet<>(List.of(
+                EntityType.SKELETON, EntityType.ZOMBIE
+        ));
+
+        if (allowedEntities.contains(type)) {
             return;
         }
 

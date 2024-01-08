@@ -3,7 +3,7 @@ package jaggwagg.frozen_apocalypse.apocalypse;
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.config.FreezingImmuneEntity;
 import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
-import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseStatusEffects;
+import jaggwagg.frozen_apocalypse.init.ModStatusEffects;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
@@ -46,7 +46,7 @@ public class LivingEntityEffects {
 
     public static boolean isImmuneToFreezing(LivingEntity livingEntity) {
         return !FrozenApocalypse.CONFIG.isFrozenApocalypseEnabled() ||
-                livingEntity.hasStatusEffect(FrozenApocalypseStatusEffects.RegisteredStatusEffects.FROST_RESISTANCE.getStatusEffect()) ||
+                livingEntity.hasStatusEffect(ModStatusEffects.RegisteredStatusEffects.FROST_RESISTANCE.getStatusEffect()) ||
                 isCreativeOrSpectator(livingEntity) ||
                 isWearingThermalArmor(livingEntity);
     }

@@ -1,4 +1,4 @@
-package jaggwagg.frozen_apocalypse.registry;
+package jaggwagg.frozen_apocalypse.init;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import net.fabricmc.fabric.api.gamerule.v1.CustomGameRuleCategory;
@@ -15,7 +15,7 @@ import net.minecraft.world.GameRules.Key;
 import java.util.Arrays;
 import java.util.StringJoiner;
 
-public class FrozenApocalypseGameRules {
+public class ModGameRules {
     private static final CustomGameRuleCategory CATEGORY = new CustomGameRuleCategory(new Identifier(FrozenApocalypse.MOD_ID, FrozenApocalypse.MOD_ID), Text.translatable("gamerule.category." + FrozenApocalypse.MOD_ID).formatted(Formatting.AQUA, Formatting.BOLD));
 
     public static void init() {

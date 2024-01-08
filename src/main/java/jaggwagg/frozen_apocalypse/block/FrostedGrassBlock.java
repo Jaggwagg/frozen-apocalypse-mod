@@ -1,6 +1,6 @@
 package jaggwagg.frozen_apocalypse.block;
 
-import jaggwagg.frozen_apocalypse.registry.FrozenApocalypseBlocks;
+import jaggwagg.frozen_apocalypse.init.ModBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.GrassBlock;
 import net.minecraft.server.world.ServerWorld;
@@ -15,7 +15,7 @@ public class FrostedGrassBlock extends GrassBlock {
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (FrozenSurvivable.canNotSurvive(state, world, pos)) {
-            world.setBlockState(pos, FrozenApocalypseBlocks.RegisteredBlocks.DEAD_GRASS_BLOCK.getBlock().getDefaultState());
+            world.setBlockState(pos, ModBlocks.RegisteredBlocks.DEAD_GRASS_BLOCK.getBlock().getDefaultState());
         }
     }
 }

@@ -1,4 +1,4 @@
-package jaggwagg.frozen_apocalypse.registry;
+package jaggwagg.frozen_apocalypse.init;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.block.DeadGrassBlock;
@@ -20,13 +20,13 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.StringJoiner;
 
-public class FrozenApocalypseBlocks {
+public class ModBlocks {
     public static void init() {
         StringJoiner joiner = new StringJoiner(", ");
 
         Arrays.stream(RegisteredBlocks.values()).forEach(value -> {
             registerBlock(value.getBlock(), value.getName());
-            joiner.add(value.name());
+            joiner.add(value.getName());
         });
 
         FrozenApocalypse.LOGGER.info(FrozenApocalypse.MOD_ID + ": Initialized blocks: " + joiner);
@@ -35,7 +35,7 @@ public class FrozenApocalypseBlocks {
     public static void registerBlock(Block block, String name) {
         Registry.register(Registries.BLOCK, new Identifier(FrozenApocalypse.MOD_ID, name), block);
         BlockItem item = Registry.register(Registries.ITEM, new Identifier(FrozenApocalypse.MOD_ID, name), new BlockItem(block, new FabricItemSettings()));
-        ItemGroupEvents.modifyEntriesEvent(FrozenApocalypseItems.ITEM_GROUP).register(content -> content.add(item));
+        ItemGroupEvents.modifyEntriesEvent(ModItems.ITEM_GROUP).register(content -> content.add(item));
     }
 
     public enum RegisteredBlocks {
