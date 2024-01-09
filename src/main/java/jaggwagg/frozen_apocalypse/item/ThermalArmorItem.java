@@ -1,6 +1,6 @@
 package jaggwagg.frozen_apocalypse.item;
 
-import jaggwagg.frozen_apocalypse.init.ModItems;
+import jaggwagg.frozen_apocalypse.registry.ModItems;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorItem;

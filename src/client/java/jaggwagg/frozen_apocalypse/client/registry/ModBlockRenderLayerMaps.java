@@ -1,6 +1,6 @@
-package jaggwagg.frozen_apocalypse.client.init;
+package jaggwagg.frozen_apocalypse.client.registry;
 
-import jaggwagg.frozen_apocalypse.init.ModBlocks;
+import jaggwagg.frozen_apocalypse.registry.ModBlocks;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.client.render.RenderLayer;
 

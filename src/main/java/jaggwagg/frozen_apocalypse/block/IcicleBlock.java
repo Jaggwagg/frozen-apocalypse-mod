@@ -1,7 +1,7 @@
 package jaggwagg.frozen_apocalypse.block;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.init.ModBlocks;
+import jaggwagg.frozen_apocalypse.registry.ModBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.Thickness;
 import net.minecraft.entity.Entity;

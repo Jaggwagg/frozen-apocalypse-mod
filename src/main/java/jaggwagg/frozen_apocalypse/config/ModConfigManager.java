@@ -23,9 +23,9 @@ public class ModConfigManager {
                     .serializeNulls()
                     .create();
             gson.toJson(config, writer);
-            FrozenApocalypse.LOGGER.info(FrozenApocalypse.MOD_ID + ": Configuration saved successfully");
+            FrozenApocalypse.loggerInfo("Configuration saved successfully");
         } catch (IOException e) {
-            FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": Unable to write file: " + e.getMessage());
+            FrozenApocalypse.loggerInfo("Unable to write file: " + e.getMessage());
         }
     }
 
@@ -40,20 +40,20 @@ public class ModConfigManager {
             try {
                 loadedConfig = gson.fromJson(reader, ModConfig.class);
             } catch (JsonParseException e) {
-                FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": Invalid config file: \n" + e.getMessage());
+                FrozenApocalypse.loggerInfo("Invalid config file: \n" + e.getMessage());
                 shouldCreateNewConfig = true;
             }
         } catch (IOException e) {
-            FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": Could not read config file: \n" + e.getMessage());
+            FrozenApocalypse.loggerInfo("Could not read config file: \n" + e.getMessage());
             shouldCreateNewConfig = true;
         }
 
         if (shouldCreateNewConfig) {
             ModConfigManager.backupConfig(filePath);
             ModConfigManager.saveConfig(loadedConfig, filePath);
-            FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": Config file not found or corrupted, creating a new default config file and backed up current one");
+            FrozenApocalypse.loggerInfo("Config file not found or corrupted, creating a new default config file and backed up current one");
         } else {
-            FrozenApocalypse.LOGGER.info(FrozenApocalypse.MOD_ID + ": Config loaded successfully");
+            FrozenApocalypse.loggerInfo("Config loaded successfully");
         }
 
         return loadedConfig;
@@ -67,7 +67,7 @@ public class ModConfigManager {
         try {
             Files.copy(Path.of(filePath), Path.of(backupFilePath), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            FrozenApocalypse.LOGGER.warn(FrozenApocalypse.MOD_ID + ": Original config file does not exist, making a new one without backup");
+            FrozenApocalypse.loggerInfo("Original config file does not exist, making a new one without backup");
         }
     }
 }

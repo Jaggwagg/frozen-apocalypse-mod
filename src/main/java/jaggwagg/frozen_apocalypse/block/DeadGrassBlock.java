@@ -1,6 +1,6 @@
 package jaggwagg.frozen_apocalypse.block;
 
-import jaggwagg.frozen_apocalypse.init.ModBlocks;
+import jaggwagg.frozen_apocalypse.registry.ModBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.GrassBlock;
 import net.minecraft.server.world.ServerWorld;

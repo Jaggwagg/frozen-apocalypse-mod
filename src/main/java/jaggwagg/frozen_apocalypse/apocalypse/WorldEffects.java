@@ -4,8 +4,8 @@ import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.block.IcicleBlock;
 import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
 import jaggwagg.frozen_apocalypse.network.ModNetwork;
-import jaggwagg.frozen_apocalypse.init.ModBlocks;
-import jaggwagg.frozen_apocalypse.init.ModGameRules;
+import jaggwagg.frozen_apocalypse.registry.ModBlocks;
+import jaggwagg.frozen_apocalypse.registry.ModGameRules;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
@@ -30,19 +30,19 @@ public final class WorldEffects {
 
     public static void initializeFrozenApocalypseLevel(ServerWorld serverWorld) {
         for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.getApocalypseLevels()) {
-            if (apocalypseLevel.getApocalypseLevel() == Math.max(0, serverWorld.getGameRules().getInt(ModGameRules.RegisteredIntegerGameRules.APOCALYPSE_LEVEL.getKey()))) {
+            if (apocalypseLevel.getApocalypseLevel() == Math.max(0, serverWorld.getGameRules().getInt(ModGameRules.RegisteredIntegerGameRules.FROZEN_APOCALYPSE_LEVEL.getKey()))) {
                 FrozenApocalypse.apocalypseLevel = apocalypseLevel;
             }
         }
     }
 
     public static void updateFrozenApocalypseLevel(ServerWorld serverWorld) {
-        if (serverWorld.getGameRules().get(ModGameRules.RegisteredBooleanGameRules.LEVEL_UPDATES_EACH_DAY.getKey()).get()) {
+        if (serverWorld.getGameRules().get(ModGameRules.RegisteredBooleanGameRules.FROZEN_APOCALYPSE_LEVEL_UPDATES_EACH_DAY.getKey()).get()) {
             int maxStartingDay = 0;
 
             for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.getApocalypseLevels()) {
                 if (apocalypseLevel.getStartingDay() <= calculateDay(serverWorld) && apocalypseLevel.getStartingDay() >= maxStartingDay) {
-                    serverWorld.getGameRules().get(ModGameRules.RegisteredIntegerGameRules.APOCALYPSE_LEVEL.getKey()).set(apocalypseLevel.getApocalypseLevel(), serverWorld.getServer());
+                    serverWorld.getGameRules().get(ModGameRules.RegisteredIntegerGameRules.FROZEN_APOCALYPSE_LEVEL.getKey()).set(apocalypseLevel.getApocalypseLevel(), serverWorld.getServer());
                     maxStartingDay = apocalypseLevel.getStartingDay();
                 }
             }
@@ -61,7 +61,7 @@ public final class WorldEffects {
     }
 
     public static int calculateUpdateSpeed(ServerWorld serverWorld) {
-        return (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(ModGameRules.RegisteredIntegerGameRules.WORLD_UPDATE_SPEED.getKey()) * 512) / FrozenApocalypse.apocalypseLevel.getWorldUpdateSpeed()));
+        return (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(ModGameRules.RegisteredIntegerGameRules.FROZEN_APOCALYPSE_WORLD_UPDATE_SPEED.getKey()) * 512) / FrozenApocalypse.apocalypseLevel.getWorldUpdateSpeed()));
     }
 
     public static void applyApocalypseEffects(ServerWorld serverWorld, BlockPos blockPos) {

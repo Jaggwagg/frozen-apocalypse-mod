@@ -3,7 +3,7 @@ package jaggwagg.frozen_apocalypse.apocalypse;
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.config.FreezingImmuneEntity;
 import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
-import jaggwagg.frozen_apocalypse.init.ModStatusEffects;
+import jaggwagg.frozen_apocalypse.registry.ModStatusEffects;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;

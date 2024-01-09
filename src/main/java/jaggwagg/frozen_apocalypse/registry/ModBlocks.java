@@ -1,4 +1,4 @@
-package jaggwagg.frozen_apocalypse.init;
+package jaggwagg.frozen_apocalypse.registry;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.block.DeadGrassBlock;
@@ -18,24 +18,18 @@ import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.StringJoiner;
 
 public class ModBlocks {
     public static void init() {
-        StringJoiner joiner = new StringJoiner(", ");
+        Arrays.stream(RegisteredBlocks.values()).forEach(value -> registerBlockWithItem(value.getId(), value.getBlock()));
 
-        Arrays.stream(RegisteredBlocks.values()).forEach(value -> {
-            registerBlock(value.getBlock(), value.getName());
-            joiner.add(value.getName());
-        });
-
-        FrozenApocalypse.LOGGER.info(FrozenApocalypse.MOD_ID + ": Initialized blocks: " + joiner);
+        FrozenApocalypse.loggerInfo("Initialized blocks");
     }
 
-    public static void registerBlock(Block block, String name) {
-        Registry.register(Registries.BLOCK, new Identifier(FrozenApocalypse.MOD_ID, name), block);
-        BlockItem item = Registry.register(Registries.ITEM, new Identifier(FrozenApocalypse.MOD_ID, name), new BlockItem(block, new FabricItemSettings()));
-        ItemGroupEvents.modifyEntriesEvent(ModItems.ITEM_GROUP).register(content -> content.add(item));
+    public static void registerBlockWithItem(String id, Block block) {
+        Registry.register(Registries.BLOCK, new Identifier(FrozenApocalypse.MOD_ID, id), block);
+        BlockItem item = Registry.register(Registries.ITEM, new Identifier(FrozenApocalypse.MOD_ID, id), new BlockItem(block, new FabricItemSettings()));
+        ItemGroupEvents.modifyEntriesEvent(ModItemGroups.RegisteredItemGroups.GENERAL.getItemGroup()).register(content -> content.add(item));
     }
 
     public enum RegisteredBlocks {
@@ -45,16 +39,16 @@ public class ModBlocks {
         DEAD_LEAVES(new LeavesBlock(FabricBlockSettings.create().strength(0.2f).mapColor(MapColor.DIRT_BROWN).ticksRandomly().sounds(BlockSoundGroup.GRASS).nonOpaque().allowsSpawning(net.minecraft.block.Blocks::canSpawnOnLeaves).suffocates(Blocks::never).blockVision(Blocks::never).burnable().pistonBehavior(PistonBehavior.DESTROY).solidBlock(Blocks::never))),
         ICICLE(new IcicleBlock(FabricBlockSettings.create().mapColor(MapColor.PALE_PURPLE).slipperiness(0.98f).solid().instrument(Instrument.BASEDRUM).nonOpaque().sounds(BlockSoundGroup.GLASS).ticksRandomly().strength(1.5F, 3.0F).dynamicBounds().offset(AbstractBlock.OffsetType.XZ).pistonBehavior(PistonBehavior.DESTROY).solidBlock(Blocks::never)));
 
-        private final String name;
+        private final String id;
         private final Block block;
 
         <T extends Block> RegisteredBlocks(T block) {
-            this.name = this.toString().toLowerCase(Locale.ROOT);
+            this.id = this.toString().toLowerCase(Locale.ROOT);
             this.block = block;
         }
 
-        public String getName() {
-            return this.name;
+        public String getId() {
+            return this.id;
         }
 
         public Block getBlock() {
