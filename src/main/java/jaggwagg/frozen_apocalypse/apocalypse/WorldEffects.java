@@ -67,8 +67,8 @@ public final class WorldEffects {
     public static void applyApocalypseEffects(ServerWorld serverWorld, BlockPos blockPos) {
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canGrassTurnToFrostedGrass(), WorldEffects::setFrostedGrass);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canWaterTurnToIce(), WorldEffects::setIce);
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canPlaceSnow(), WorldEffects::setSnow);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canPlaceIcicles(), WorldEffects::setIcicle);
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canPlaceSnow(), WorldEffects::setSnow);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canFrostedGrassTurnToDeadGrass(), WorldEffects::setDeadGrass);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canLeavesTurnToDeadLeaves(), WorldEffects::setDeadLeaves);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canIceTurnToPackedIce(), WorldEffects::setPackedIce);
@@ -106,10 +106,43 @@ public final class WorldEffects {
         }
     }
 
+    private static void setIcicle(ServerWorld serverWorld, BlockPos blockPos) {
+        BlockState blockState = serverWorld.getBlockState(blockPos);
+        BlockState blockStateDown = serverWorld.getBlockState(blockPos.down());
+
+        if (!FrozenApocalypse.CONFIG.isPlacingCustomBlocksEnabled()) {
+            return;
+        }
+
+        if (!(serverWorld.isRaining() || serverWorld.isThundering())) {
+            return;
+        }
+
+        if (blockState.isOf(Blocks.SNOW)) {
+            return;
+        }
+
+        if (blockStateDown.isOf(Blocks.SNOW_BLOCK) || blockStateDown.isOf(Blocks.AIR)) {
+            return;
+        }
+
+        for (int y = 0; y < 5; y++) {
+            if (serverWorld.getBlockState(blockPos.down(y)).isAir() && serverWorld.getRandom().nextInt(2) == 0 && serverWorld.getBlockState(blockPos.down(y - 1)).isOpaque()) {
+                serverWorld.setBlockState(blockPos.down(y), ModBlocks.RegisteredBlocks.ICICLE.getBlock().getDefaultState().with(IcicleBlock.VERTICAL_DIRECTION, Direction.DOWN).with(IcicleBlock.GROWTH, serverWorld.getRandom().nextInt(2)));
+                break;
+            }
+        }
+    }
+
     private static void setSnow(ServerWorld serverWorld, BlockPos blockPos) {
+        BlockState blockState = serverWorld.getBlockState(blockPos);
         BlockState belowBlockState = serverWorld.getBlockState(blockPos.down());
 
         if (!(serverWorld.isRaining() || serverWorld.isThundering())) {
+            return;
+        }
+
+        if (blockState.isOf(Blocks.SNOW)) {
             return;
         }
 
@@ -126,23 +159,6 @@ public final class WorldEffects {
         }
 
         serverWorld.setBlockState(blockPos, Blocks.SNOW.getDefaultState());
-    }
-
-    private static void setIcicle(ServerWorld serverWorld, BlockPos blockPos) {
-        if (!FrozenApocalypse.CONFIG.isPlacingCustomBlocksEnabled()) {
-            return;
-        }
-
-        if (!(serverWorld.isRaining() || serverWorld.isThundering())) {
-            return;
-        }
-
-        for (int y = 0; y < 5; y++) {
-            if (serverWorld.getBlockState(blockPos.down(y)).isAir() && serverWorld.getRandom().nextInt(4) == 0 && serverWorld.getBlockState(blockPos.down(y - 1)).isOpaque()) {
-                serverWorld.setBlockState(blockPos.down(y), ModBlocks.RegisteredBlocks.ICICLE.getBlock().getDefaultState().with(IcicleBlock.VERTICAL_DIRECTION, Direction.DOWN).with(IcicleBlock.GROWTH, serverWorld.getRandom().nextInt(2)));
-                break;
-            }
-        }
     }
 
     private static void setDeadGrass(ServerWorld serverWorld, BlockPos blockPos) {
@@ -193,21 +209,21 @@ public final class WorldEffects {
     }
 
     private static void setSnowBlock(ServerWorld serverWorld, BlockPos blockPos) {
-        BlockState blockState = serverWorld.getBlockState(blockPos.down());
+        BlockState blockStateDown = serverWorld.getBlockState(blockPos.down());
 
         if (!(serverWorld.isRaining() || serverWorld.isThundering())) {
             return;
         }
 
-        if (serverWorld.getBlockState(blockPos.down()).contains(FluidBlock.LEVEL)) {
+        if (blockStateDown.contains(FluidBlock.LEVEL)) {
             return;
         }
 
-        if (serverWorld.getBlockState(blockPos.down()).contains(LeavesBlock.PERSISTENT)) {
+        if (blockStateDown.contains(LeavesBlock.PERSISTENT)) {
             return;
         }
 
-        if (blockState.isOf(Blocks.SNOW_BLOCK) || blockState.isOf(Blocks.AIR)) {
+        if (blockStateDown.isOf(Blocks.SNOW_BLOCK) || blockStateDown.isOf(Blocks.AIR)) {
             return;
         }
 
