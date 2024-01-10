@@ -31,6 +31,7 @@
 - Removed the ability to add custom light source check (contributed to significant performance issues)
 - Removed heat source check delay as it doesn't improve performance
 - Removed severely outdated Simplified Chinese translation
+- Removed disabling the weather
 
 ### <ins>v1.1.4 - Released 2023-12-23</ins>
 
