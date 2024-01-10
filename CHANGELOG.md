@@ -6,7 +6,7 @@
 - Added a 9th apocalypse level, sun is now 90% smaller, entities freeze very quickly
 - Added 4 new mob variants: Cryoboomer (creeper), Frostbite (zombie), Iceweaver (spider), Shiverstare (enderman)
 - These variants are created if the corresponding mob is above the freezing Y level
-- Added 4 new blocks: frosted grass, dead grass, dead leaves, and icicles
+- Added 5 new blocks: frosted grass, dead grass, dead leaves, icicles, and icy cobwebs
 - Each new block spawns during certain apocalypse levels
 - Added config option for minimum light level to avoid freezing for each apocalypse level, further levels increase the minimum light level
 - Added config option for freezing immune entities
