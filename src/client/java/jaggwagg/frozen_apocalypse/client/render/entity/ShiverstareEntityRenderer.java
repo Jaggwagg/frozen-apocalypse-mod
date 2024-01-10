@@ -1,10 +1,8 @@
 package jaggwagg.frozen_apocalypse.client.render.entity;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import net.minecraft.client.render.entity.CreeperEntityRenderer;
 import net.minecraft.client.render.entity.EndermanEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.util.Identifier;
 
