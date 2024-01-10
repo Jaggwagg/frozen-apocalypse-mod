@@ -7,5 +7,6 @@ import net.minecraft.client.render.RenderLayer;
 public class ModBlockRenderLayerMaps {
     public static void init() {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.RegisteredBlocks.ICICLE.getBlock(), RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.RegisteredBlocks.ICY_COBWEB.getBlock(), RenderLayer.getCutout());
     }
 }
