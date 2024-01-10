@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -20,6 +21,7 @@ import java.util.Locale;
 public class ModItems {
     public static void init() {
         Arrays.stream(RegisteredItems.values()).forEach(value -> registerItem(value.getId(), value.getItem()));
+        Arrays.stream(RegisteredSpawnEggs.values()).forEach(value -> registerItem(value.getId(), value.getItem()));
 
         FrozenApocalypse.loggerInfo("Initialized items");
     }
@@ -63,6 +65,29 @@ public class ModItems {
         private final Item item;
 
         <T extends Item> RegisteredItems(T item) {
+            this.id = this.toString().toLowerCase(Locale.ROOT);
+            this.item = item;
+        }
+
+        public String getId() {
+            return this.id;
+        }
+
+        public Item getItem() {
+            return this.item;
+        }
+    }
+
+    public enum RegisteredSpawnEggs {
+        CRYOBOOMER_SPAWN_EGG(new SpawnEggItem(ModEntityTypes.RegisteredMobEntityTypes.CRYOBOOMER.getEntityType(), 0x0ba6a7, 0x000000, new FabricItemSettings())),
+        FROSTBITE_SPAWN_EGG(new SpawnEggItem(ModEntityTypes.RegisteredMobEntityTypes.FROSTBITE.getEntityType(), 0x0b67a7, 0x659c91, new FabricItemSettings())),
+        ICEWEAVER_SPAWN_EGG(new SpawnEggItem(ModEntityTypes.RegisteredMobEntityTypes.ICEWEAVER.getEntityType(), 0x2e3c3e, 0x910c3e, new FabricItemSettings())),
+        SHIVERSTARE_SPAWN_EGG(new SpawnEggItem(ModEntityTypes.RegisteredMobEntityTypes.SHIVERSTARE.getEntityType(), 0x001817, 0x000000, new FabricItemSettings()));
+
+        private final String id;
+        private final Item item;
+
+        <T extends SpawnEggItem> RegisteredSpawnEggs(T item) {
             this.id = this.toString().toLowerCase(Locale.ROOT);
             this.item = item;
         }

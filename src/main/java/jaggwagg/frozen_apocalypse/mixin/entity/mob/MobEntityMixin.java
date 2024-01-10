@@ -22,7 +22,7 @@ public abstract class MobEntityMixin {
     @Inject(method = "canMobSpawn", at = @At("RETURN"), cancellable = true)
     private static void canMobSpawn(EntityType<? extends MobEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
         Set<EntityType<? extends MobEntity>> allowedEntities = new HashSet<>(List.of(
-                EntityType.SKELETON, EntityType.ZOMBIE
+                EntityType.CREEPER, EntityType.ENDERMAN, EntityType.SKELETON, EntityType.SPIDER, EntityType.ZOMBIE
         ));
 
         if (allowedEntities.contains(type)) {

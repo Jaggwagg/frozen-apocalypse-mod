@@ -30,9 +30,15 @@ public class ModConfig {
 
     private void addDefaultFreezingImmuneEntities() {
         this.freezingImmuneEntities.addAll(List.of(
+                new FreezingImmuneEntity("frozen_apocalypse:cryoboomer"),
+                new FreezingImmuneEntity("frozen_apocalypse:frostbite"),
+                new FreezingImmuneEntity("frozen_apocalypse:iceweaver"),
+                new FreezingImmuneEntity("frozen_apocalypse:shiverstare"),
+                new FreezingImmuneEntity("minecraft:creeper"),
                 new FreezingImmuneEntity("minecraft:ender_dragon"),
                 new FreezingImmuneEntity("minecraft:polar_bear"),
                 new FreezingImmuneEntity("minecraft:skeleton"),
+                new FreezingImmuneEntity("minecraft:spider"),
                 new FreezingImmuneEntity("minecraft:stray"),
                 new FreezingImmuneEntity("minecraft:warden"),
                 new FreezingImmuneEntity("minecraft:wither"),

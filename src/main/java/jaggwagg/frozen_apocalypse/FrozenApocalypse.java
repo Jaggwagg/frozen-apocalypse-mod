@@ -24,6 +24,7 @@ public class FrozenApocalypse implements ModInitializer {
     @Override
     public void onInitialize() {
         ModBlocks.init();
+        ModEntityTypes.init();
         ModEvents.init();
         ModGameRules.init();
         ModItems.init();
