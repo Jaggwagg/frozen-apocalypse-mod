@@ -107,19 +107,21 @@ public final class WorldEffects {
     }
 
     private static void setSnow(ServerWorld serverWorld, BlockPos blockPos) {
+        BlockState belowBlockState = serverWorld.getBlockState(blockPos.down());
+
         if (!(serverWorld.isRaining() || serverWorld.isThundering())) {
             return;
         }
 
-        if (serverWorld.getBlockState(blockPos.down()).contains(FluidBlock.LEVEL)) {
+        if (belowBlockState.contains(FluidBlock.LEVEL)) {
             return;
         }
 
-        if (serverWorld.getBlockState(blockPos.down()).contains(LeavesBlock.PERSISTENT)) {
+        if (belowBlockState.contains(LeavesBlock.PERSISTENT)) {
             return;
         }
 
-        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.ICE) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.PACKED_ICE) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.AIR)) {
+        if (belowBlockState.isOf(Blocks.ICE) || belowBlockState.isOf(Blocks.PACKED_ICE) || belowBlockState.isOf(Blocks.AIR) || !belowBlockState.isOpaque()) {
             return;
         }
 
@@ -144,14 +146,15 @@ public final class WorldEffects {
     }
 
     private static void setDeadGrass(ServerWorld serverWorld, BlockPos blockPos) {
-        if (serverWorld.getBlockState(blockPos.down()).isOf(ModBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock())) {
-            BlockState blockState = serverWorld.getBlockState(blockPos.down());
+        BlockState blockState = serverWorld.getBlockState(blockPos);
+        BlockState blockStateDown = serverWorld.getBlockState(blockPos.down());
 
-            if (!(serverWorld.getBlockState(blockPos).isOf(Blocks.SNOW) || serverWorld.getBlockState(blockPos).isOf(Blocks.SNOW_BLOCK) || serverWorld.getBlockState(blockPos).isOf(Blocks.POWDER_SNOW))) {
+        if (blockStateDown.isOf(ModBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock())) {
+            if (!(blockState.isOf(Blocks.SNOW) || blockState.isOf(Blocks.SNOW_BLOCK) || blockState.isOf(Blocks.POWDER_SNOW))) {
                 serverWorld.setBlockState(blockPos, Blocks.AIR.getDefaultState());
             }
 
-            serverWorld.setBlockState(blockPos.down(), ModBlocks.RegisteredBlocks.DEAD_GRASS_BLOCK.getBlock().getStateWithProperties(blockState));
+            serverWorld.setBlockState(blockPos.down(), ModBlocks.RegisteredBlocks.DEAD_GRASS_BLOCK.getBlock().getStateWithProperties(blockStateDown));
         }
     }
 
@@ -190,6 +193,8 @@ public final class WorldEffects {
     }
 
     private static void setSnowBlock(ServerWorld serverWorld, BlockPos blockPos) {
+        BlockState blockState = serverWorld.getBlockState(blockPos.down());
+
         if (!(serverWorld.isRaining() || serverWorld.isThundering())) {
             return;
         }
@@ -202,7 +207,7 @@ public final class WorldEffects {
             return;
         }
 
-        if (serverWorld.getBlockState(blockPos.down()).isOf(Blocks.SNOW_BLOCK) || serverWorld.getBlockState(blockPos.down()).isOf(Blocks.AIR)) {
+        if (blockState.isOf(Blocks.SNOW_BLOCK) || blockState.isOf(Blocks.AIR)) {
             return;
         }
 
