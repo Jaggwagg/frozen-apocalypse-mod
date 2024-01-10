@@ -6,6 +6,7 @@ import java.util.List;
 public class ModConfig {
     private final boolean isFrozenApocalypseEnabled;
     private final boolean isSunSizeChangesEnabled;
+    private final boolean isConvertingMobsEnabled;
     private final boolean isPlacingCustomBlocksEnabled;
     private final List<AffectedDimension> affectedDimensions;
     private final List<FreezingImmuneEntity> freezingImmuneEntities;
@@ -14,6 +15,7 @@ public class ModConfig {
     public ModConfig() {
         this.isFrozenApocalypseEnabled = true;
         this.isSunSizeChangesEnabled = true;
+        this.isConvertingMobsEnabled = true;
         this.isPlacingCustomBlocksEnabled = true;
         this.affectedDimensions = new ArrayList<>();
         this.freezingImmuneEntities = new ArrayList<>();
@@ -68,6 +70,10 @@ public class ModConfig {
 
     public boolean isSunSizeChangesEnabled() {
         return this.isSunSizeChangesEnabled;
+    }
+
+    public boolean isConvertingMobsEnabled() {
+        return this.isConvertingMobsEnabled;
     }
 
     public boolean isPlacingCustomBlocksEnabled() {

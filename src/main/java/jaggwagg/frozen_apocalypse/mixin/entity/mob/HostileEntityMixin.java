@@ -39,6 +39,10 @@ public abstract class HostileEntityMixin {
     private void tickMovement(CallbackInfo ci) {
         HostileEntity hostileEntity = (HostileEntity) (Object) this;
 
+        if (!FrozenApocalypse.CONFIG.isConvertingMobsEnabled()) {
+            return;
+        }
+
         if (hostileEntity.getWorld().isClient || !hostileEntity.isAlive() || hostileEntity.isAiDisabled()) {
             return;
         }
