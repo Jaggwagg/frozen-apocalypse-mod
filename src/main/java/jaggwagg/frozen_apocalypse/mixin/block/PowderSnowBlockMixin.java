@@ -1,7 +1,6 @@
 package jaggwagg.frozen_apocalypse.mixin.block;
 
 import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
-import jaggwagg.frozen_apocalypse.registry.ModItems;
 import jaggwagg.frozen_apocalypse.registry.ModStatusEffects;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PowderSnowBlock;
