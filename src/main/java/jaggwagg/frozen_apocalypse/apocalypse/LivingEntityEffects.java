@@ -14,6 +14,9 @@ public class LivingEntityEffects {
     public static void freezeLivingEntity(World world, LivingEntity livingEntity) {
         if (!LivingEntityEffects.isNearHeatSource(world, livingEntity)) {
             if (FrozenApocalypse.apocalypseLevel.canFreezeEntities() && livingEntity.getY() >= FrozenApocalypse.apocalypseLevel.getFreezingYLevel()) {
+                float freezeDamage = FrozenApocalypse.apocalypseLevel.getFreezeDamage();
+                int freezeDamageDelay = FrozenApocalypse.apocalypseLevel.getFreezeDamageDelay();
+
                 if (!livingEntity.inPowderSnow) {
                     livingEntity.setInPowderSnow(true);
                 }
@@ -22,9 +25,9 @@ public class LivingEntityEffects {
                     livingEntity.setOnFire(false);
                 }
 
-                if (FrozenApocalypse.apocalypseLevel.getFreezeDamageDelay() > 0 && FrozenApocalypse.apocalypseLevel.getFreezeDamage() > 0) {
-                    if (world.getRandom().nextInt(FrozenApocalypse.apocalypseLevel.getFreezeDamageDelay() + 1) == 1) {
-                        livingEntity.damage(world.getDamageSources().freeze(), FrozenApocalypse.apocalypseLevel.getFreezeDamage());
+                if (freezeDamageDelay > 0 && freezeDamage > 0.0f) {
+                    if (world.getRandom().nextInt(freezeDamageDelay + 1) == 1) {
+                        livingEntity.damage(world.getDamageSources().freeze(), freezeDamage);
                     }
                 }
             }
@@ -32,9 +35,7 @@ public class LivingEntityEffects {
     }
 
     public static boolean isNearHeatSource(World world, LivingEntity livingEntity) {
-        int livingEntityBlockPosLightLevel = world.getLightLevel(LightType.BLOCK, livingEntity.getBlockPos());
-
-        return livingEntityBlockPosLightLevel > FrozenApocalypse.apocalypseLevel.getMinimumHeatSourceDistance();
+        return world.getLightLevel(LightType.BLOCK, livingEntity.getBlockPos()) > FrozenApocalypse.apocalypseLevel.getMinimumHeatSourceDistance();
     }
 
     public static boolean shouldSkipFreezingChecks(World world, LivingEntity livingEntity) {

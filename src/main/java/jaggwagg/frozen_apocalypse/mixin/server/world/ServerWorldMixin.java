@@ -15,6 +15,7 @@ public abstract class ServerWorldMixin {
     @Inject(method = "tickChunk", at = @At("TAIL"))
     private void tickChunk(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
         ServerWorld serverWorld = (ServerWorld) (Object) this;
+        int updateSpeed = WorldEffects.calculateUpdateSpeed(serverWorld);
 
         if (WorldEffects.shouldSkipTick(serverWorld)) {
             return;
@@ -26,8 +27,6 @@ public abstract class ServerWorldMixin {
         if (FrozenApocalypse.CONFIG.isSunSizeChangesEnabled()) {
             WorldEffects.sendFrozenApocalypseLevelToPlayers(serverWorld);
         }
-
-        int updateSpeed = WorldEffects.calculateUpdateSpeed(serverWorld);
 
         if (updateSpeed < 1 || serverWorld.getRandom().nextInt(updateSpeed) > 1) {
             return;

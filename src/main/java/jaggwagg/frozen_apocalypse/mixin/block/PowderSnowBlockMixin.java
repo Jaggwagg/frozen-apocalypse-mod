@@ -31,7 +31,7 @@ public abstract class PowderSnowBlockMixin {
         if (entity instanceof LivingEntity livingEntity) {
             hasFrostResistance(livingEntity);
 
-            if (livingEntity.getEquippedStack(EquipmentSlot.FEET).isOf(ModItems.RegisteredItems.IRON_THERMAL_BOOTS.getItem())) {
+            if (livingEntity.getEquippedStack(EquipmentSlot.FEET).getItem() instanceof ThermalArmorItem) {
                 cir.setReturnValue(true);
             }
         }
