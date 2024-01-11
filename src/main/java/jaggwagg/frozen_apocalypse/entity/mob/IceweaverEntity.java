@@ -6,13 +6,12 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.SpiderEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class IceweaverEntity extends SpiderEntity {
+public class IceweaverEntity extends SpiderEntity implements SlownessAfflicting {
     public IceweaverEntity(EntityType<? extends IceweaverEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -22,15 +21,16 @@ public class IceweaverEntity extends SpiderEntity {
         boolean attacked = super.tryAttack(target);
 
         if (attacked && this.getMainHandStack().isEmpty() && target instanceof LivingEntity) {
-            BlockState targetBlockState = target.getWorld().getBlockState(target.getBlockPos());
-            int duration = (int) this.getWorld().getLocalDifficulty(this.getBlockPos()).getLocalDifficulty();
-            ((LivingEntity)target).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 140 * duration), this);
+            BlockPos targetBlockPos = target.getBlockPos();
+            BlockState icyCobwebDefaultState = ModBlocks.RegisteredBlocks.ICY_COBWEB.getBlock().getDefaultState();
 
-            if (this.getWorld().getRandom().nextInt(8) == 0) {
-                if (targetBlockState.isAir() || targetBlockState.isOf(Blocks.SNOW)) {
-                    target.getWorld().setBlockState(target.getBlockPos(), ModBlocks.RegisteredBlocks.ICY_COBWEB.getBlock().getDefaultState());
+            if (this.getWorld().getRandom().nextInt(4) == 0) {
+                if (icyCobwebDefaultState.canPlaceAt(target.getWorld(), targetBlockPos)) {
+                    target.getWorld().setBlockState(target.getBlockPos(), icyCobwebDefaultState);
                 }
             }
+
+            this.inflictSlowness(this, (LivingEntity) target);
         }
 
         return attacked;
