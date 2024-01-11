@@ -7,14 +7,14 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 
-public class DeadGrassBlock extends GrassBlock {
+public class DeadGrassBlock extends GrassBlock implements FrozenSurvivable {
     public DeadGrassBlock(Settings settings) {
         super(settings);
     }
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if (FrozenSurvivable.canNotSurvive(state, world, pos)) {
+        if (this.canNotSurvive(state, world, pos)) {
             world.setBlockState(pos, ModBlocks.RegisteredBlocks.PERMAFROST.getBlock().getDefaultState());
         }
     }
