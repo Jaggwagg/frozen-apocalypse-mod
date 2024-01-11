@@ -42,7 +42,7 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
 
     public IcicleBlock(AbstractBlock.Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(VERTICAL_DIRECTION, Direction.UP).with(THICKNESS, Thickness.TIP).with(GROWTH, 0).with(WATERLOGGED, false));
+        this.setDefaultState(this.stateManager.getDefaultState().with(VERTICAL_DIRECTION, Direction.DOWN).with(THICKNESS, Thickness.TIP).with(GROWTH, 0).with(WATERLOGGED, false));
     }
 
     private static void spawnFallingBlock(BlockState state, ServerWorld world, BlockPos pos) {
@@ -54,7 +54,9 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
             if (isTip(blockState)) {
                 int i = Math.max(1 + pos.getY() - mutable.getY(), 6);
                 float f = (float) i;
+
                 fallingBlockEntity.setHurtEntities(f, 40);
+
                 break;
             }
 
@@ -95,32 +97,36 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
 
     @Nullable
     private static Direction getDirectionToPlaceAt(WorldView world, BlockPos pos, Direction direction) {
-        Direction direction2;
+        Direction placingDirection;
+
         if (canPlaceAtWithDirection(world, pos, direction)) {
-            direction2 = direction;
+            placingDirection = direction;
         } else {
             if (!canPlaceAtWithDirection(world, pos, direction.getOpposite())) {
                 return null;
             }
 
-            direction2 = direction.getOpposite();
+            placingDirection = direction.getOpposite();
         }
 
-        return direction2;
+        return placingDirection;
     }
 
     private static Thickness getThickness(WorldView world, BlockPos pos, Direction direction, boolean tryMerge) {
-        Direction direction2 = direction.getOpposite();
+        Direction oppositeDirection = direction.getOpposite();
         BlockState blockState = world.getBlockState(pos.offset(direction));
-        if (isIcicleFacingDirection(blockState, direction2)) {
+
+        if (isIcicleFacingDirection(blockState, oppositeDirection)) {
             return !tryMerge && blockState.get(THICKNESS) != Thickness.TIP_MERGE ? Thickness.TIP : Thickness.TIP_MERGE;
         } else if (!isIcicleFacingDirection(blockState, direction)) {
             return Thickness.TIP;
         } else {
             Thickness thickness = blockState.get(THICKNESS);
+
             if (thickness != Thickness.TIP && thickness != Thickness.TIP_MERGE) {
-                BlockState blockState2 = world.getBlockState(pos.offset(direction2));
-                return !isIcicleFacingDirection(blockState2, direction) ? Thickness.BASE : Thickness.MIDDLE;
+                BlockState nextBlockState = world.getBlockState(pos.offset(oppositeDirection));
+
+                return !isIcicleFacingDirection(nextBlockState, direction) ? Thickness.BASE : Thickness.MIDDLE;
             } else {
                 return Thickness.FRUSTUM;
             }
@@ -130,6 +136,7 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
     private static boolean canPlaceAtWithDirection(WorldView world, BlockPos pos, Direction direction) {
         BlockPos blockPos = pos.offset(direction.getOpposite());
         BlockState blockState = world.getBlockState(blockPos);
+
         return blockState.isSideSolidFullSquare(world, blockPos, direction) || isIcicleFacingDirection(blockState, direction);
     }
 
@@ -138,6 +145,7 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
             return false;
         } else {
             Thickness thickness = state.get(THICKNESS);
+
             return thickness == Thickness.TIP || thickness == Thickness.TIP_MERGE;
         }
     }
@@ -178,11 +186,12 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
         if (direction != Direction.UP && direction != Direction.DOWN) {
             return state;
         } else {
-            Direction direction2 = state.get(VERTICAL_DIRECTION);
-            if (direction2 == Direction.DOWN && world.getBlockTickScheduler().isQueued(pos, this)) {
+            Direction verticalDirection = state.get(VERTICAL_DIRECTION);
+
+            if (verticalDirection == Direction.DOWN && world.getBlockTickScheduler().isQueued(pos, this)) {
                 return state;
-            } else if (direction == direction2.getOpposite() && !this.canPlaceAt(state, world, pos)) {
-                if (direction2 == Direction.DOWN) {
+            } else if (direction == verticalDirection.getOpposite() && !this.canPlaceAt(state, world, pos)) {
+                if (verticalDirection == Direction.DOWN) {
                     world.scheduleBlockTick(pos, this, 2);
                 } else {
                     world.scheduleBlockTick(pos, this, 1);
@@ -190,8 +199,9 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
 
                 return state;
             } else {
-                boolean bl = state.get(THICKNESS) == Thickness.TIP_MERGE;
-                Thickness thickness = getThickness(world, pos, direction2, bl);
+                boolean isMerge = state.get(THICKNESS) == Thickness.TIP_MERGE;
+                Thickness thickness = getThickness(world, pos, verticalDirection, isMerge);
+
                 return state.with(THICKNESS, thickness);
             }
         }
@@ -241,13 +251,15 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
         WorldAccess worldAccess = ctx.getWorld();
         BlockPos blockPos = ctx.getBlockPos();
         Direction direction = ctx.getVerticalPlayerLookDirection().getOpposite();
-        Direction direction2 = getDirectionToPlaceAt(worldAccess, blockPos, direction);
-        if (direction2 == null) {
+        Direction placingDirection = getDirectionToPlaceAt(worldAccess, blockPos, direction);
+
+        if (placingDirection == null) {
             return null;
         } else {
-            boolean bl = !ctx.shouldCancelInteraction();
-            Thickness thickness = getThickness(worldAccess, blockPos, direction2, bl);
-            return thickness == null ? null : this.getDefaultState().with(VERTICAL_DIRECTION, direction2).with(THICKNESS, thickness).with(WATERLOGGED, worldAccess.getFluidState(blockPos).getFluid() == Fluids.WATER);
+            boolean canMerge = !ctx.shouldCancelInteraction();
+            Thickness thickness = getThickness(worldAccess, blockPos, placingDirection, canMerge);
+
+            return thickness == null ? null : this.getDefaultState().with(VERTICAL_DIRECTION, placingDirection).with(THICKNESS, thickness).with(WATERLOGGED, worldAccess.getFluidState(blockPos).getFluid() == Fluids.WATER);
         }
     }
 
@@ -268,6 +280,7 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         Thickness thickness = state.get(THICKNESS);
         VoxelShape voxelShape;
+
         if (thickness == Thickness.TIP_MERGE) {
             voxelShape = TIP_MERGE_SHAPE;
         } else if (thickness == Thickness.TIP) {
@@ -284,8 +297,9 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
             voxelShape = MIDDLE_SHAPE;
         }
 
-        Vec3d vec3d = state.getModelOffset(world, pos);
-        return voxelShape.offset(vec3d.x, 0.0, vec3d.z);
+        Vec3d modelOffset = state.getModelOffset(world, pos);
+
+        return voxelShape.offset(modelOffset.x, 0.0, modelOffset.z);
     }
 
     @Override
@@ -302,7 +316,6 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
         if (!fallingBlockEntity.isSilent()) {
             world.syncWorldEvent(1045, pos, 0);
         }
-
     }
 
     @Override
