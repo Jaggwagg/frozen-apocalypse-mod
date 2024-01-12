@@ -1,6 +1,6 @@
 # Frozen Apocalypse Mod - Changelog
 
-### <ins>v1.2.0 - Unreleased</ins>
+### <ins>v1.2.0 - Released 2024-1-12</ins>
 
 ##### Added
 - Added a 9th apocalypse level, sun is now 90% smaller, entities freeze very quickly
