@@ -30,7 +30,7 @@ jobs:
       - name: Publish (GitHub/Modrinth/CurseForge)
         uses: Kir-Antipov/mc-publish@v3.2
         with:
-          github-token: "${{secrets.GITHUB_TOKEN}}"
+          github-token: "${{secrets.GH_TOKEN}}"
 
           modrinth-id: lP4Oae7B
           modrinth-token: "${{secrets.MODRINTH_TOKEN}}"
