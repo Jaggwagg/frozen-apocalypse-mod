@@ -5,6 +5,7 @@
   "mixins": [
     "block.PowderSnowBlockMixin",
     "entity.LivingEntityMixin",
+    "entity.mob.EndermanEntityMixin",
     "entity.mob.HostileEntityMixin",
     "entity.mob.MobEntityMixin",
     "entity.mob.WaterCreatureEntityMixin",
