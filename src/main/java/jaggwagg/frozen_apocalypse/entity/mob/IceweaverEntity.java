@@ -38,8 +38,10 @@ public class IceweaverEntity extends SpiderEntity implements SlownessAfflicting 
 
     @Override
     public void slowMovement(BlockState state, Vec3d multiplier) {
-        if (!state.isOf(Blocks.COBWEB) || !state.isOf(ModBlocks.RegisteredBlocks.ICY_COBWEB.getBlock())) {
-            super.slowMovement(state, multiplier);
+        if (state.isOf(Blocks.COBWEB) || state.isOf(ModBlocks.RegisteredBlocks.ICY_COBWEB.getBlock())) {
+            return;
         }
+
+        super.slowMovement(state, multiplier);
     }
 }
