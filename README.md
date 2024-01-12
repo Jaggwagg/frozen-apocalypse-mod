@@ -73,4 +73,4 @@ If substantive changes are made after the pull request has been marked Approved 
 - Avoid just `merge` as it will create an extraneous merge commit
 
 ## License
-* Current - [GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/)
+[GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/)
