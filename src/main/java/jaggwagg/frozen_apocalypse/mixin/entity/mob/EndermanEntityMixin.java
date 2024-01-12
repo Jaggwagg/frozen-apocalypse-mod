@@ -20,6 +20,10 @@ public class EndermanEntityMixin {
         EndermanEntity endermanEntity = (EndermanEntity) (Object) this;
         ItemStack itemStack = player.getInventory().armor.get(3);
 
+        if (player.isCreative() || player.isSpectator()) {
+            return;
+        }
+
         if (!itemStack.isOf(Blocks.CARVED_PUMPKIN.asItem())) {
             Vec3d vec3d = player.getRotationVec(1.0F).normalize();
             Vec3d vec3d2 = new Vec3d(endermanEntity.getX() - player.getX(), endermanEntity.getEyeY() - player.getEyeY(), endermanEntity.getZ() - player.getZ());
