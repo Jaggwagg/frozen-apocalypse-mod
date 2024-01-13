@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,15 +16,24 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ModConfigManager {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void saveConfig(ModConfig config, String filePath) {
-        try (FileWriter writer = new FileWriter(filePath)) {
-            Gson gson = new GsonBuilder()
-                    .disableHtmlEscaping()
-                    .setPrettyPrinting()
-                    .serializeNulls()
-                    .create();
-            gson.toJson(config, writer);
-            FrozenApocalypse.loggerInfo("Configuration saved successfully");
+        File file = new File(filePath);
+
+        try {
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            }
+            try (FileWriter writer = new FileWriter(file)) {
+                Gson gson = new GsonBuilder()
+                        .disableHtmlEscaping()
+                        .setPrettyPrinting()
+                        .serializeNulls()
+                        .create();
+                gson.toJson(config, writer);
+                FrozenApocalypse.loggerInfo("Configuration saved successfully");
+            }
         } catch (IOException e) {
             FrozenApocalypse.loggerInfo("Unable to write file: " + e.getMessage());
         }
