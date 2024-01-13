@@ -1,15 +1,15 @@
-<img alt="frozen_apocalypse_logo" src="https://github.com/Jaggwagg/frozen-apocalypse-mod/assets/33637354/0d136f19-88e3-4486-b11e-9f0fe5b043d7">
-
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Jaggwagg/frozen-apocalypse-mod/build.yml?style=flat-square&logo=github)
-![Static Badge](https://img.shields.io/badge/loader-fabric-fdf2d5?style=flat-square&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAADQAAAA4CAMAAACFZCuiAAAAGFBMVEUAAAA4NCqAem2akn6uppS8spzGvKXb0LRXf0qqAAAAAXRSTlMAQObYZgAAAH5JREFUSMfV1kEKwCAMRFFta73%2FjTsBA0GixK4mf9XN2wxVLGVTReU0YiSgoyOYAL3oCBIjO0JDIUiM7ABhSIx0AMmDdZQFWWChpOBCWdBqAKmNtiOQIfl4kDeAIvcvIEc3mqEdwD14xGgFtyABmmEIJEAWujdpUqTw1%2BOQB32HlBchz2KP1gAAAABJRU5ErkJggg%3D%3D&link=https%3A%2F%2Ffabricmc.net%2F)
-![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.modrinth.com%2Fv2%2Fproject%2FlP4Oae7B&query=downloads&style=flat-square&logo=modrinth&label=modrinth&color=lightgreen)
-![Static Badge](https://img.shields.io/badge/curseforge-download-darkorange?style=flat-square&logo=curseforge&link=https%3A%2F%2Fwww.curseforge.com%2Fminecraft%2Fmc-mods%2Ffrozen-apocalypse)
+![Logo](https://github.com/Jaggwagg/frozen-apocalypse-mod/assets/33637354/0d136f19-88e3-4486-b11e-9f0fe5b043d7)
+<a><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Jaggwagg/frozen-apocalypse-mod/build.yml?style=flat-square&logo=github"></a>
+<a href="https://fabricmc.net/"><img alt="Static Badge" src="https://img.shields.io/badge/loader-fabric-fdf2d5?style=flat-square&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAADQAAAA4CAMAAACFZCuiAAAAGFBMVEUAAAA4NCqAem2akn6uppS8spzGvKXb0LRXf0qqAAAAAXRSTlMAQObYZgAAAH5JREFUSMfV1kEKwCAMRFFta73%2FjTsBA0GixK4mf9XN2wxVLGVTReU0YiSgoyOYAL3oCBIjO0JDIUiM7ABhSIx0AMmDdZQFWWChpOBCWdBqAKmNtiOQIfl4kDeAIvcvIEc3mqEdwD14xGgFtyABmmEIJEAWujdpUqTw1%2BOQB32HlBchz2KP1gAAAABJRU5ErkJggg%3D%3D"></a>
+<a href="https://modrinth.com/mod/frozen-apocalypse"><img alt="Dynamic JSON Badge" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.modrinth.com%2Fv2%2Fproject%2FlP4Oae7B&query=downloads&style=flat-square&logo=modrinth&label=modrinth&color=00af5c"></a>
+<a href="https://www.curseforge.com/minecraft/mc-mods/frozen-apocalypse"><img alt="Static Badge" src="https://img.shields.io/badge/curseforge-download-orange?style=flat-square&logo=curseforge"></a>
+<a href="https://choosealicense.com/licenses/gpl-3.0/"><img alt="Static Badge" src="https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square&logo=GNU"></a>
 
 Frozen Apocalypse is an open source Minecraft mod designed to add a challenge to your Minecraft world. The sun is quickly moving away from your world, eventually freezing the surface and making it uninhabitable.
 <h4><ins>Warning! This will destroy your world! Make backups!</ins></h4>
 
 ## Forge Users
-Frozen Apocalypse is compatible with Sinytra Connector (Minecraft 1.20.1). For instructions, click ![here](https://github.com/Sinytra/Connector).
+Frozen Apocalypse is compatible with Sinytra Connector (Minecraft 1.20.1). For instructions, click [here](https://github.com/Sinytra/Connector).
 
 ## Premise
 Have you ever wanted to freeze your Minecraft world, turning it into a frozen wasteland. Is Minecraft too easy for you or do you just want a reason to make an awesome underground base? If so, this mod is for you!
