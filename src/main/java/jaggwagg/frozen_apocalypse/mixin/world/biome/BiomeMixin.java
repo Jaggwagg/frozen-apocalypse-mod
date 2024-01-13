@@ -12,6 +12,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class BiomeMixin {
     @Inject(method = "doesNotSnow", at = @At("RETURN"), cancellable = true)
     private void doesNotSnow(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        if (!FrozenApocalypse.CONFIG.isFrozenApocalypseEnabled()) {
+            return;
+        }
+
         if (FrozenApocalypse.apocalypseLevel.canAllBiomesSnow()) {
             cir.setReturnValue(false);
         }
@@ -19,6 +23,10 @@ public abstract class BiomeMixin {
 
     @Inject(method = "hasPrecipitation", at = @At("RETURN"), cancellable = true)
     public void hasPrecipitation(CallbackInfoReturnable<Boolean> cir) {
+        if (!FrozenApocalypse.CONFIG.isFrozenApocalypseEnabled()) {
+            return;
+        }
+
         if (FrozenApocalypse.apocalypseLevel.canAllBiomesSnow()) {
             cir.setReturnValue(true);
         }
