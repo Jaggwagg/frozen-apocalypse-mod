@@ -1,5 +1,10 @@
 # Frozen Apocalypse Mod - Changelog
 
+### <ins>v1.2.1 - Unreleased</ins>
+
+##### Fixed
+- Dimension ids (actually world ids) not being checked properly
+
 ### <ins>v1.2.0 - Released 2024-1-12</ins>
 
 ##### Added
