@@ -15,9 +15,7 @@ public class AllEffects {
                 ServerWorld serverWorld = worldAccess.getServer().getWorld(RegistryKey.of(RegistryKeys.WORLD, new Identifier(affectedDimension.getId())));
 
                 if (serverWorld != null) {
-                    String worldId = serverWorld.getRegistryKey().getValue().toString();
-
-                    if (affectedDimension.getId().equals(worldId)) {
+                    if (serverWorld.getDimension().equals(worldAccess.getDimension())) {
                         return false;
                     }
                 }
