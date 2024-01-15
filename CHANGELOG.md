@@ -1,9 +1,10 @@
 # Frozen Apocalypse Mod - Changelog
 
-### <ins>v1.2.1 - Unreleased</ins>
+### <ins>v1.2.1 - Released 2024-1-15</ins>
 
 ##### Fixed
 - Dimension ids (actually world ids) not being checked properly
+- Icy cobwebs not breaking fast with swords or shears
 
 ### <ins>v1.2.0 - Released 2024-1-12</ins>
 
