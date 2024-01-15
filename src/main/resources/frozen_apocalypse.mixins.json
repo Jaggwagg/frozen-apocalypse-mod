@@ -10,6 +10,8 @@
     "entity.mob.MobEntityMixin",
     "entity.mob.WaterCreatureEntityMixin",
     "entity.passive.AnimalEntityMixin",
+    "item.ShearsItemMixin",
+    "item.SwordItemMixin",
     "server.world.ServerWorldMixin",
     "world.biome.BiomeMixin"
   ],
