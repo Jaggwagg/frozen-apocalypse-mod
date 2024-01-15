@@ -61,7 +61,6 @@ For setup instructions please see the [fabric wiki page](https://fabricmc.net/wi
 - Mark unfinished pull requests with the `wip` label
 - When you start work on something you should have a pull request opened that same day or at least as soon as possible so others can be aware of the changes you are making
 - You as the person opening the pull request should assign a reviewer
-- The project leader has the final say for all pull requests and mergers
 
 ### Merging
 Once your pull request has been Approved it may be merged at your discretion. In most cases responsibility for merging is left to the person who opened the pull request, however for simple pull requests it is fine for anyone to merge.
