@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": {
+      "item": "minecraft:golden_boots"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "LXL",
+    "LLL"
+  ],
+  "result": {
+    "item": "frozen_apocalypse:golden_thermal_boots"
+  }
+}
