@@ -62,5 +62,5 @@ See the changelogs [here](docs/CHANGELOG.md).
 
 ## License
 * [GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/) - Project (codebase)
-* (no assets, just placeholder) [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en) - Assets (textures/models)
-* (no assets, just placeholder) [Minecraft EULA](https://www.minecraft.net/en-us/eula) - Mojang derivative assets (any asset derived from Mojang, ex. like a Creeper texture colored blue)
+* [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en) - Assets (textures/models)
+* [Minecraft EULA](https://www.minecraft.net/en-us/eula) - Mojang derivative assets (any asset derived from Mojang, ex. like a Creeper texture colored blue)
