@@ -1,5 +1,11 @@
 # Frozen Apocalypse Mod - Changelog
 
+### <ins>v1.2.2 - Unreleased</ins>
+
+##### Added
+- Added golden thermal armor
+- Added iron, gold, and diamond thermal horse armor
+
 ### <ins>v1.2.1 - Released 2024-1-15</ins>
 
 ##### Fixed
