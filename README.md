@@ -55,21 +55,12 @@ git clone https://github.com/Jaggwagg/frozen-apocalypse.git
 For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
 
 ## Contributing
-### Rules
-- Pull requests should always be reviewed by at least one other member prior to being merged
-  - Exceptions include very small pull requests that are not critical to functionality (function renaming, etc.)
-- Mark unfinished pull requests with the `wip` label
-- When you start work on something you should have a pull request opened that same day or at least as soon as possible so others can be aware of the changes you are making
-- You as the person opening the pull request should assign a reviewer
+See the contributing guidelines [here](docs/CONTRIBUTING.md).
 
-### Merging
-Once your pull request has been Approved it may be merged at your discretion. In most cases responsibility for merging is left to the person who opened the pull request, however for simple pull requests it is fine for anyone to merge.
-
-If substantive changes are made after the pull request has been marked Approved you should ask for an additional round of review.
-
-- Use `squash and merge` if all commits in the PR can be summarized succinctly by a single message
-- Use `rebase and merge` if each commit in the PR has its own significance
-- Avoid just `merge` as it will create an extraneous merge commit
+## Changelog
+See the changelogs [here](docs/CHANGELOG.md).
 
 ## License
-[GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/)
+* [GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/) - Project (codebase)
+* (no assets, just placeholder) [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en) - Assets (textures/models)
+* (no assets, just placeholder) [Minecraft EULA](https://www.minecraft.net/en-us/eula) - Mojang derivative assets (any asset derived from Mojang, ex. like a Creeper texture colored blue)
