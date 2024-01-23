@@ -1,10 +1,7 @@
 package jaggwagg.frozen_apocalypse.registry;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.item.DiamondThermalArmorMaterial;
-import jaggwagg.frozen_apocalypse.item.IronThermalArmorMaterial;
-import jaggwagg.frozen_apocalypse.item.NetheriteThermalArmorMaterial;
-import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
+import jaggwagg.frozen_apocalypse.item.*;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.ArmorItem;
@@ -32,6 +29,7 @@ public class ModItems {
     }
 
     public enum RegisteredArmorMaterials {
+        GOLD_THERMAL_ARMOR(new GoldThermalArmorMaterial()),
         IRON_THERMAL_ARMOR(new IronThermalArmorMaterial()),
         DIAMOND_THERMAL_ARMOR(new DiamondThermalArmorMaterial()),
         NETHERITE_THERMAL_ARMOR(new NetheriteThermalArmorMaterial());
@@ -48,14 +46,21 @@ public class ModItems {
     }
 
     public enum RegisteredItems {
-        IRON_THERMAL_HELMET(new ThermalArmorItem(RegisteredArmorMaterials.IRON_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.HELMET, new FabricItemSettings())),
-        IRON_THERMAL_CHESTPLATE(new ThermalArmorItem(RegisteredArmorMaterials.IRON_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.CHESTPLATE, new FabricItemSettings())),
-        IRON_THERMAL_LEGGINGS(new ThermalArmorItem(RegisteredArmorMaterials.IRON_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.LEGGINGS, new FabricItemSettings())),
-        IRON_THERMAL_BOOTS(new ThermalArmorItem(RegisteredArmorMaterials.IRON_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.BOOTS, new FabricItemSettings())),
+        DIAMOND_THERMAL_HORSE_ARMOR(new ThermalHorseArmorItem(11, "diamond_thermal", new FabricItemSettings().maxCount(1))),
         DIAMOND_THERMAL_HELMET(new ThermalArmorItem(RegisteredArmorMaterials.DIAMOND_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.HELMET, new FabricItemSettings())),
         DIAMOND_THERMAL_CHESTPLATE(new ThermalArmorItem(RegisteredArmorMaterials.DIAMOND_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.CHESTPLATE, new FabricItemSettings())),
         DIAMOND_THERMAL_LEGGINGS(new ThermalArmorItem(RegisteredArmorMaterials.DIAMOND_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.LEGGINGS, new FabricItemSettings())),
         DIAMOND_THERMAL_BOOTS(new ThermalArmorItem(RegisteredArmorMaterials.DIAMOND_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.BOOTS, new FabricItemSettings())),
+        GOLDEN_THERMAL_HORSE_ARMOR(new ThermalHorseArmorItem(7, "golden_thermal", new FabricItemSettings().maxCount(1))),
+        GOLDEN_THERMAL_HELMET(new ThermalArmorItem(RegisteredArmorMaterials.GOLD_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.HELMET, new FabricItemSettings())),
+        GOLDEN_THERMAL_CHESTPLATE(new ThermalArmorItem(RegisteredArmorMaterials.GOLD_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.CHESTPLATE, new FabricItemSettings())),
+        GOLDEN_THERMAL_LEGGINGS(new ThermalArmorItem(RegisteredArmorMaterials.GOLD_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.LEGGINGS, new FabricItemSettings())),
+        GOLDEN_THERMAL_BOOTS(new ThermalArmorItem(RegisteredArmorMaterials.GOLD_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.BOOTS, new FabricItemSettings())),
+        IRON_THERMAL_HORSE_ARMOR(new ThermalHorseArmorItem(5, "iron_thermal", new FabricItemSettings().maxCount(1))),
+        IRON_THERMAL_HELMET(new ThermalArmorItem(RegisteredArmorMaterials.IRON_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.HELMET, new FabricItemSettings())),
+        IRON_THERMAL_CHESTPLATE(new ThermalArmorItem(RegisteredArmorMaterials.IRON_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.CHESTPLATE, new FabricItemSettings())),
+        IRON_THERMAL_LEGGINGS(new ThermalArmorItem(RegisteredArmorMaterials.IRON_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.LEGGINGS, new FabricItemSettings())),
+        IRON_THERMAL_BOOTS(new ThermalArmorItem(RegisteredArmorMaterials.IRON_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.BOOTS, new FabricItemSettings())),
         NETHERITE_THERMAL_HELMET(new ThermalArmorItem(RegisteredArmorMaterials.NETHERITE_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.HELMET, new FabricItemSettings())),
         NETHERITE_THERMAL_CHESTPLATE(new ThermalArmorItem(RegisteredArmorMaterials.NETHERITE_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.CHESTPLATE, new FabricItemSettings())),
         NETHERITE_THERMAL_LEGGINGS(new ThermalArmorItem(RegisteredArmorMaterials.NETHERITE_THERMAL_ARMOR.getMaterial(), ArmorItem.Type.LEGGINGS, new FabricItemSettings())),
