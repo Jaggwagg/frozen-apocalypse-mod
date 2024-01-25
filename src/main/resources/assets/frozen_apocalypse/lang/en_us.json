@@ -17,7 +17,7 @@
   "gamerule.frozenApocalypseLevelUpdatesEachDay": "Apocalypse level updates each day",
   "gamerule.frozenApocalypseMaxLevel": "Apocalypse maximum level",
   "gamerule.frozenApocalypseWorldUpdateSpeed": "Apocalypse world update speed",
-  "group.frozen_apocalypse.general": "Frozen Apocalypse",
+  "group.frozen_apocalypse.frozen_apocalypse": "Frozen Apocalypse",
   "item.frozen_apocalypse.cryoboomer_spawn_egg": "Cryoboomer Spawn Egg",
   "item.frozen_apocalypse.diamond_thermal_boots": "Diamond Thermal Boots",
   "item.frozen_apocalypse.diamond_thermal_chestplate": "Diamond Thermal Chestplate",

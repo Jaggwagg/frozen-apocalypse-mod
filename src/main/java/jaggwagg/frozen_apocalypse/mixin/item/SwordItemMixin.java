@@ -1,6 +1,6 @@
 package jaggwagg.frozen_apocalypse.mixin.item;
 
-import jaggwagg.frozen_apocalypse.registry.ModBlocks;
+import jaggwagg.frozen_apocalypse.block.ModBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class SwordItemMixin {
     @Inject(method = "getMiningSpeedMultiplier", at = @At("RETURN"), cancellable = true)
     public void getMiningSpeedMultiplier(ItemStack stack, BlockState state, CallbackInfoReturnable<Float> cir) {
-        if (state.isOf(ModBlocks.RegisteredBlocks.ICY_COBWEB.getBlock())) {
+        if (state.isOf(ModBlocks.ICY_COBWEB.getBlock())) {
             cir.setReturnValue(15.0f);
         }
     }

@@ -1,6 +1,6 @@
 package jaggwagg.frozen_apocalypse.entity.mob;
 
-import jaggwagg.frozen_apocalypse.registry.ModBlocks;
+import jaggwagg.frozen_apocalypse.block.ModBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -22,7 +22,7 @@ public class IceweaverEntity extends SpiderEntity implements SlownessAfflicting 
 
         if (attacked && this.getMainHandStack().isEmpty() && target instanceof LivingEntity) {
             BlockPos targetBlockPos = target.getBlockPos();
-            BlockState icyCobwebDefaultState = ModBlocks.RegisteredBlocks.ICY_COBWEB.getBlock().getDefaultState();
+            BlockState icyCobwebDefaultState = ModBlocks.ICY_COBWEB.getBlock().getDefaultState();
 
             if (this.getWorld().getRandom().nextInt(4) == 0) {
                 if (icyCobwebDefaultState.canPlaceAt(target.getWorld(), targetBlockPos)) {
@@ -38,7 +38,7 @@ public class IceweaverEntity extends SpiderEntity implements SlownessAfflicting 
 
     @Override
     public void slowMovement(BlockState state, Vec3d multiplier) {
-        if (state.isOf(Blocks.COBWEB) || state.isOf(ModBlocks.RegisteredBlocks.ICY_COBWEB.getBlock())) {
+        if (state.isOf(Blocks.COBWEB) || state.isOf(ModBlocks.ICY_COBWEB.getBlock())) {
             return;
         }
 

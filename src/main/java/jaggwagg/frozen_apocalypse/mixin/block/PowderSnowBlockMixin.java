@@ -2,7 +2,7 @@ package jaggwagg.frozen_apocalypse.mixin.block;
 
 import jaggwagg.frozen_apocalypse.item.ThermalArmorItem;
 import jaggwagg.frozen_apocalypse.item.ThermalHorseArmorItem;
-import jaggwagg.frozen_apocalypse.registry.ModStatusEffects;
+import jaggwagg.frozen_apocalypse.entity.effect.ModStatusEffects;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PowderSnowBlock;
 import net.minecraft.entity.Entity;
@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PowderSnowBlockMixin {
     @Unique
     private static void hasFrostResistance(LivingEntity livingEntity) {
-        if (livingEntity.hasStatusEffect(ModStatusEffects.RegisteredStatusEffects.FROST_RESISTANCE.getStatusEffect())) {
+        if (livingEntity.hasStatusEffect(ModStatusEffects.FROST_RESISTANCE.getStatusEffect())) {
             livingEntity.inPowderSnow = false;
         }
     }

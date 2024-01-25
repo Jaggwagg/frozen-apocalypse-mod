@@ -5,7 +5,7 @@ import jaggwagg.frozen_apocalypse.client.render.entity.CryoboomerEntityRenderer;
 import jaggwagg.frozen_apocalypse.client.render.entity.FrostbiteEntityRenderer;
 import jaggwagg.frozen_apocalypse.client.render.entity.IceweaverEntityRenderer;
 import jaggwagg.frozen_apocalypse.client.render.entity.ShiverstareEntityRenderer;
-import jaggwagg.frozen_apocalypse.registry.ModEntityTypes;
+import jaggwagg.frozen_apocalypse.entity.ModMobEntityTypes;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.entity.Entity;
@@ -32,10 +32,10 @@ public class ModEntityRenderers {
     }
 
     public enum RegisteredEntityRenderers {
-        CRYOBOOMER_ENTITY_RENDERER(ModEntityTypes.RegisteredMobEntityTypes.CRYOBOOMER.getEntityType(), CryoboomerEntityRenderer::new),
-        FROSTBITE_ENTITY_RENDERER(ModEntityTypes.RegisteredMobEntityTypes.FROSTBITE.getEntityType(), FrostbiteEntityRenderer::new),
-        ICEWEAVER_ENTITY_RENDERER(ModEntityTypes.RegisteredMobEntityTypes.ICEWEAVER.getEntityType(), IceweaverEntityRenderer::new),
-        SHIVERSTARE_ENTITY_RENDERER(ModEntityTypes.RegisteredMobEntityTypes.SHIVERSTARE.getEntityType(), ShiverstareEntityRenderer::new);
+        CRYOBOOMER_ENTITY_RENDERER(ModMobEntityTypes.CRYOBOOMER.getEntityType(), CryoboomerEntityRenderer::new),
+        FROSTBITE_ENTITY_RENDERER(ModMobEntityTypes.FROSTBITE.getEntityType(), FrostbiteEntityRenderer::new),
+        ICEWEAVER_ENTITY_RENDERER(ModMobEntityTypes.ICEWEAVER.getEntityType(), IceweaverEntityRenderer::new),
+        SHIVERSTARE_ENTITY_RENDERER(ModMobEntityTypes.SHIVERSTARE.getEntityType(), ShiverstareEntityRenderer::new);
 
         private final EntityType<?> entityType;
         private final EntityRendererFactory<?> entityRendererFactory;

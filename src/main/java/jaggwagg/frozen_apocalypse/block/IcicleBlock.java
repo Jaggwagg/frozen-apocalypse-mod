@@ -1,7 +1,6 @@
 package jaggwagg.frozen_apocalypse.block;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.registry.ModBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.Thickness;
 import net.minecraft.entity.Entity;
@@ -82,7 +81,7 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
                 return;
             }
 
-            if (aboveBlockState.isOf(ModBlocks.RegisteredBlocks.ICICLE.getBlock())) {
+            if (aboveBlockState.isOf(ModBlocks.ICICLE.getBlock())) {
                 place(world, pos, Thickness.FRUSTUM, blockStateGrowth);
             }
 
@@ -91,7 +90,7 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
     }
 
     private static void place(WorldAccess world, BlockPos pos, Thickness thickness, int growth) {
-        BlockState blockState = ModBlocks.RegisteredBlocks.ICICLE.getBlock().getDefaultState().with(VERTICAL_DIRECTION, Direction.DOWN).with(THICKNESS, thickness).with(GROWTH, growth).with(WATERLOGGED, world.getFluidState(pos).getFluid() == Fluids.WATER);
+        BlockState blockState = ModBlocks.ICICLE.getBlock().getDefaultState().with(VERTICAL_DIRECTION, Direction.DOWN).with(THICKNESS, thickness).with(GROWTH, growth).with(WATERLOGGED, world.getFluidState(pos).getFluid() == Fluids.WATER);
         world.setBlockState(pos, blockState, 3);
     }
 
@@ -141,7 +140,7 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
     }
 
     private static boolean isTip(BlockState state) {
-        if (!state.isOf(ModBlocks.RegisteredBlocks.ICICLE.getBlock())) {
+        if (!state.isOf(ModBlocks.ICICLE.getBlock())) {
             return false;
         } else {
             Thickness thickness = state.get(THICKNESS);
@@ -159,11 +158,11 @@ public class IcicleBlock extends Block implements LandingBlock, Waterloggable {
     }
 
     private static boolean isHeldByIcicle(BlockState state, WorldView world, BlockPos pos) {
-        return isPointingDown(state) && !world.getBlockState(pos.up()).isOf(ModBlocks.RegisteredBlocks.ICICLE.getBlock());
+        return isPointingDown(state) && !world.getBlockState(pos.up()).isOf(ModBlocks.ICICLE.getBlock());
     }
 
     private static boolean isIcicleFacingDirection(BlockState state, Direction direction) {
-        return state.isOf(ModBlocks.RegisteredBlocks.ICICLE.getBlock()) && state.get(VERTICAL_DIRECTION) == direction;
+        return state.isOf(ModBlocks.ICICLE.getBlock()) && state.get(VERTICAL_DIRECTION) == direction;
     }
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {

@@ -1,7 +1,6 @@
 package jaggwagg.frozen_apocalypse.block;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.registry.ModBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.GrassBlock;
@@ -18,7 +17,7 @@ public class DeadGrassBlock extends GrassBlock implements FrozenSurvivable {
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (this.canNotSurvive(state, world, pos)) {
             if (FrozenApocalypse.apocalypseLevel.canGrassTurnToPermafrost()) {
-                world.setBlockState(pos, ModBlocks.RegisteredBlocks.PERMAFROST.getBlock().getDefaultState());
+                world.setBlockState(pos, ModBlocks.PERMAFROST.getBlock().getDefaultState());
             } else {
                 world.setBlockState(pos, Blocks.DIRT.getDefaultState());
             }

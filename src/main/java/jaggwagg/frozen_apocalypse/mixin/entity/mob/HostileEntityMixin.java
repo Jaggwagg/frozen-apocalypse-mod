@@ -1,7 +1,7 @@
 package jaggwagg.frozen_apocalypse.mixin.entity.mob;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.registry.ModEntityTypes;
+import jaggwagg.frozen_apocalypse.entity.ModMobEntityTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -52,15 +52,15 @@ public abstract class HostileEntityMixin {
         }
 
         if (hostileEntity.getType().equals(EntityType.CREEPER)) {
-            hostileEntity.convertTo(ModEntityTypes.RegisteredMobEntityTypes.CRYOBOOMER.getEntityType(), true);
+            hostileEntity.convertTo(ModMobEntityTypes.CRYOBOOMER.getEntityType(), true);
         } else if (hostileEntity.getType().equals(EntityType.ENDERMAN)) {
-            hostileEntity.convertTo(ModEntityTypes.RegisteredMobEntityTypes.SHIVERSTARE.getEntityType(), true);
+            hostileEntity.convertTo(ModMobEntityTypes.SHIVERSTARE.getEntityType(), true);
         } else if (hostileEntity.getType().equals(EntityType.SKELETON)) {
             hostileEntity.convertTo(EntityType.STRAY, true);
         } else if (hostileEntity.getType().equals(EntityType.SPIDER)) {
-            hostileEntity.convertTo(ModEntityTypes.RegisteredMobEntityTypes.ICEWEAVER.getEntityType(), true);
+            hostileEntity.convertTo(ModMobEntityTypes.ICEWEAVER.getEntityType(), true);
         } else if (hostileEntity.getType().equals(EntityType.ZOMBIE)) {
-            hostileEntity.convertTo(ModEntityTypes.RegisteredMobEntityTypes.FROSTBITE.getEntityType(), true);
+            hostileEntity.convertTo(ModMobEntityTypes.FROSTBITE.getEntityType(), true);
         }
     }
 }

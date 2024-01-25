@@ -23,13 +23,13 @@ public class FrozenApocalypse implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        ModBlocks.init();
-        ModEntityTypes.init();
-        ModEvents.init();
-        ModGameRules.init();
-        ModItems.init();
-        ModItemGroups.init();
-        ModStatusEffects.init();
+        RegisterBlocks.init();
+        RegisterEntityTypes.init();
+        RegisterEvents.init();
+        RegisterGameRules.init();
+        RegisterItemGroups.init();
+        RegisterItems.init();
+        RegisterStatusEffects.init();
 
         LOGGER.info(MOD_ID + ": Initialized common successfully");
     }

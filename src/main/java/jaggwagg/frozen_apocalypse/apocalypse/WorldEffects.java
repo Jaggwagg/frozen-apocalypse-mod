@@ -4,8 +4,9 @@ import jaggwagg.frozen_apocalypse.FrozenApocalypse;
 import jaggwagg.frozen_apocalypse.block.IcicleBlock;
 import jaggwagg.frozen_apocalypse.config.ApocalypseLevel;
 import jaggwagg.frozen_apocalypse.network.ModNetwork;
-import jaggwagg.frozen_apocalypse.registry.ModBlocks;
-import jaggwagg.frozen_apocalypse.registry.ModGameRules;
+import jaggwagg.frozen_apocalypse.block.ModBlocks;
+import jaggwagg.frozen_apocalypse.world.ModBooleanGameRules;
+import jaggwagg.frozen_apocalypse.world.ModIntegerGameRules;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.*;
@@ -30,15 +31,15 @@ public final class WorldEffects {
 
     public static void initializeFrozenApocalypseLevel(ServerWorld serverWorld) {
         for (ApocalypseLevel apocalypseLevel : FrozenApocalypse.CONFIG.getApocalypseLevels()) {
-            if (apocalypseLevel.getApocalypseLevel() == Math.max(0, serverWorld.getGameRules().getInt(ModGameRules.RegisteredIntegerGameRules.FROZEN_APOCALYPSE_LEVEL.getKey()))) {
+            if (apocalypseLevel.getApocalypseLevel() == Math.max(0, serverWorld.getGameRules().getInt(ModIntegerGameRules.FROZEN_APOCALYPSE_LEVEL.getKey()))) {
                 FrozenApocalypse.apocalypseLevel = apocalypseLevel;
             }
         }
     }
 
     public static void updateFrozenApocalypseLevel(ServerWorld serverWorld) {
-        GameRules.BooleanRule apocalypseLevelUpdatesEachDayGameRule = serverWorld.getGameRules().get(ModGameRules.RegisteredBooleanGameRules.FROZEN_APOCALYPSE_LEVEL_UPDATES_EACH_DAY.getKey());
-        GameRules.IntRule apocalypseLevelGameRule = serverWorld.getGameRules().get(ModGameRules.RegisteredIntegerGameRules.FROZEN_APOCALYPSE_LEVEL.getKey());
+        GameRules.BooleanRule apocalypseLevelUpdatesEachDayGameRule = serverWorld.getGameRules().get(ModBooleanGameRules.FROZEN_APOCALYPSE_LEVEL_UPDATES_EACH_DAY.getKey());
+        GameRules.IntRule apocalypseLevelGameRule = serverWorld.getGameRules().get(ModIntegerGameRules.FROZEN_APOCALYPSE_LEVEL.getKey());
         int maxStartingDay = 0;
 
         if (!apocalypseLevelUpdatesEachDayGameRule.get()) {
@@ -65,15 +66,15 @@ public final class WorldEffects {
     }
 
     public static int calculateUpdateSpeed(ServerWorld serverWorld) {
-        return (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(ModGameRules.RegisteredIntegerGameRules.FROZEN_APOCALYPSE_WORLD_UPDATE_SPEED.getKey()) * 512) / FrozenApocalypse.apocalypseLevel.getWorldUpdateSpeed()));
+        return (int) Math.ceil((Math.ceil(3.0 / serverWorld.getGameRules().getInt(ModIntegerGameRules.FROZEN_APOCALYPSE_WORLD_UPDATE_SPEED.getKey()) * 512) / FrozenApocalypse.apocalypseLevel.getWorldUpdateSpeed()));
     }
 
     public static void applyApocalypseEffects(ServerWorld serverWorld, BlockPos blockPos) {
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canGrassTurnToFrostedGrass(), (currentServerWorld, currentBlockPos) -> placeGrassBlock(currentServerWorld, currentBlockPos, Blocks.GRASS_BLOCK, ModBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock()));
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canGrassTurnToFrostedGrass(), (currentServerWorld, currentBlockPos) -> placeGrassBlock(currentServerWorld, currentBlockPos, Blocks.GRASS_BLOCK, ModBlocks.FROSTED_GRASS_BLOCK.getBlock()));
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canWaterTurnToIce(), WorldEffects::placeIce);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canPlaceIcicles(), WorldEffects::placeIcicle);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canPlaceSnow(), WorldEffects::placeSnow);
-        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canFrostedGrassTurnToDeadGrass(), (currentServerWorld, currentBlockPos) -> placeGrassBlock(currentServerWorld, currentBlockPos, ModBlocks.RegisteredBlocks.FROSTED_GRASS_BLOCK.getBlock(), ModBlocks.RegisteredBlocks.DEAD_GRASS_BLOCK.getBlock()));
+        applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canFrostedGrassTurnToDeadGrass(), (currentServerWorld, currentBlockPos) -> placeGrassBlock(currentServerWorld, currentBlockPos, ModBlocks.FROSTED_GRASS_BLOCK.getBlock(), ModBlocks.DEAD_GRASS_BLOCK.getBlock()));
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canLeavesTurnToDeadLeaves(), WorldEffects::placeDeadLeaves);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canIceTurnToPackedIce(), WorldEffects::placePackedIce);
         applyEffectIfEnabled(serverWorld, blockPos, FrozenApocalypse.apocalypseLevel.canLavaTurnToObsidian(), WorldEffects::placeObsidian);
@@ -136,7 +137,7 @@ public final class WorldEffects {
 
         for (int y = 0; y < 5; y++) {
             BlockPos blockPosBelow = blockPos.down(y);
-            Block icicleBlock = ModBlocks.RegisteredBlocks.ICICLE.getBlock();
+            Block icicleBlock = ModBlocks.ICICLE.getBlock();
 
             if (serverWorld.getBlockState(blockPosBelow).isOf(icicleBlock)) {
                 break;
@@ -178,9 +179,9 @@ public final class WorldEffects {
                         BlockPos currentBlockPos = new BlockPos(blockPos.getX() + x, blockPos.getY() + y, blockPos.getZ() + z);
 
                         if (serverWorld.getBlockState(currentBlockPos).getBlock() instanceof LeavesBlock) {
-                            if (!serverWorld.getBlockState(currentBlockPos).isOf(ModBlocks.RegisteredBlocks.DEAD_LEAVES.getBlock())) {
+                            if (!serverWorld.getBlockState(currentBlockPos).isOf(ModBlocks.DEAD_LEAVES.getBlock())) {
                                 BlockState blockState = serverWorld.getBlockState(currentBlockPos);
-                                serverWorld.setBlockState(currentBlockPos, ModBlocks.RegisteredBlocks.DEAD_LEAVES.getBlock().getStateWithProperties(blockState));
+                                serverWorld.setBlockState(currentBlockPos, ModBlocks.DEAD_LEAVES.getBlock().getStateWithProperties(blockState));
                             }
                         }
                     }
@@ -236,7 +237,7 @@ public final class WorldEffects {
 
         if (blockState.getBlock() instanceof GrassBlock || blockState.isOf(Blocks.DIRT) || blockState.isOf(Blocks.PODZOL)) {
             if (FrozenApocalypse.CONFIG.isPlacingCustomBlocksEnabled()) {
-                placeBlock(serverWorld, blockPosBelow, ModBlocks.RegisteredBlocks.PERMAFROST.getBlock().getDefaultState());
+                placeBlock(serverWorld, blockPosBelow, ModBlocks.PERMAFROST.getBlock().getDefaultState());
             } else {
                 placeBlock(serverWorld, blockPosBelow, Blocks.PODZOL.getDefaultState());
             }
