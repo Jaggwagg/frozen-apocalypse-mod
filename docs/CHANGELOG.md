@@ -6,6 +6,9 @@
 - Added golden thermal armor
 - Added iron, gold, and diamond thermal horse armor
 
+##### Fixed
+- Creative or spectating players unnecessarily getting frost resistance effect after death
+
 ### <ins>v1.2.1 - Released 2024-1-15</ins>
 
 ##### Fixed

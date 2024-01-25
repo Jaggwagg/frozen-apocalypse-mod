@@ -1,8 +1,9 @@
 package jaggwagg.frozen_apocalypse.event;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
-import jaggwagg.frozen_apocalypse.registry.ModGameRules;
-import jaggwagg.frozen_apocalypse.registry.ModStatusEffects;
+import jaggwagg.frozen_apocalypse.entity.effect.ModStatusEffects;
+import jaggwagg.frozen_apocalypse.world.ModBooleanGameRules;
+import jaggwagg.frozen_apocalypse.world.ModIntegerGameRules;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -18,21 +19,21 @@ public class FrostResistanceAfterDeathEvent implements ServerPlayerEvents.AfterR
             return;
         }
 
-        if (!newPlayer.getWorld().getGameRules().getBoolean(ModGameRules.RegisteredBooleanGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION.getKey())) {
+        if (!newPlayer.getWorld().getGameRules().getBoolean(ModBooleanGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION.getKey())) {
             return;
         }
 
-        if (!newPlayer.isCreative() || !newPlayer.isSpectator()) {
-            int length = newPlayer.getWorld().getGameRules().getInt(ModGameRules.RegisteredIntegerGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION.getKey());
+        if (!(newPlayer.isCreative() || newPlayer.isSpectator())) {
+            int length = newPlayer.getWorld().getGameRules().getInt(ModIntegerGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION.getKey());
 
             if (length < MINIMUM_DEATH_PROTECTION_DURATION) {
                 ServerWorld serverWorld = newPlayer.getServerWorld();
 
-                serverWorld.getGameRules().get(ModGameRules.RegisteredIntegerGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION.getKey()).set(MINIMUM_DEATH_PROTECTION_DURATION, newPlayer.getWorld().getServer());
-                length = newPlayer.getWorld().getGameRules().getInt(ModGameRules.RegisteredIntegerGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION.getKey());
+                serverWorld.getGameRules().get(ModIntegerGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION.getKey()).set(MINIMUM_DEATH_PROTECTION_DURATION, newPlayer.getWorld().getServer());
+                length = newPlayer.getWorld().getGameRules().getInt(ModIntegerGameRules.FROZEN_APOCALYPSE_DEATH_PROTECTION_DURATION.getKey());
             }
 
-            newPlayer.addStatusEffect(new StatusEffectInstance(ModStatusEffects.RegisteredStatusEffects.FROST_RESISTANCE.getStatusEffect(), length));
+            newPlayer.addStatusEffect(new StatusEffectInstance(ModStatusEffects.FROST_RESISTANCE.getStatusEffect(), length));
         }
     }
 }
