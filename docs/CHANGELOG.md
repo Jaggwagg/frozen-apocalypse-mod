@@ -8,6 +8,7 @@
 
 ##### Fixed
 - Creative or spectating players unnecessarily getting frost resistance effect after death
+- Cryoboomer explosion placing blocks where it shouldn't (replacing obsidian/bedrock)
 - Dimensions not being checked for snow in biomes (#13)
 - Frozen variants converted in non-affected dimensions (#15)
 

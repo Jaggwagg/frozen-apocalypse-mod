@@ -58,11 +58,12 @@ public class CryoboomerEntity extends CreeperEntity {
     }
 
     private void placePowderedSnow(BlockPos blockPos) {
+        World world = this.getWorld();
         int radius = 10;
         int center = (int) (radius * 0.5);
         int squareDistance; 
 
-        if (!this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+        if (!world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
             return;
         }
 
@@ -74,9 +75,11 @@ public class CryoboomerEntity extends CreeperEntity {
                     if (squareDistance < (radius - center) * (radius - center)) {
                         BlockPos placingBlockPos = new BlockPos(blockPos.getX() + x, blockPos.getY() + y, blockPos.getZ() + z);
 
-                        if (!this.getWorld().getBlockState(placingBlockPos).isAir()) {
-                            if (this.getWorld().getBlockState(placingBlockPos.up()).isAir()) {
-                                this.getWorld().setBlockState(placingBlockPos, Blocks.POWDER_SNOW.getDefaultState());
+                        if (!world.getBlockState(placingBlockPos).isAir()) {
+                            if ((world.getBlockState(placingBlockPos.up()).isAir() || world.getBlockState(placingBlockPos.up()).isOf(Blocks.SNOW))) {
+                                if (!world.getBlockState(placingBlockPos).isOf(Blocks.POWDER_SNOW)) {
+                                    world.setBlockState(placingBlockPos.up(), Blocks.POWDER_SNOW.getDefaultState());
+                                }
                             }
                         }
                     }
