@@ -1,6 +1,7 @@
 package jaggwagg.frozen_apocalypse.mixin.entity.mob;
 
 import jaggwagg.frozen_apocalypse.FrozenApocalypse;
+import jaggwagg.frozen_apocalypse.apocalypse.AllEffects;
 import jaggwagg.frozen_apocalypse.entity.ModMobEntityTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.HostileEntity;
@@ -48,6 +49,10 @@ public abstract class HostileEntityMixin {
         }
 
         if (!FrozenApocalypse.apocalypseLevel.canFreezeEntities() || hostileEntity.getBlockPos().getY() < FrozenApocalypse.apocalypseLevel.getFreezingYLevel()) {
+            return;
+        }
+
+        if (AllEffects.isSafeDimension(hostileEntity.getWorld())) {
             return;
         }
 
