@@ -4,10 +4,12 @@
 
 ##### Added
 - Added golden thermal armor
-- Added iron, gold, and diamond thermal horse armor
+- Added iron, gold, and diamond thermal horse armor (#14)
 
 ##### Fixed
 - Creative or spectating players unnecessarily getting frost resistance effect after death
+- Dimensions not being checked for snow in biomes (#13)
+- Frozen variants converted in non-affected dimensions (#15)
 
 ### <ins>v1.2.1 - Released 2024-1-15</ins>
 
