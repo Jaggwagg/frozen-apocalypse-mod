@@ -1,6 +1,6 @@
 # Frozen Apocalypse Mod - Changelog
 
-### <ins>v1.2.2 - Unreleased</ins>
+### <ins>v1.2.2 - Released 2024-1-27</ins>
 
 ##### Added
 - Added golden thermal armor
