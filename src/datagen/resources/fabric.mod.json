@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "frozen_apocalypse_datagen",
+  "name": "Frozen Apocalypse Datagen",
+  "version": "1.2.2",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "jaggwagg.frozen_apocalypse.datagen.FrozenApocalypseDataGenerator"
+    ]
+  }
+}
